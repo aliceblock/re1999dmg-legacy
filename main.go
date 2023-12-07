@@ -192,6 +192,9 @@ func regulusDmgCalculate() {
 	baseCrit := 0.452
 	regulusCritRateBonus := 0.5
 	psychubeCritRate := 0.16
+	resoDmgBonus := 0.205
+	hisBoundenDutyDmgBonus := 0.12
+	braveNewWorldUltBonus := 0.18
 
 	calculatorForThunder := DamageCalculator{
 		BaseAttackStats:                   baseAtk,
@@ -204,7 +207,7 @@ func regulusDmgCalculate() {
 		DefenseBonus:                      0,
 		DefenseReduction:                  bkbDefDown,
 		PenetrationRate:                   0,
-		CasterDamageIncrease:              0.205,
+		CasterDamageIncrease:              resoDmgBonus,
 		TargetDamageTakenReduction:        bkbDmgTakenPlus,
 		IncantationUltimateRitualBonusDmg: 0,
 		CasterCriticalRate:                baseCrit + psychubeCritRate,
@@ -239,6 +242,57 @@ func regulusDmgCalculate() {
 
 	fmt.Println()
 
+	calculatorForBraveNewWorld := DamageCalculator{
+		BaseAttackStats:                   baseAtk,
+		ResonanceAttackPercentage:         resoAtkPercent,
+		PsychubeAttackPercentage:          0.0,
+		ResonanceFixedAttackStats:         resoAtkFixed,
+		PsychubeFixedAttackStats:          370,
+		DamageBonus:                       anAnleeDmgBonus,
+		EnemyDefenseValue:                 enemyDef,
+		DefenseBonus:                      0,
+		DefenseReduction:                  bkbDefDown,
+		PenetrationRate:                   0,
+		CasterDamageIncrease:              resoDmgBonus,
+		TargetDamageTakenReduction:        bkbDmgTakenPlus,
+		IncantationUltimateRitualBonusDmg: 0,
+		CasterCriticalRate:                baseCrit,
+		CasterCriticalDamageBonus:         0.558 + 0.065 + 0.15 + regulusExcessCritDmgBonus(baseCrit),
+		TargetCriticalDefense:             0.1,
+		AfflatusAdvantage:                 afflatusAdvantage,
+		SkillMultiplier:                   3.0,
+	}
+
+	finalDamageBraveNewWorldSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.SkillMultiplier = 1.75
+	finalDamageBraveNewWorldSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.SkillMultiplier = 3.0
+	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus + braveNewWorldUltBonus
+	finalDamageBraveNewWorldUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus
+	calculatorForBraveNewWorld.CasterCriticalRate = baseCrit + regulusCritRateBonus
+	calculatorForBraveNewWorld.CasterCriticalDamageBonus = 0.558 + 0.065 + 0.15 + 0.16 + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
+	calculatorForBraveNewWorld.SkillMultiplier = 3.0
+	finalDamageBraveNewWorldWithRestlessHeartSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.SkillMultiplier = 1.75
+	finalDamageBraveNewWorldWithRestlessHeartSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.SkillMultiplier = 3.0
+	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus + braveNewWorldUltBonus
+	finalDamageBraveNewWorldWithRestlessHeartUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	// TODO: Add Brave New World Buff Triggered
+
+	fmt.Printf("---------\nRegulus Brave New World Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f", finalDamageBraveNewWorldSkill1)
+	fmt.Printf("\nSkill 2: %.2f", finalDamageBraveNewWorldSkill2)
+	fmt.Printf("\nUltimate: %.2f", finalDamageBraveNewWorldUlt)
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartSkill1)
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartSkill2)
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartUlt)
+
+	fmt.Println()
+
 	calculatorForBoundenDuty := DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
@@ -250,7 +304,7 @@ func regulusDmgCalculate() {
 		DefenseBonus:                      0,
 		DefenseReduction:                  bkbDefDown,
 		PenetrationRate:                   0,
-		CasterDamageIncrease:              0.205,
+		CasterDamageIncrease:              resoDmgBonus + hisBoundenDutyDmgBonus,
 		TargetDamageTakenReduction:        bkbDmgTakenPlus,
 		IncantationUltimateRitualBonusDmg: 0,
 		CasterCriticalRate:                baseCrit,
