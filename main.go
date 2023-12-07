@@ -212,53 +212,6 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 
 	fmt.Println()
 
-	calculatorForThunder := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          psychube.ThunderousApplause.Atk,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resonanceStats.DmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit + psychube.ThunderousApplause.CritRate,
-		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
-	}
-
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
-	finalDamageThunderSkill1 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
-	finalDamageThunderSkill2 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
-	finalDamageThunderUlt := calculatorForThunder.CalculateFinalDamage()
-
-	calculatorForThunder.CasterCriticalRate = baseCrit + psychube.ThunderousApplause.CritRate + regulusCritRateBonus
-	calculatorForThunder.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate+regulusCritRateBonus)
-
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
-	finalDamageThunderWithRestlessHeartSkill1 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
-	finalDamageThunderWithRestlessHeartSkill2 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
-	finalDamageThunderWithRestlessHeartUlt := calculatorForThunder.CalculateFinalDamage()
-
-	fmt.Printf("---------\nRegulus Thunder Final Damage:")
-	fmt.Printf("\nSkill 1: %.2f", finalDamageThunderSkill1)
-	fmt.Printf("\nSkill 2: %.2f", finalDamageThunderSkill2)
-	fmt.Printf("\nUltimate: %.2f", finalDamageThunderUlt)
-	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartSkill1)
-	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartSkill2)
-	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartUlt)
-
-	fmt.Println()
-
 	calculatorForBoundenDuty := DmgCal.DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
@@ -302,6 +255,55 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartSkill1)
 	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartSkill2)
 	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartUlt)
+
+	fmt.Println()
+
+	calculatorForThunder := DmgCal.DamageCalculator{
+		BaseAttackStats:                   baseAtk,
+		ResonanceAttackPercentage:         resoAtkPercent,
+		PsychubeAttackPercentage:          0,
+		ResonanceFixedAttackStats:         resoAtkFixed,
+		PsychubeFixedAttackStats:          psychube.ThunderousApplause.Atk,
+		DamageBonus:                       anAnleeDmgBonus,
+		EnemyDefenseValue:                 enemyDef,
+		DefenseBonus:                      0,
+		DefenseReduction:                  bkbDefDown,
+		PenetrationRate:                   0,
+		CasterDamageIncrease:              resonanceStats.DmgBonus,
+		TargetDamageTakenReduction:        bkbDmgTakenPlus,
+		IncantationUltimateRitualBonusDmg: 0,
+		CasterCriticalRate:                baseCrit + psychube.ThunderousApplause.CritRate,
+		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate),
+		TargetCriticalDefense:             0.1,
+		AfflatusAdvantage:                 afflatusAdvantage,
+	}
+
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageThunderSkill1 := calculatorForThunder.CalculateFinalDamage()
+	calculatorForThunder.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate+regulusCritRateBonus)
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	finalDamageThunderSkill2 := calculatorForThunder.CalculateFinalDamage()
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	finalDamageThunderUlt := calculatorForThunder.CalculateFinalDamage()
+
+	calculatorForThunder.CasterCriticalRate = baseCrit + psychube.ThunderousApplause.CritRate + regulusCritRateBonus
+	calculatorForThunder.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate+regulusCritRateBonus)
+
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageThunderWithRestlessHeartSkill1 := calculatorForThunder.CalculateFinalDamage()
+	calculatorForThunder.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate+regulusCritRateBonus)
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	finalDamageThunderWithRestlessHeartSkill2 := calculatorForThunder.CalculateFinalDamage()
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	finalDamageThunderWithRestlessHeartUlt := calculatorForThunder.CalculateFinalDamage()
+
+	fmt.Printf("---------\nRegulus Thunder Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f", finalDamageThunderSkill1)
+	fmt.Printf("\nSkill 2: %.2f", finalDamageThunderSkill2)
+	fmt.Printf("\nUltimate: %.2f", finalDamageThunderUlt)
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartSkill1)
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartSkill2)
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageThunderWithRestlessHeartUlt)
 
 	fmt.Println()
 
