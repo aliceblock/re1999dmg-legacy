@@ -2,102 +2,34 @@ package main
 
 import (
 	"fmt"
-	"math"
+
+	DmgCal "github.com/aliceblock/re1999dmg/damage_calculator"
+	"github.com/aliceblock/re1999dmg/damage_calculator/character"
+	"github.com/aliceblock/re1999dmg/damage_calculator/psychube"
 )
 
-// DamageCalculator struct represents the parameters for damage calculation.
-type DamageCalculator struct {
-	BaseAttackStats                   float64
-	ResonanceAttackPercentage         float64
-	PsychubeAttackPercentage          float64
-	ResonanceFixedAttackStats         float64
-	PsychubeFixedAttackStats          float64
-	DamageBonus                       float64
-	EnemyDefenseValue                 float64
-	DefenseBonus                      float64
-	DefenseReduction                  float64
-	PenetrationRate                   float64
-	CasterDamageIncrease              float64
-	TargetDamageTakenReduction        float64
-	IncantationUltimateRitualBonusDmg float64
-	CasterCriticalRate                float64
-	CasterCriticalDamageBonus         float64
-	TargetCriticalDefense             float64
-	AfflatusAdvantage                 bool
-	SkillMultiplier                   float64
-}
-
-// CalculateFinalDamage calculates the final damage using the defined formula.
-func (d *DamageCalculator) CalculateFinalDamage() float64 {
-	// Calculate Effective Attack Value
-	effectiveAttackValue := d.BaseAttackStats*(1+d.ResonanceAttackPercentage+d.PsychubeAttackPercentage) +
-		d.ResonanceFixedAttackStats + d.PsychubeFixedAttackStats
-
-	// Calculate Attack and Defense Factor
-	attackDefenseFactor := effectiveAttackValue*(1+d.DamageBonus) -
-		d.EnemyDefenseValue*(1+d.DefenseBonus-d.DefenseReduction)*(1-d.PenetrationRate)
-
-	// Check if the result is less than the specified threshold
-	if attackDefenseFactor < effectiveAttackValue*(1+d.ResonanceAttackPercentage)*0.1 {
-		attackDefenseFactor = effectiveAttackValue * (1 + d.ResonanceAttackPercentage) * 0.1
-	}
-
-	// Calculate DMG Bonus
-	dmgBonus := math.Max(1+d.CasterDamageIncrease-d.TargetDamageTakenReduction, 0.3)
-
-	// Calculate Incantation/Ultimate/Ritual Might
-	incantationUltimateRitualMight := math.Max(1+d.IncantationUltimateRitualBonusDmg, 0)
-
-	// Calculate Critical Bonus
-	criticalBonus := math.Max(1+d.CasterCriticalDamageBonus-d.TargetCriticalDefense, 1.1)
-
-	// Calculate Afflatus Bonus
-	afflatusBonus := 1.0
-	if d.AfflatusAdvantage {
-		afflatusBonus = 1.3
-	}
-
-	// Calculate Final Damage
-	var finalDamage float64
-	if d.CasterCriticalRate >= 1 {
-		finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * d.SkillMultiplier
-	} else {
-		finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*d.CasterCriticalRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-d.CasterCriticalRate)*afflatusBonus) * d.SkillMultiplier
-
-	}
-
-	// Echo every calculation step
-	// fmt.Printf("Effective Attack Value: %.2f\n", effectiveAttackValue)
-	// fmt.Printf("Attack and Defense Factor: %.2f\n", attackDefenseFactor)
-	// fmt.Printf("DMG Bonus: %.2f\n", dmgBonus)
-	// fmt.Printf("Incantation/Ultimate/Ritual Might: %.2f\n", incantationUltimateRitualMight)
-	// fmt.Printf("Critical Bonus: %.2f\n", criticalBonus)
-	// fmt.Printf("Afflatus Bonus: %.2f\n", afflatusBonus)
-	// fmt.Printf("Skill Multiplier: %.2f\n", d.SkillMultiplier)
-
-	return finalDamage
-}
-
 func main() {
-	aKnightDmgCalculate()
-	regulusDmgCalculate()
+	// aKnightDmgCalculate(false, false, false)
+	regulusDmgCalculate(character.RegulusStat, false, false, false)
 }
 
-func aKnightDmgCalculate() {
+func aKnightDmgCalculate(afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool) {
 	baseAtk := 1176.0
 	resoAtkPercent := 0.18
 	resoAtkFixed := 141.0
-	anAnleeDmgBonus := 0.15
-	anAnleeDmgBonus = 0.0
+	anAnleeDmgBonus := 0.0
+	if applyAnAnLeeBuff {
+		anAnleeDmgBonus = 0.15
+	}
 	enemyDef := 600.0
-	bkbDefDown := 0.15
-	bkbDefDown = 0.0
-	bkbDmgTakenPlus := -0.15
-	bkbDmgTakenPlus = 0.0
-	afflatusAdvantage := true
+	bkbDefDown := 0.0
+	bkbDmgTakenPlus := 0.0
+	if applyBkbBuff {
+		bkbDmgTakenPlus = -0.15
+	}
 	baseCrit := 0.27
 
-	calculatorForHop := DamageCalculator{
+	calculatorForHop := DmgCal.DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
 		PsychubeAttackPercentage:          0.0,
@@ -144,7 +76,7 @@ func aKnightDmgCalculate() {
 
 	fmt.Println()
 
-	calculatorForBoundenDuty := DamageCalculator{
+	calculatorForBoundenDuty := DmgCal.DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
 		PsychubeAttackPercentage:          0.0,
@@ -177,62 +109,147 @@ func aKnightDmgCalculate() {
 	fmt.Printf("\nUltimate: %.2f", finalDamageHisBoundenDutyUlt)
 }
 
-func regulusDmgCalculate() {
-	baseAtk := 1186.0
-	resoAtkPercent := 0.105
-	resoAtkFixed := 142.0
-	anAnleeDmgBonus := 0.15
-	anAnleeDmgBonus = 0.0
-	enemyDef := 600.0
-	bkbDefDown := 0.15
-	bkbDefDown = 0.0
-	bkbDmgTakenPlus := -0.15
-	bkbDmgTakenPlus = 0.0
-	afflatusAdvantage := false
-	baseCrit := 0.452
-	regulusCritRateBonus := 0.5
-	psychubeCritRate := 0.16
-	resoDmgBonus := 0.205
-	hisBoundenDutyDmgBonus := 0.12
-	braveNewWorldUltBonus := 0.18
+/*
+1 :2 Move Merge
+2 :5 Use 2 Incantation
+3 :5 Wait
+4 :1 Ultimate
+5 :3 Move Merge
+6 :5 Use 1 Incantation
+7 :5 Wait
+8 :1 Ultimate
+9 :3 Move Merge
+10:5 Use 1 Incantation
+11:5 Wait
+12:1 Ultimate
+*/
+func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool) {
+	resonanceStats := char.GetResonanceStats()
 
-	calculatorForThunder := DamageCalculator{
+	baseAtk := char.Atk
+	resoAtkPercent := resonanceStats.AtkPercent
+	resoAtkFixed := resonanceStats.Atk
+	baseCrit := char.CritRate + resonanceStats.CritRate
+
+	enemyDef := 600.0
+
+	// Additional Bonus
+	regulusCritRateBonus := 0.5
+
+	anAnleeDmgBonus := 0.0
+	if applyAnAnLeeBuff {
+		anAnleeDmgBonus = 0.15
+	}
+	bkbDefDown := 0.0
+	bkbDmgTakenPlus := 0.0
+	if applyBkbBuff {
+		bkbDefDown = 0.15
+		bkbDmgTakenPlus = -0.15
+	}
+
+	calculatorForBraveNewWorld := DmgCal.DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0.0,
+		PsychubeAttackPercentage:          0,
 		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          330,
+		PsychubeFixedAttackStats:          psychube.BraveNewWorld.Atk,
 		DamageBonus:                       anAnleeDmgBonus,
 		EnemyDefenseValue:                 enemyDef,
 		DefenseBonus:                      0,
 		DefenseReduction:                  bkbDefDown,
 		PenetrationRate:                   0,
-		CasterDamageIncrease:              resoDmgBonus,
+		CasterDamageIncrease:              resonanceStats.DmgBonus,
 		TargetDamageTakenReduction:        bkbDmgTakenPlus,
 		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit + psychubeCritRate,
-		CasterCriticalDamageBonus:         0.558 + 0.065 + 0.15 + 0.16 + regulusExcessCritDmgBonus(baseCrit+psychubeCritRate),
+		CasterCriticalRate:                baseCrit,
+		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
 		TargetCriticalDefense:             0.1,
 		AfflatusAdvantage:                 afflatusAdvantage,
-		SkillMultiplier:                   3.0,
 	}
 
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageBraveNewWorldSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.AdditionalEffect.IncantationMight
+	finalDamageBraveNewWorldBuffSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = 0
+	finalDamageBraveNewWorldSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.AdditionalEffect.IncantationMight
+	finalDamageBraveNewWorldBuffSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.UltimateMight
+	finalDamageBraveNewWorldUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	// Reset
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = 0
+	calculatorForBraveNewWorld.CasterCriticalRate = baseCrit + regulusCritRateBonus
+	calculatorForBraveNewWorld.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
+
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageBraveNewWorldWithRestlessHeartSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.AdditionalEffect.IncantationMight
+	finalDamageBraveNewWorldWithRestlessHeartBuffSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = 0
+	finalDamageBraveNewWorldWithRestlessHeartSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.AdditionalEffect.IncantationMight
+	finalDamageBraveNewWorldWithRestlessHeartBuffSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	calculatorForBraveNewWorld.IncantationUltimateRitualBonusDmg = psychube.BraveNewWorld.UltimateMight
+	finalDamageBraveNewWorldWithRestlessHeartUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
+
+	fmt.Printf("\n---------\nRegulus Brave New World Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f (with BNW Buff %.2f)", finalDamageBraveNewWorldSkill1, finalDamageBraveNewWorldBuffSkill1)
+	fmt.Printf("\nSkill 2: %.2f (with BNW Buff %.2f)", finalDamageBraveNewWorldSkill2, finalDamageBraveNewWorldBuffSkill2)
+	fmt.Printf("\nUltimate: %.2f", finalDamageBraveNewWorldUlt)
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f (with BNW Buff %.2f)", finalDamageBraveNewWorldWithRestlessHeartSkill1, finalDamageBraveNewWorldWithRestlessHeartBuffSkill1)
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f (with BNW Buff %.2f)", finalDamageBraveNewWorldWithRestlessHeartSkill2, finalDamageBraveNewWorldWithRestlessHeartBuffSkill2)
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartUlt)
+
+	fmt.Println()
+
+	calculatorForThunder := DmgCal.DamageCalculator{
+		BaseAttackStats:                   baseAtk,
+		ResonanceAttackPercentage:         resoAtkPercent,
+		PsychubeAttackPercentage:          0,
+		ResonanceFixedAttackStats:         resoAtkFixed,
+		PsychubeFixedAttackStats:          psychube.ThunderousApplause.Atk,
+		DamageBonus:                       anAnleeDmgBonus,
+		EnemyDefenseValue:                 enemyDef,
+		DefenseBonus:                      0,
+		DefenseReduction:                  bkbDefDown,
+		PenetrationRate:                   0,
+		CasterDamageIncrease:              resonanceStats.DmgBonus,
+		TargetDamageTakenReduction:        bkbDmgTakenPlus,
+		IncantationUltimateRitualBonusDmg: 0,
+		CasterCriticalRate:                baseCrit + psychube.ThunderousApplause.CritRate,
+		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate),
+		TargetCriticalDefense:             0.1,
+		AfflatusAdvantage:                 afflatusAdvantage,
+	}
+
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
 	finalDamageThunderSkill1 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = 1.75
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
 	finalDamageThunderSkill2 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = 3.0
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
 	finalDamageThunderUlt := calculatorForThunder.CalculateFinalDamage()
 
-	calculatorForThunder.CasterCriticalRate = baseCrit + psychubeCritRate + regulusCritRateBonus
-	calculatorForThunder.CasterCriticalDamageBonus = 0.558 + 0.065 + 0.15 + 0.16 + regulusExcessCritDmgBonus(baseCrit+psychubeCritRate+regulusCritRateBonus)
-	calculatorForThunder.SkillMultiplier = 3.0
+	calculatorForThunder.CasterCriticalRate = baseCrit + psychube.ThunderousApplause.CritRate + regulusCritRateBonus
+	calculatorForThunder.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate+regulusCritRateBonus)
+
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
 	finalDamageThunderWithRestlessHeartSkill1 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = 1.75
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
 	finalDamageThunderWithRestlessHeartSkill2 := calculatorForThunder.CalculateFinalDamage()
-	calculatorForThunder.SkillMultiplier = 3.0
+	calculatorForThunder.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
 	finalDamageThunderWithRestlessHeartUlt := calculatorForThunder.CalculateFinalDamage()
 
-	fmt.Printf("\n---------\nRegulus Thunder Final Damage:")
+	fmt.Printf("---------\nRegulus Thunder Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f", finalDamageThunderSkill1)
 	fmt.Printf("\nSkill 2: %.2f", finalDamageThunderSkill2)
 	fmt.Printf("\nUltimate: %.2f", finalDamageThunderUlt)
@@ -242,91 +259,40 @@ func regulusDmgCalculate() {
 
 	fmt.Println()
 
-	calculatorForBraveNewWorld := DamageCalculator{
+	calculatorForBoundenDuty := DmgCal.DamageCalculator{
 		BaseAttackStats:                   baseAtk,
 		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0.0,
+		PsychubeAttackPercentage:          0,
 		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          370,
+		PsychubeFixedAttackStats:          psychube.HisBoundenDuty.Atk,
 		DamageBonus:                       anAnleeDmgBonus,
 		EnemyDefenseValue:                 enemyDef,
 		DefenseBonus:                      0,
 		DefenseReduction:                  bkbDefDown,
 		PenetrationRate:                   0,
-		CasterDamageIncrease:              resoDmgBonus,
+		CasterDamageIncrease:              resonanceStats.DmgBonus + psychube.HisBoundenDuty.DmgBonus,
 		TargetDamageTakenReduction:        bkbDmgTakenPlus,
 		IncantationUltimateRitualBonusDmg: 0,
 		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         0.558 + 0.065 + 0.15 + regulusExcessCritDmgBonus(baseCrit),
+		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
 		TargetCriticalDefense:             0.1,
 		AfflatusAdvantage:                 afflatusAdvantage,
-		SkillMultiplier:                   3.0,
 	}
 
-	finalDamageBraveNewWorldSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
-	calculatorForBraveNewWorld.SkillMultiplier = 1.75
-	finalDamageBraveNewWorldSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
-	calculatorForBraveNewWorld.SkillMultiplier = 3.0
-	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus + braveNewWorldUltBonus
-	finalDamageBraveNewWorldUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
-
-	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus
-	calculatorForBraveNewWorld.CasterCriticalRate = baseCrit + regulusCritRateBonus
-	calculatorForBraveNewWorld.CasterCriticalDamageBonus = 0.558 + 0.065 + 0.15 + 0.16 + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
-	calculatorForBraveNewWorld.SkillMultiplier = 3.0
-	finalDamageBraveNewWorldWithRestlessHeartSkill1 := calculatorForBraveNewWorld.CalculateFinalDamage()
-	calculatorForBraveNewWorld.SkillMultiplier = 1.75
-	finalDamageBraveNewWorldWithRestlessHeartSkill2 := calculatorForBraveNewWorld.CalculateFinalDamage()
-	calculatorForBraveNewWorld.SkillMultiplier = 3.0
-	calculatorForBraveNewWorld.CasterDamageIncrease = resoDmgBonus + braveNewWorldUltBonus
-	finalDamageBraveNewWorldWithRestlessHeartUlt := calculatorForBraveNewWorld.CalculateFinalDamage()
-
-	// TODO: Add Brave New World Buff Triggered
-
-	fmt.Printf("---------\nRegulus Brave New World Final Damage:")
-	fmt.Printf("\nSkill 1: %.2f", finalDamageBraveNewWorldSkill1)
-	fmt.Printf("\nSkill 2: %.2f", finalDamageBraveNewWorldSkill2)
-	fmt.Printf("\nUltimate: %.2f", finalDamageBraveNewWorldUlt)
-	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartSkill1)
-	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartSkill2)
-	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageBraveNewWorldWithRestlessHeartUlt)
-
-	fmt.Println()
-
-	calculatorForBoundenDuty := DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0.0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          410,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resoDmgBonus + hisBoundenDutyDmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         0.558 + 0.065 + 0.15 + regulusExcessCritDmgBonus(baseCrit),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
-		SkillMultiplier:                   3.0,
-	}
-
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
 	finalDamageBoundenDutySkill1 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 1.75
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
 	finalDamageBoundenDutySkill2 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 3.0
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
 	finalDamageBoundenDutyUlt := calculatorForBoundenDuty.CalculateFinalDamage()
 
 	calculatorForBoundenDuty.CasterCriticalRate = baseCrit + regulusCritRateBonus
-	calculatorForBoundenDuty.CasterCriticalDamageBonus = 0.558 + 0.065 + 0.15 + 0.16 + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
-	calculatorForBoundenDuty.SkillMultiplier = 3.0
+	calculatorForBoundenDuty.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
 	finalDamageBoundenDutyWithRestlessHeartSkill1 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 1.75
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
 	finalDamageBoundenDutyWithRestlessHeartSkill2 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 3.0
+	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
 	finalDamageBoundenDutyWithRestlessHeartUlt := calculatorForBoundenDuty.CalculateFinalDamage()
 
 	fmt.Printf("---------\nRegulus His Bounden Duty Final Damage:")
@@ -336,6 +302,57 @@ func regulusDmgCalculate() {
 	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartSkill1)
 	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartSkill2)
 	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageBoundenDutyWithRestlessHeartUlt)
+
+	fmt.Println()
+
+	calculatorForHop := DmgCal.DamageCalculator{
+		BaseAttackStats:                   baseAtk,
+		ResonanceAttackPercentage:         resoAtkPercent,
+		PsychubeAttackPercentage:          0,
+		ResonanceFixedAttackStats:         resoAtkFixed,
+		PsychubeFixedAttackStats:          psychube.Hopscotch.Atk,
+		DamageBonus:                       anAnleeDmgBonus,
+		EnemyDefenseValue:                 enemyDef,
+		DefenseBonus:                      0,
+		DefenseReduction:                  bkbDefDown,
+		PenetrationRate:                   0,
+		CasterDamageIncrease:              resonanceStats.DmgBonus,
+		TargetDamageTakenReduction:        bkbDmgTakenPlus,
+		IncantationUltimateRitualBonusDmg: 0,
+		CasterCriticalRate:                baseCrit,
+		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
+		TargetCriticalDefense:             0.1,
+		AfflatusAdvantage:                 afflatusAdvantage,
+	}
+
+	calculatorForHop.IncantationUltimateRitualBonusDmg = psychube.Hopscotch.IncantationMight
+	calculatorForHop.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageHopSkill1 := calculatorForHop.CalculateFinalDamage()
+	calculatorForHop.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	finalDamageHopSkill2 := calculatorForHop.CalculateFinalDamage()
+	calculatorForHop.IncantationUltimateRitualBonusDmg = 0
+	calculatorForHop.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	finalDamageHopUlt := calculatorForHop.CalculateFinalDamage()
+
+	calculatorForHop.CasterCriticalRate = baseCrit + regulusCritRateBonus
+	calculatorForHop.CasterCriticalDamageBonus = char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit+regulusCritRateBonus)
+
+	calculatorForHop.IncantationUltimateRitualBonusDmg = psychube.Hopscotch.IncantationMight
+	calculatorForHop.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
+	finalDamageHopWithRestlessHeartSkill1 := calculatorForHop.CalculateFinalDamage()
+	calculatorForHop.SkillMultiplier = char.Skill[character.Skill2][1].Multiplier
+	finalDamageHopWithRestlessHeartSkill2 := calculatorForHop.CalculateFinalDamage()
+	calculatorForHop.IncantationUltimateRitualBonusDmg = 0
+	calculatorForHop.SkillMultiplier = char.Skill[character.Ultimate][0].Multiplier
+	finalDamageHopWithRestlessHeartUlt := calculatorForHop.CalculateFinalDamage()
+
+	fmt.Printf("---------\nRegulus Hopscotch Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f", finalDamageHopSkill1)
+	fmt.Printf("\nSkill 2: %.2f", finalDamageHopSkill2)
+	fmt.Printf("\nUltimate: %.2f", finalDamageHopUlt)
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f", finalDamageHopWithRestlessHeartSkill1)
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f", finalDamageHopWithRestlessHeartSkill2)
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", finalDamageHopWithRestlessHeartUlt)
 }
 
 func regulusExcessCritDmgBonus(critRate float64) float64 {
