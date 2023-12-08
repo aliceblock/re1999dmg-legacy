@@ -6,12 +6,14 @@ import (
 	"github.com/aliceblock/re1999dmg/damage_calculator/character/idea"
 )
 
+// TODO: Move Resonance
 type Character struct {
 	Atk        float64                `json:"atk"`
 	AtkPercent float64                `json:"atkPercent"`
 	DmgBonus   float64                `json:"dmgBonus"`
 	CritRate   float64                `json:"critRate"`
 	CritDmg    float64                `json:"critDmg"`
+	Insight    Insight                `json:"insight"`
 	Resonance  Resonance              `json:"resonance"`
 	Skill      map[SkillIndex][]Skill `json:"skill"`
 }
@@ -34,6 +36,13 @@ func (c *Character) GetResonanceStats() ResonanceStats {
 	stats.CritRate = toFixed(stats.CritRate, 3)
 	stats.CritDmg = toFixed(stats.CritDmg, 3)
 	return stats
+}
+
+type Insight struct {
+	AtkPercent float64 `json:"atkPercent"`
+	DmgBonus   float64 `json:"dmgBonus"`
+	CritRate   float64 `json:"critRate"`
+	CritDmg    float64 `json:"critDmg"`
 }
 
 type Resonance struct {
@@ -65,13 +74,13 @@ const (
 	Ultimate            = 2
 )
 
-var RegulusStat = Character{
+var Regulus = Character{
 	Atk:      1186.0,
 	CritRate: 0.172,
 	CritDmg:  0.558 + 0.15, // Base + Insight 2
 	Resonance: Resonance{
 		Ideas: []IdeaAmount{
-			{Idea: idea.BaseTIdea, Amount: 1},
+			{Idea: idea.RegulusBaseIdea, Amount: 1},
 			{Idea: idea.C4LIdea, Amount: 2},
 			{Idea: idea.C4IIdea, Amount: 1},
 			{Idea: idea.C4SIdea, Amount: 3},

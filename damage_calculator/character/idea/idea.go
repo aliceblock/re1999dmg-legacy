@@ -19,7 +19,7 @@ var BaseZIdea = Idea{
 // 	DmgBonus: 0.06,
 // }
 
-var BaseTIdea = Idea{
+var RegulusBaseIdea = Idea{
 	Atk:      142,
 	DmgBonus: 0.06,
 }
