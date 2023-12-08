@@ -13,7 +13,7 @@ type Character struct {
 	CritRate   float64                `json:"critRate"`
 	CritDmg    float64                `json:"critDmg"`
 	Resonance  Resonance              `json:"resonance"`
-	Skill      map[SkillIndex][]skill `json:"skill"`
+	Skill      map[SkillIndex][]Skill `json:"skill"`
 }
 
 func (c *Character) GetResonanceStats() ResonanceStats {
@@ -53,7 +53,7 @@ type ResonanceStats struct {
 	CritDmg    float64 `json:"critDmg"`
 }
 
-type skill struct {
+type Skill struct {
 	Multiplier float64 `json:"multiplier"`
 }
 
@@ -82,7 +82,7 @@ var RegulusStat = Character{
 			{Idea: idea.C1Idea, Amount: 1},
 		},
 	},
-	Skill: map[SkillIndex][]skill{
+	Skill: map[SkillIndex][]Skill{
 		Skill1: {
 			{Multiplier: 2.0},
 			{Multiplier: 3.0},

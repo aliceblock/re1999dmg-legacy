@@ -1,31 +1,20 @@
 package damage_calculator
 
-import "math"
+import (
+	"math"
+
+	"github.com/aliceblock/re1999dmg/damage_calculator/character"
+)
 
 // DamageCalculator struct represents the parameters for damage calculation.
 type DamageCalculator struct {
-	BaseAttackStats                   float64
-	ResonanceAttackPercentage         float64
-	PsychubeAttackPercentage          float64
-	ResonanceFixedAttackStats         float64
-	PsychubeFixedAttackStats          float64
-	DamageBonus                       float64
-	EnemyDefenseValue                 float64
-	DefenseBonus                      float64
-	DefenseReduction                  float64
-	PenetrationRate                   float64
-	CasterDamageIncrease              float64
-	TargetDamageTakenReduction        float64
-	IncantationUltimateRitualBonusDmg float64
-	CasterCriticalRate                float64
-	CasterCriticalDamageBonus         float64
-	TargetCriticalDefense             float64
-	AfflatusAdvantage                 bool
-	SkillMultiplier                   float64
+	DamageCalculatorInfo
 }
 
 // CalculateFinalDamage calculates the final damage using the defined formula.
-func (d *DamageCalculator) CalculateFinalDamage() float64 {
+func (d *DamageCalculator) CalculateFinalDamage(damageCalculatorInfo DamageCalculatorInfo, skill character.SkillIndex) []float64 {
+	finalDamages := make([]float64, 3)
+
 	// Calculate Effective Attack Value
 	effectiveAttackValue := d.BaseAttackStats*(1+d.ResonanceAttackPercentage+d.PsychubeAttackPercentage) +
 		d.ResonanceFixedAttackStats + d.PsychubeFixedAttackStats
@@ -55,12 +44,37 @@ func (d *DamageCalculator) CalculateFinalDamage() float64 {
 	}
 
 	// Calculate Final Damage
-	var finalDamage float64
-	if d.CasterCriticalRate >= 1 {
-		finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * d.SkillMultiplier
-	} else {
-		finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*d.CasterCriticalRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-d.CasterCriticalRate)*afflatusBonus) * d.SkillMultiplier
+	for _, skillInfo := range d.Character.Skill[skill] {
+		var skillMultiplier float64 = skillInfo.Multiplier
+		var finalDamage float64
+		if d.CasterCriticalRate >= 1 {
+			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier
+		} else {
+			finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*d.CasterCriticalRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-d.CasterCriticalRate)*afflatusBonus) * skillMultiplier
+		}
+		finalDamages = append(finalDamages, finalDamage)
 	}
 
-	return finalDamage
+	return finalDamages
+}
+
+type DamageCalculatorInfo struct {
+	Character                         character.Character
+	BaseAttackStats                   float64
+	ResonanceAttackPercentage         float64
+	PsychubeAttackPercentage          float64
+	ResonanceFixedAttackStats         float64
+	PsychubeFixedAttackStats          float64
+	DamageBonus                       float64
+	EnemyDefenseValue                 float64
+	DefenseBonus                      float64
+	DefenseReduction                  float64
+	PenetrationRate                   float64
+	CasterDamageIncrease              float64
+	TargetDamageTakenReduction        float64
+	IncantationUltimateRitualBonusDmg float64
+	CasterCriticalRate                float64
+	CasterCriticalDamageBonus         float64
+	TargetCriticalDefense             float64
+	AfflatusAdvantage                 bool
 }

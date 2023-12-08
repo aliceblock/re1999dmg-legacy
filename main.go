@@ -9,104 +9,7 @@ import (
 )
 
 func main() {
-	// aKnightDmgCalculate(false, false, false)
-	regulusDmgCalculate(character.RegulusStat, false, false, false)
-}
-
-func aKnightDmgCalculate(afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool) {
-	baseAtk := 1176.0
-	resoAtkPercent := 0.18
-	resoAtkFixed := 141.0
-	anAnleeDmgBonus := 0.0
-	if applyAnAnLeeBuff {
-		anAnleeDmgBonus = 0.15
-	}
-	enemyDef := 600.0
-	bkbDefDown := 0.0
-	bkbDmgTakenPlus := 0.0
-	if applyBkbBuff {
-		bkbDmgTakenPlus = -0.15
-	}
-	baseCrit := 0.27
-
-	calculatorForHop := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0.0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          370,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              0.155,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0.18,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         0.533,
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
-		SkillMultiplier:                   2.75,
-	}
-
-	finalDamageHopSkill1 := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.SkillMultiplier = 1.5
-	finalDamageHopSkill2 := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.SkillMultiplier = 5.5
-	calculatorForHop.IncantationUltimateRitualBonusDmg = 0
-	finalDamageHopUlt := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.IncantationUltimateRitualBonusDmg = 0.04
-	finalDamageHopUlt1 := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.IncantationUltimateRitualBonusDmg = 0.08
-	finalDamageHopUlt2 := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.IncantationUltimateRitualBonusDmg = 0.12
-	finalDamageHopUlt3 := calculatorForHop.CalculateFinalDamage()
-	calculatorForHop.IncantationUltimateRitualBonusDmg = 0.16
-	finalDamageHopUlt4 := calculatorForHop.CalculateFinalDamage()
-
-	fmt.Printf("\n---------\nA Knight Hopscotch:")
-	fmt.Printf("\nSkill 1: %.2f", finalDamageHopSkill1)
-	fmt.Printf("\nSkill 2: %.2f", finalDamageHopSkill2)
-	fmt.Printf("\nUltimate: %.2f", finalDamageHopUlt)
-	fmt.Printf("\nUltimate+1: %.2f", finalDamageHopUlt1)
-	fmt.Printf("\nUltimate+2: %.2f", finalDamageHopUlt2)
-	fmt.Printf("\nUltimate+3: %.2f", finalDamageHopUlt3)
-	fmt.Printf("\nUltimate+4: %.2f", finalDamageHopUlt4)
-
-	fmt.Println()
-
-	calculatorForBoundenDuty := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0.0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          410,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              0.275,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         0.533,
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
-		SkillMultiplier:                   2.75,
-	}
-
-	finalDamageHisBoundenDutySkill1 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 1.5
-	finalDamageHisBoundenDutySkill2 := calculatorForBoundenDuty.CalculateFinalDamage()
-	calculatorForBoundenDuty.SkillMultiplier = 5.5
-	finalDamageHisBoundenDutyUlt := calculatorForBoundenDuty.CalculateFinalDamage()
-
-	fmt.Printf("---------\nA Knight His Bounden Duty:")
-	fmt.Printf("\nSkill 1: %.2f", finalDamageHisBoundenDutySkill1)
-	fmt.Printf("\nSkill 2: %.2f", finalDamageHisBoundenDutySkill2)
-	fmt.Printf("\nUltimate: %.2f", finalDamageHisBoundenDutyUlt)
+	regulusDmgCalculate(character.RegulusStat, false, false, false, false, false)
 }
 
 /*
@@ -123,7 +26,7 @@ func aKnightDmgCalculate(afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkb
 11:5 Wait
 12:1 Ultimate
 */
-func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool) {
+func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool, applyConfusion bool, applyToothFairyBuff bool) {
 	resonanceStats := char.GetResonanceStats()
 
 	baseAtk := char.Atk
@@ -132,6 +35,7 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 	baseCrit := char.CritRate + resonanceStats.CritRate
 
 	enemyDef := 600.0
+	enemyCritDef := 0.1
 
 	// Additional Bonus
 	regulusCritRateBonus := 0.5
@@ -146,25 +50,40 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 		bkbDefDown = 0.15
 		bkbDmgTakenPlus = -0.15
 	}
+	confusionCritResistRateDown := 0.0
+	if applyConfusion {
+		confusionCritResistRateDown = 0.25
+	}
+	baseCrit += confusionCritResistRateDown
+	tfCritResistRateDown := 0.0
+	tfCritDefDown := 0.0
+	if applyToothFairyBuff {
+		tfCritResistRateDown = 0.15
+		tfCritDefDown = -0.15
+	}
+	baseCrit += tfCritResistRateDown
 
 	calculatorForBraveNewWorld := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          psychube.BraveNewWorld.Atk,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resonanceStats.DmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
+		DamageCalculatorInfo: DmgCal.DamageCalculatorInfo{
+			Character:                         character.RegulusStat,
+			BaseAttackStats:                   baseAtk,
+			ResonanceAttackPercentage:         resoAtkPercent,
+			PsychubeAttackPercentage:          0,
+			ResonanceFixedAttackStats:         resoAtkFixed,
+			PsychubeFixedAttackStats:          psychube.BraveNewWorld.Atk,
+			DamageBonus:                       anAnleeDmgBonus,
+			EnemyDefenseValue:                 enemyDef,
+			DefenseBonus:                      0,
+			DefenseReduction:                  bkbDefDown,
+			PenetrationRate:                   0,
+			CasterDamageIncrease:              resonanceStats.DmgBonus,
+			TargetDamageTakenReduction:        bkbDmgTakenPlus,
+			IncantationUltimateRitualBonusDmg: 0,
+			CasterCriticalRate:                baseCrit,
+			CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
+			TargetCriticalDefense:             enemyCritDef + tfCritDefDown,
+			AfflatusAdvantage:                 afflatusAdvantage,
+		},
 	}
 
 	calculatorForBraveNewWorld.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
@@ -213,23 +132,25 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 	fmt.Println()
 
 	calculatorForBoundenDuty := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          psychube.HisBoundenDuty.Atk,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resonanceStats.DmgBonus + psychube.HisBoundenDuty.DmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
+		DamageCalculatorInfo: DmgCal.DamageCalculatorInfo{
+			BaseAttackStats:                   baseAtk,
+			ResonanceAttackPercentage:         resoAtkPercent,
+			PsychubeAttackPercentage:          0,
+			ResonanceFixedAttackStats:         resoAtkFixed,
+			PsychubeFixedAttackStats:          psychube.HisBoundenDuty.Atk,
+			DamageBonus:                       anAnleeDmgBonus,
+			EnemyDefenseValue:                 enemyDef,
+			DefenseBonus:                      0,
+			DefenseReduction:                  bkbDefDown,
+			PenetrationRate:                   0,
+			CasterDamageIncrease:              resonanceStats.DmgBonus + psychube.HisBoundenDuty.DmgBonus,
+			TargetDamageTakenReduction:        bkbDmgTakenPlus,
+			IncantationUltimateRitualBonusDmg: 0,
+			CasterCriticalRate:                baseCrit,
+			CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
+			TargetCriticalDefense:             0.1,
+			AfflatusAdvantage:                 afflatusAdvantage,
+		},
 	}
 
 	calculatorForBoundenDuty.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
@@ -259,23 +180,25 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 	fmt.Println()
 
 	calculatorForThunder := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          psychube.ThunderousApplause.Atk,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resonanceStats.DmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit + psychube.ThunderousApplause.CritRate,
-		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
+		DamageCalculatorInfo: DmgCal.DamageCalculatorInfo{
+			BaseAttackStats:                   baseAtk,
+			ResonanceAttackPercentage:         resoAtkPercent,
+			PsychubeAttackPercentage:          0,
+			ResonanceFixedAttackStats:         resoAtkFixed,
+			PsychubeFixedAttackStats:          psychube.ThunderousApplause.Atk,
+			DamageBonus:                       anAnleeDmgBonus,
+			EnemyDefenseValue:                 enemyDef,
+			DefenseBonus:                      0,
+			DefenseReduction:                  bkbDefDown,
+			PenetrationRate:                   0,
+			CasterDamageIncrease:              resonanceStats.DmgBonus,
+			TargetDamageTakenReduction:        bkbDmgTakenPlus,
+			IncantationUltimateRitualBonusDmg: 0,
+			CasterCriticalRate:                baseCrit + psychube.ThunderousApplause.CritRate,
+			CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + psychube.ThunderousApplause.CritDmg + regulusExcessCritDmgBonus(baseCrit+psychube.ThunderousApplause.CritRate),
+			TargetCriticalDefense:             0.1,
+			AfflatusAdvantage:                 afflatusAdvantage,
+		},
 	}
 
 	calculatorForThunder.SkillMultiplier = char.Skill[character.Skill1][1].Multiplier
@@ -308,23 +231,25 @@ func regulusDmgCalculate(char character.Character, afflatusAdvantage bool, apply
 	fmt.Println()
 
 	calculatorForHop := DmgCal.DamageCalculator{
-		BaseAttackStats:                   baseAtk,
-		ResonanceAttackPercentage:         resoAtkPercent,
-		PsychubeAttackPercentage:          0,
-		ResonanceFixedAttackStats:         resoAtkFixed,
-		PsychubeFixedAttackStats:          psychube.Hopscotch.Atk,
-		DamageBonus:                       anAnleeDmgBonus,
-		EnemyDefenseValue:                 enemyDef,
-		DefenseBonus:                      0,
-		DefenseReduction:                  bkbDefDown,
-		PenetrationRate:                   0,
-		CasterDamageIncrease:              resonanceStats.DmgBonus,
-		TargetDamageTakenReduction:        bkbDmgTakenPlus,
-		IncantationUltimateRitualBonusDmg: 0,
-		CasterCriticalRate:                baseCrit,
-		CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
-		TargetCriticalDefense:             0.1,
-		AfflatusAdvantage:                 afflatusAdvantage,
+		DamageCalculatorInfo: DmgCal.DamageCalculatorInfo{
+			BaseAttackStats:                   baseAtk,
+			ResonanceAttackPercentage:         resoAtkPercent,
+			PsychubeAttackPercentage:          0,
+			ResonanceFixedAttackStats:         resoAtkFixed,
+			PsychubeFixedAttackStats:          psychube.Hopscotch.Atk,
+			DamageBonus:                       anAnleeDmgBonus,
+			EnemyDefenseValue:                 enemyDef,
+			DefenseBonus:                      0,
+			DefenseReduction:                  bkbDefDown,
+			PenetrationRate:                   0,
+			CasterDamageIncrease:              resonanceStats.DmgBonus,
+			TargetDamageTakenReduction:        bkbDmgTakenPlus,
+			IncantationUltimateRitualBonusDmg: 0,
+			CasterCriticalRate:                baseCrit,
+			CasterCriticalDamageBonus:         char.CritDmg + resonanceStats.CritDmg + regulusExcessCritDmgBonus(baseCrit),
+			TargetCriticalDefense:             0.1,
+			AfflatusAdvantage:                 afflatusAdvantage,
+		},
 	}
 
 	calculatorForHop.IncantationUltimateRitualBonusDmg = psychube.Hopscotch.IncantationMight
