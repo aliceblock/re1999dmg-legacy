@@ -1,4 +1,4 @@
-package idea
+package resonance
 
 type Idea struct {
 	Atk        float64 `json:"atk"`
@@ -8,26 +8,10 @@ type Idea struct {
 	CritDmg    float64 `json:"critDmg"`
 }
 
-var BaseZIdea = Idea{
-	Atk:      141,
-	CritDmg:  0.06,
-	DmgBonus: 0.02,
-}
-
-// var BaseUIdea = Idea{
-// 	Atk:      142,
-// 	DmgBonus: 0.06,
-// }
-
 var RegulusBaseIdea = Idea{
 	Atk:      142,
 	DmgBonus: 0.06,
 }
-
-// var BasePlusIdea = Idea{
-// 	Atk:      142,
-// 	DmgBonus: 0.06,
-// }
 
 var C1Idea = Idea{
 	DmgBonus: 0.005,

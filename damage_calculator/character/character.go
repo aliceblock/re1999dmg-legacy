@@ -1,69 +1,72 @@
 package character
 
-import (
-	"math"
-
-	"github.com/aliceblock/re1999dmg/damage_calculator/character/idea"
-)
-
-// TODO: Move Resonance
 type Character struct {
-	Atk        float64                `json:"atk"`
-	AtkPercent float64                `json:"atkPercent"`
-	DmgBonus   float64                `json:"dmgBonus"`
-	CritRate   float64                `json:"critRate"`
-	CritDmg    float64                `json:"critDmg"`
-	Insight    Insight                `json:"insight"`
-	Resonance  Resonance              `json:"resonance"`
-	Skill      map[SkillIndex][]Skill `json:"skill"`
+	InsightLevel *CharacterInsightLevel
+	insight      Insight
+	stat         map[CharacterInsightLevel]Stat
+	skill        map[SkillIndex][]Skill
 }
 
-func (c *Character) GetResonanceStats() ResonanceStats {
-	stats := ResonanceStats{}
-	for _, ideaAmount := range c.Resonance.Ideas {
-		if ideaAmount.Amount <= 0 {
-			continue
-		}
-		stats.Atk += ideaAmount.Idea.Atk * float64(ideaAmount.Amount)
-		stats.AtkPercent += ideaAmount.Idea.AtkPercent * float64(ideaAmount.Amount)
-		stats.CritRate += ideaAmount.Idea.CritRate * float64(ideaAmount.Amount)
-		stats.CritDmg += ideaAmount.Idea.CritDmg * float64(ideaAmount.Amount)
-		stats.DmgBonus += ideaAmount.Idea.DmgBonus * float64(ideaAmount.Amount)
+func (c *Character) Atk() float64 {
+	return c.stat[*c.InsightLevel].Atk
+}
+
+func (c *Character) CritRate() float64 {
+	return c.stat[*c.InsightLevel].CritRate + c.Insight().CritRate
+}
+
+func (c *Character) CritDmg() float64 {
+	return c.stat[*c.InsightLevel].CritDmg + c.Insight().CritDmg
+}
+
+func (c *Character) Insight() Insight {
+	return c.insight
+}
+
+func (c *Character) Skills(skillIndex SkillIndex) []Skill {
+	return c.skill[skillIndex]
+}
+
+func (c *Character) Skill(skillIndex SkillIndex, star SKillStarIndex) Skill {
+	if skillIndex == Ultimate {
+		return c.skill[skillIndex][Star1]
 	}
-	stats.Atk = toFixed(stats.Atk, 3)
-	stats.AtkPercent = toFixed(stats.AtkPercent, 3)
-	stats.DmgBonus = toFixed(stats.DmgBonus, 3)
-	stats.CritRate = toFixed(stats.CritRate, 3)
-	stats.CritDmg = toFixed(stats.CritDmg, 3)
-	return stats
+	return c.skill[skillIndex][star]
+}
+
+func (c *Character) SetInsightLevel(insightLevel CharacterInsightLevel) {
+	c.InsightLevel = &insightLevel
+}
+
+func MakeCharacter(insightLevel *CharacterInsightLevel, stat map[CharacterInsightLevel]Stat, insight Insight, skill map[SkillIndex][]Skill) *Character {
+	char := new(Character)
+	if insightLevel == nil {
+		char.InsightLevel = new(CharacterInsightLevel)
+		*char.InsightLevel = Insight3L60
+	} else {
+		char.InsightLevel = insightLevel
+	}
+	char.stat = stat
+	char.insight = insight
+	char.skill = skill
+	return char
 }
 
 type Insight struct {
-	AtkPercent float64 `json:"atkPercent"`
-	DmgBonus   float64 `json:"dmgBonus"`
-	CritRate   float64 `json:"critRate"`
-	CritDmg    float64 `json:"critDmg"`
+	AtkPercent float64
+	DmgBonus   float64
+	CritRate   float64
+	CritDmg    float64
 }
 
-type Resonance struct {
-	Ideas []IdeaAmount `json:"ideas"`
-}
-
-type IdeaAmount struct {
-	Idea   idea.Idea `json:"idea"`
-	Amount int16     `json:"amount"`
-}
-
-type ResonanceStats struct {
-	Atk        float64 `json:"atk"`
-	AtkPercent float64 `json:"atkPercent"`
-	DmgBonus   float64 `json:"dmgBonus"`
-	CritRate   float64 `json:"critRate"`
-	CritDmg    float64 `json:"critDmg"`
+type Stat struct {
+	Atk      float64
+	CritRate float64
+	CritDmg  float64
 }
 
 type Skill struct {
-	Multiplier float64 `json:"multiplier"`
+	Multiplier float64
 }
 
 type SkillIndex int16
@@ -74,24 +77,45 @@ const (
 	Ultimate            = 2
 )
 
-var Regulus = Character{
-	Atk:      1186.0,
-	CritRate: 0.172,
-	CritDmg:  0.558 + 0.15, // Base + Insight 2
-	Resonance: Resonance{
-		Ideas: []IdeaAmount{
-			{Idea: idea.RegulusBaseIdea, Amount: 1},
-			{Idea: idea.C4LIdea, Amount: 2},
-			{Idea: idea.C4IIdea, Amount: 1},
-			{Idea: idea.C4SIdea, Amount: 3},
-			{Idea: idea.C4JIdea, Amount: 1},
-			{Idea: idea.C4TIdea, Amount: 1},
-			{Idea: idea.C3Idea, Amount: 3},
-			{Idea: idea.C2Idea, Amount: 1},
-			{Idea: idea.C1Idea, Amount: 1},
+type SKillStarIndex int16
+
+const (
+	Star1 SkillIndex = 0
+	Star2            = 1
+	Star3            = 2
+)
+
+type CharacterInsightLevel int16
+
+const (
+	Insight2L50 CharacterInsightLevel = 0
+	Insight3L1                        = 1
+	Insight3L60                       = 2
+)
+
+var Regulus = MakeCharacter(
+	nil,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      1009.0,
+			CritRate: 0.1556,
+			CritDmg:  0.533,
+		},
+		Insight3L1: {
+			Atk:      1046.0,
+			CritRate: 0.172,
+			CritDmg:  0.5575,
+		},
+		Insight3L60: {
+			Atk:      1186.0,
+			CritRate: 0.172,
+			CritDmg:  0.5575,
 		},
 	},
-	Skill: map[SkillIndex][]Skill{
+	Insight{
+		CritDmg: 0.15,
+	},
+	map[SkillIndex][]Skill{
 		Skill1: {
 			{Multiplier: 2.0},
 			{Multiplier: 3.0},
@@ -106,13 +130,4 @@ var Regulus = Character{
 			{Multiplier: 3.0},
 		},
 	},
-}
-
-func round(num float64) int {
-	return int(num + math.Copysign(0.5, num))
-}
-
-func toFixed(num float64, precision int) float64 {
-	output := math.Pow(10, float64(precision))
-	return float64(round(num*output)) / output
-}
+)

@@ -9,7 +9,7 @@ type Psychube struct {
 	ultimateMight    float64
 	critRate         float64
 	critDmg          float64
-	additionalEffect Stat
+	additionalEffect *Stat
 }
 
 type Stat struct {
@@ -52,7 +52,7 @@ func (p *Psychube) CritDmg() float64 {
 	return p.critDmg
 }
 
-func (p *Psychube) AdditionalEffect() Stat {
+func (p *Psychube) AdditionalEffect() *Stat {
 	return p.additionalEffect
 }
 
@@ -89,7 +89,9 @@ func (s *Stat) CritDmg() float64 {
 var ThunderousApplause = Psychube{
 	atk:      330,
 	critRate: 0.16,
-	critDmg:  0.16,
+	additionalEffect: &Stat{
+		critDmg: 0.16,
+	},
 }
 
 /*
@@ -98,6 +100,9 @@ For each enemy target defeated by the carrier, Ultimate Might +4% for the carrie
 var Hopscotch = Psychube{
 	atk:              370,
 	incantationMight: 0.18,
+	additionalEffect: &Stat{
+		ultimateMight: 0.04,
+	},
 }
 
 /*
@@ -106,7 +111,7 @@ After the carrier casts an Ultimate, Incantation Might of the next incantation +
 var BraveNewWorld = Psychube{
 	atk:           370,
 	ultimateMight: 0.18,
-	additionalEffect: Stat{
+	additionalEffect: &Stat{
 		incantationMight: 0.2,
 	},
 }
