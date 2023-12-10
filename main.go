@@ -15,8 +15,8 @@ var calculator = map[CharacterIndex]func(int16, bool, bool, bool, bool, bool){
 }
 
 func main() {
-	calculatorFunc := calculator[AKnight]
-	calculatorFunc(1, false, false, false, false, false)
+	calculatorFunc := calculator[Regulus]
+	calculatorFunc(3, false, false, false, false, false)
 }
 
 type CharacterIndex int16
@@ -111,25 +111,29 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 	}
 
 	skill1Damages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
-	skill1WithBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill1, enemyHit)
+	skill1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill1, enemyHit)
 	skill2Damages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
-	skill2WithBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill2, enemyHit)
+	skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill2, enemyHit)
 	ultimateDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, enemyHit)
 
 	fmt.Printf("---------\nRegulus Brave New World Final Damage:")
-	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1WithBuffDamages[0], skill1WithBuffDamages[1], skill1WithBuffDamages[2])
-	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2WithBuffDamages[0], skill2WithBuffDamages[1], skill2WithBuffDamages[2])
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
 	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 
-	skill1Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
-	skill1WithBuffDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight(), CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
-	skill2Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
-	skill2WithBuffDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight(), CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
-	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
+	skill1RestlessDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
+	skill1RestlessBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight(), CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
+	skill2RestlessDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
+	skill2RestlessBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight(), CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
+	ultimateRestlessDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBraveNewWorld.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
 
-	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1WithBuffDamages[0], skill1WithBuffDamages[1], skill1WithBuffDamages[2])
-	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2WithBuffDamages[0], skill2WithBuffDamages[1], skill2WithBuffDamages[2])
-	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateDamages[0])
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1RestlessDamages[0], skill1RestlessDamages[1], skill1RestlessDamages[2], skill1RestlessBuffDamages[0], skill1RestlessBuffDamages[1], skill1RestlessBuffDamages[2])
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill2RestlessDamages[0], skill2RestlessDamages[1], skill2RestlessDamages[2], skill2RestlessBuffDamages[0], skill2RestlessBuffDamages[1], skill2RestlessBuffDamages[2])
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
+
+	expectTotalDamage := skill1RestlessDamages[character.Star2]*1 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3 + skill1RestlessBuffDamages[character.Star2]*2
+
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 	fmt.Println()
 
@@ -154,13 +158,17 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 
-	skill1Damages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
-	skill2Damages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
-	ultimateDamages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
+	skill1RestlessDamages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, enemyHit)
+	skill2RestlessDamages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
+	ultimateRestlessDamages = calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
 
-	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
-	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
-	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateDamages[0])
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f", skill1RestlessDamages[0], skill1RestlessDamages[1], skill1RestlessDamages[2])
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f", skill2RestlessDamages[0], skill2RestlessDamages[1], skill2RestlessDamages[2])
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
+
+	expectTotalDamage = skill1RestlessDamages[character.Star2]*3 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3
+
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 	fmt.Println()
 
@@ -185,13 +193,17 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 
-	skill1Damages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg() + DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate()+regulusCritRateBonus)}, character.Skill1, enemyHit)
-	skill2Damages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
-	ultimateDamages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
+	skill1RestlessDamages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg() + DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate()+regulusCritRateBonus)}, character.Skill1, enemyHit)
+	skill2RestlessDamages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, enemyHit)
+	ultimateRestlessDamages = calculatorForThunder.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, enemyHit)
 
-	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
-	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
-	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateDamages[0])
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f", skill1RestlessDamages[0], skill1RestlessDamages[1], skill1RestlessDamages[2])
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f", skill2RestlessDamages[0], skill2RestlessDamages[1], skill2RestlessDamages[2])
+	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
+
+	expectTotalDamage = skill1RestlessDamages[character.Star2]*3 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3
+
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 }
 
 func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool, applyConfusion bool, applyToothFairyBuff bool) {
