@@ -1,11 +1,11 @@
 package resonance
 
 type Idea struct {
-	Atk        float64 `json:"atk"`
-	AtkPercent float64 `json:"atkPercent"`
-	DmgBonus   float64 `json:"dmgBonus"`
-	CritRate   float64 `json:"critRate"`
-	CritDmg    float64 `json:"critDmg"`
+	Atk        float64
+	AtkPercent float64
+	DmgBonus   float64
+	CritRate   float64
+	CritDmg    float64
 }
 
 var RegulusBaseIdea = Idea{
@@ -17,6 +17,12 @@ var AKnightBaseIdea = Idea{
 	Atk:      141,
 	DmgBonus: 0.02,
 	CritDmg:  0.06,
+}
+
+var LilyaBaseIdea = Idea{
+	Atk:      133,
+	CritRate: 0.06,
+	CritDmg:  0.08,
 }
 
 var C1Idea = Idea{
@@ -32,15 +38,7 @@ var C3Idea = Idea{
 	CritRate:   0.025,
 }
 
-var C4IIdea = Idea{
-	AtkPercent: 0.03,
-}
-
-var C4TIdea = Idea{
-	AtkPercent: 0.03,
-}
-
-var C4OIdea = Idea{
+var C4IOTIdea = Idea{
 	AtkPercent: 0.03,
 }
 

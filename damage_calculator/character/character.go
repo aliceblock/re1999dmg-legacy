@@ -68,7 +68,7 @@ type Stat struct {
 type Skill struct {
 	Multiplier  float64
 	EnemyHit    int16
-	ExtraAction *Skill
+	ExtraAction SkillIndex
 }
 
 type SkillIndex int16
@@ -170,6 +170,50 @@ var AKnight = MakeCharacter(
 		},
 		Ultimate: {
 			{Multiplier: 4.0, EnemyHit: 4},
+		},
+	},
+)
+
+var Lilya = MakeCharacter(
+	nil,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      944.0,
+			CritRate: 0.1556,
+			CritDmg:  0.533,
+		},
+		Insight3L1: {
+			Atk:      979.0,
+			CritRate: 0.172,
+			CritDmg:  0.5575,
+		},
+		Insight3L60: {
+			Atk:      1110.0,
+			CritRate: 0.172,
+			CritDmg:  0.5575,
+		},
+	},
+	Insight{
+		CritRate: 0.1,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.6, EnemyHit: 1, ExtraAction: ExtraAction1},
+			{Multiplier: 2.4, EnemyHit: 1, ExtraAction: ExtraAction1},
+			{Multiplier: 4.0, EnemyHit: 1, ExtraAction: ExtraAction1},
+		},
+		Skill2: {
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 2.25, EnemyHit: 2},
+			{Multiplier: 3.75, EnemyHit: 2},
+		},
+		Ultimate: {
+			{Multiplier: 7.0, EnemyHit: 1},
+		},
+		ExtraAction1: {
+			{Multiplier: 0.8, EnemyHit: 1},
+			{Multiplier: 1.2, EnemyHit: 1},
+			{Multiplier: 2.0, EnemyHit: 1},
 		},
 	},
 )

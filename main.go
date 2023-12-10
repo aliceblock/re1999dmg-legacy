@@ -9,14 +9,16 @@ import (
 	"github.com/aliceblock/re1999dmg/damage_calculator/psychube"
 )
 
-var calculator = map[CharacterIndex]func(int16, bool, bool, bool, bool, bool){
+var calculator = map[CharacterIndex]func(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool, applyConfusion bool, applyToothFairyBuff bool){
 	Regulus: regulusDmgCalculate,
 	AKnight: aKnightDmgCalculate,
+	Lilya:   lilyaDmgCalculate,
 }
 
 func main() {
-	calculatorFunc := calculator[Regulus]
-	calculatorFunc(3, false, false, false, false, false)
+	calculatorFunc := calculator[Lilya]
+	calculatorFunc(1, false, false, false, false, false)
+	calculatorFunc(1, false, false, false, true, false)
 }
 
 type CharacterIndex int16
@@ -24,6 +26,7 @@ type CharacterIndex int16
 const (
 	Regulus CharacterIndex = 0
 	AKnight                = 1
+	Lilya                  = 2
 )
 
 /*
@@ -85,10 +88,9 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Ideas: []resonance.IdeaAmount{
 			{Idea: resonance.RegulusBaseIdea, Amount: 1},
 			{Idea: resonance.C4LIdea, Amount: 2},
-			{Idea: resonance.C4IIdea, Amount: 1},
+			{Idea: resonance.C4IOTIdea, Amount: 2},
 			{Idea: resonance.C4SIdea, Amount: 3},
 			{Idea: resonance.C4JIdea, Amount: 1},
-			{Idea: resonance.C4TIdea, Amount: 1},
 			{Idea: resonance.C3Idea, Amount: 3},
 			{Idea: resonance.C2Idea, Amount: 1},
 			{Idea: resonance.C1Idea, Amount: 1},
@@ -143,6 +145,7 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              dmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -178,6 +181,7 @@ func regulusDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              dmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -251,10 +255,8 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Ideas: []resonance.IdeaAmount{
 			{Idea: resonance.AKnightBaseIdea, Amount: 1},
 			{Idea: resonance.C4LIdea, Amount: 3},
-			{Idea: resonance.C4IIdea, Amount: 2},
+			{Idea: resonance.C4IOTIdea, Amount: 6},
 			{Idea: resonance.C4SIdea, Amount: 2},
-			{Idea: resonance.C4TIdea, Amount: 2},
-			{Idea: resonance.C4OIdea, Amount: 2},
 		},
 	}
 
@@ -270,6 +272,7 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              balancePleaseDmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -295,6 +298,7 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              dmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -322,6 +326,7 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              dmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -347,6 +352,7 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 		Resonance:                 &resonance,
 		BuffDmgBonus:              dmgBonus,
 		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
 		EnemyDamageTakenReduction: enemyDamageTakenReduction,
 		CritRate:                  critRate,
 		EnemyCritDef:              enemyCritDef,
@@ -367,6 +373,227 @@ func aKnightDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuf
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f with Hopscotch buff (%.2f, %.2f, %.2f, %.2f)", ultimateDamages[0], ultimateBuff1Damages[0], ultimateBuff2Damages[0], ultimateBuff3Damages[0], ultimateBuff4Damages[0])
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+}
+
+func lilyaDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkbBuff bool, applyConfusion bool, applyToothFairyBuff bool) {
+	critRate := 0.1
+
+	enemyDef := 600.0
+	enemyCritDef := 0.1
+
+	// Buff/Debuff
+	dmgBonus := 0.0
+	enemyDefReduction := 0.0
+	enemyDamageTakenReduction := 0.0
+
+	anAnleeDmgBonus := 0.0
+	if applyAnAnLeeBuff {
+		anAnleeDmgBonus = 0.15
+	}
+	dmgBonus += anAnleeDmgBonus
+
+	bkbDefReduction := 0.0
+	bkbDmgTakenPlus := 0.0
+	if applyBkbBuff {
+		bkbDefReduction = 0.15
+		bkbDmgTakenPlus = -0.15
+	}
+	enemyDefReduction += bkbDefReduction
+	enemyDamageTakenReduction += bkbDmgTakenPlus
+
+	confusionCritResistRateDown := 0.0
+	if applyConfusion {
+		confusionCritResistRateDown = 0.25
+	}
+	critRate += confusionCritResistRateDown
+
+	tfCritResistRateDown := 0.0
+	tfCritDefDown := 0.0
+	if applyToothFairyBuff {
+		tfCritResistRateDown = 0.15
+		tfCritDefDown = -0.15
+	}
+	critRate += tfCritResistRateDown
+	enemyCritDef += tfCritDefDown
+
+	resonances := []resonance.Resonance{
+		{
+			Ideas: []resonance.IdeaAmount{
+				{Idea: resonance.LilyaBaseIdea, Amount: 1},
+				{Idea: resonance.C4IOTIdea, Amount: 2},
+				{Idea: resonance.C4LIdea, Amount: 2},
+				{Idea: resonance.C4SIdea, Amount: 1},
+				{Idea: resonance.C4JIdea, Amount: 3},
+				{Idea: resonance.C3Idea, Amount: 3},
+				{Idea: resonance.C2Idea, Amount: 1},
+				{Idea: resonance.C1Idea, Amount: 1},
+			},
+		}, {
+			Ideas: []resonance.IdeaAmount{
+				{Idea: resonance.LilyaBaseIdea, Amount: 1},
+				{Idea: resonance.C4IOTIdea, Amount: 5},
+				{Idea: resonance.C4LIdea, Amount: 2},
+				{Idea: resonance.C4SIdea, Amount: 1},
+				{Idea: resonance.C4JIdea, Amount: 3},
+			},
+		},
+	}
+
+	character.Lilya.SetInsightLevel(character.Insight3L60)
+
+	calculatorForReso1 := DmgCal.DamageCalculator{
+		Character:                 character.Lilya,
+		Psychube:                  &psychube.ThunderousApplause,
+		Resonance:                 &resonances[0],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate + psychube.ThunderousApplause.CritRate(), // Insight 3
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages := calculatorForReso1.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Skill1, enemyHit)
+	skill1ExtraDamages := calculatorForReso1.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Skill1, enemyHit)
+	totalCritRate := calculatorForReso1.GetTotalCritRate()
+	fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+	for index, damage := range skill1ExtraDamages {
+		if totalCritRate >= 1.0 {
+			skill1Damages[index] += damage
+		} else {
+			skill1Damages[index] += damage * totalCritRate
+		}
+	}
+	skill2Damages := calculatorForReso1.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
+	ultimateDamages := calculatorForReso1.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2, CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Ultimate, enemyHit)
+	expectTotalDamage := basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+
+	fmt.Printf("---------\nLilya Thunderous Applause resonance 1 Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForReso2 := DmgCal.DamageCalculator{
+		Character:                 character.Lilya,
+		Psychube:                  &psychube.ThunderousApplause,
+		Resonance:                 &resonances[1],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate + psychube.ThunderousApplause.CritRate(), // Insight 3
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForReso2.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Skill1, enemyHit)
+	skill1ExtraDamages = calculatorForReso2.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Skill1, enemyHit)
+	totalCritRate = calculatorForReso2.GetTotalCritRate()
+	fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+	for index, damage := range skill1ExtraDamages {
+		if totalCritRate >= 1.0 {
+			skill1Damages[index] += damage
+		} else {
+			skill1Damages[index] += damage * totalCritRate
+		}
+	}
+	skill2Damages = calculatorForReso2.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
+	ultimateDamages = calculatorForReso2.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2, CritDmg: psychube.ThunderousApplause.AdditionalEffect().CritDmg()}, character.Ultimate, enemyHit)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+
+	fmt.Printf("---------\nLilya Thunderous Applause resonance 2 Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForReso1HBD := DmgCal.DamageCalculator{
+		Character:                 character.Lilya,
+		Psychube:                  &psychube.HisBoundenDuty,
+		Resonance:                 &resonances[0],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForReso1HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1ExtraDamages = calculatorForReso1HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	totalCritRate = calculatorForReso1HBD.GetTotalCritRate()
+	fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+	for index, damage := range skill1ExtraDamages {
+		if totalCritRate >= 1.0 {
+			skill1Damages[index] += damage
+		} else {
+			skill1Damages[index] += damage * totalCritRate
+		}
+	}
+	skill2Damages = calculatorForReso1HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
+	ultimateDamages = calculatorForReso1HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, enemyHit)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+
+	fmt.Printf("---------\nLilya His Bounden Duty resonance 2 Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForReso2HBD := DmgCal.DamageCalculator{
+		Character:                 character.Lilya,
+		Psychube:                  &psychube.HisBoundenDuty,
+		Resonance:                 &resonances[1],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForReso2HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1ExtraDamages = calculatorForReso2HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	totalCritRate = calculatorForReso2HBD.GetTotalCritRate()
+	fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+	for index, damage := range skill1ExtraDamages {
+		if totalCritRate >= 1.0 {
+			skill1Damages[index] += damage
+		} else {
+			skill1Damages[index] += damage * totalCritRate
+		}
+	}
+	skill2Damages = calculatorForReso2HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
+	ultimateDamages = calculatorForReso2HBD.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, enemyHit)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+
+	fmt.Printf("---------\nLilya His Bounden Duty resonance 2 Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+}
+
+/*
+Skill1(1) x1
+Skill1(2) x3
+Skill1(3) x2
+Skill2(1) x1
+Skill2(2) x2
+Ultimate x2
+*/
+func basicCalculateExpectTotalDmg(skill1Damages []float64, skill2Damages []float64, ultimateDamages []float64) float64 {
+	return skill1Damages[character.Star1] + skill1Damages[character.Star2]*3 + skill1Damages[character.Star3]*2 + skill2Damages[character.Star2]*1 + skill2Damages[character.Star2]*2 + ultimateDamages[character.Star1]*2
 }
 
 /*
