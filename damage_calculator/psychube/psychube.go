@@ -120,3 +120,14 @@ var HisBoundenDuty = Psychube{
 	atk:      410,
 	dmgBonus: 0.12,
 }
+
+/*
+When the wearer attacks, if they do not have Afflatus advantage/disadvantage, the damage is increased by 6%. If the wearer's Afflatus is Spirit or Intellect, this effect is increased to 12%.
+*/
+var BalancePlease = Psychube{
+	atk:              380,
+	incantationMight: 0.18,
+	additionalEffect: &Stat{
+		dmgBonus: 0.12,
+	},
+}

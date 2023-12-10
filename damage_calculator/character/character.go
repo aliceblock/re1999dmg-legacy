@@ -131,3 +131,40 @@ var Regulus = MakeCharacter(
 		},
 	},
 )
+
+var AKnight = MakeCharacter(
+	nil,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      1000.0,
+			CritRate: 0.1153,
+			CritDmg:  0.4725,
+		},
+		Insight3L1: {
+			Atk:      1037.0,
+			CritRate: 0.1273,
+			CritDmg:  0.4905,
+		},
+		Insight3L60: {
+			Atk:      1176.0,
+			CritRate: 0.1273,
+			CritDmg:  0.4905,
+		},
+	},
+	Insight{},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.8},
+			{Multiplier: 2.5},
+			{Multiplier: 4.5},
+		},
+		Skill2: {
+			{Multiplier: 1.5},
+			{Multiplier: 1.5},
+			{Multiplier: 2.25},
+		},
+		Ultimate: {
+			{Multiplier: 4.0},
+		},
+	},
+)

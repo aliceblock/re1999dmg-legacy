@@ -13,6 +13,12 @@ var RegulusBaseIdea = Idea{
 	DmgBonus: 0.06,
 }
 
+var AKnightBaseIdea = Idea{
+	Atk:      141,
+	DmgBonus: 0.02,
+	CritDmg:  0.06,
+}
+
 var C1Idea = Idea{
 	DmgBonus: 0.005,
 }

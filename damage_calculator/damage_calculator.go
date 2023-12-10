@@ -36,7 +36,7 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 	effectiveAttackValue := d.Character.Atk()*(1+resonanceStats.AtkPercent()+d.Psychube.AtkPercent()) + resonanceStats.Atk() + d.Psychube.Atk()
 
 	// Calculate Attack and Defense Factor
-	attackDefenseFactor := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-d.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
+	attackDefenseFactor := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-d.EnemyDefReduction-additionalInfo.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
 
 	// Check if the result is less than the specified threshold
 	if attackDefenseFactor < effectiveAttackValue*(1+d.Character.Insight().AtkPercent)*0.1 {
@@ -97,6 +97,7 @@ func ExcessCritDmgBonus(critRate float64) float64 {
 
 type DamageCalculatorInfo struct {
 	BuffDmgBonus              float64
+	EnemyDefReduction         float64
 	EnemyDamageTakenReduction float64
 	PenetrationRate           float64
 	IncantationMight          float64
