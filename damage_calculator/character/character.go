@@ -66,15 +66,20 @@ type Stat struct {
 }
 
 type Skill struct {
-	Multiplier float64
+	Multiplier  float64
+	EnemyHit    int16
+	ExtraAction *Skill
 }
 
 type SkillIndex int16
 
 const (
-	Skill1   SkillIndex = 0
-	Skill2              = 1
-	Ultimate            = 2
+	Skill1       SkillIndex = 0
+	Skill2                  = 1
+	Ultimate                = 2
+	ExtraAction1            = 3
+	ExtraAction2            = 4
+	ExtraAction3            = 5
 )
 
 type SKillStarIndex int16
@@ -117,17 +122,17 @@ var Regulus = MakeCharacter(
 	},
 	map[SkillIndex][]Skill{
 		Skill1: {
-			{Multiplier: 2.0},
-			{Multiplier: 3.0},
-			{Multiplier: 5.0},
+			{Multiplier: 2.0, EnemyHit: 1},
+			{Multiplier: 3.0, EnemyHit: 1},
+			{Multiplier: 5.0, EnemyHit: 1},
 		},
 		Skill2: {
-			{Multiplier: 1.5},
-			{Multiplier: 1.75},
-			{Multiplier: 2.75},
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 1.75, EnemyHit: 2},
+			{Multiplier: 2.75, EnemyHit: 2},
 		},
 		Ultimate: {
-			{Multiplier: 3.0},
+			{Multiplier: 3.0, EnemyHit: 4},
 		},
 	},
 )
@@ -154,17 +159,17 @@ var AKnight = MakeCharacter(
 	Insight{},
 	map[SkillIndex][]Skill{
 		Skill1: {
-			{Multiplier: 1.8},
-			{Multiplier: 2.5},
-			{Multiplier: 4.5},
+			{Multiplier: 1.8, EnemyHit: 1},
+			{Multiplier: 2.5, EnemyHit: 1},
+			{Multiplier: 4.5, EnemyHit: 1},
 		},
 		Skill2: {
-			{Multiplier: 1.5},
-			{Multiplier: 1.5},
-			{Multiplier: 2.25},
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 2.25, EnemyHit: 2},
 		},
 		Ultimate: {
-			{Multiplier: 4.0},
+			{Multiplier: 4.0, EnemyHit: 4},
 		},
 	},
 )

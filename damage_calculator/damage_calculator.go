@@ -27,7 +27,7 @@ type DamageCalculator struct {
 }
 
 // CalculateFinalDamage calculates the final damage using the defined formula.
-func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorInfo, skill character.SkillIndex) []float64 {
+func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorInfo, skill character.SkillIndex, enemyHit int16) []float64 {
 	var finalDamages []float64
 
 	resonanceStats := d.Resonance.GetResonanceStats()
@@ -69,13 +69,17 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 
 	// Calculate Final Damage
 	for _, skillInfo := range d.Character.Skills(skill) {
+		enemyHit := enemyHit
+		if enemyHit > skillInfo.EnemyHit {
+			enemyHit = skillInfo.EnemyHit
+		}
 		var skillMultiplier float64 = skillInfo.Multiplier
 		var finalDamage float64
 		critRate := d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + d.CritRate + additionalInfo.CritRate
 		if critRate >= 1 {
-			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier
+			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier * float64(enemyHit)
 		} else {
-			finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*critRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-critRate)*afflatusBonus) * skillMultiplier
+			finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*critRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-critRate)*afflatusBonus) * skillMultiplier * float64(enemyHit)
 		}
 		finalDamages = append(finalDamages, finalDamage)
 	}
