@@ -16,7 +16,7 @@ var calculator = map[CharacterIndex]func(bool, bool, bool, bool, bool){
 
 func main() {
 	calculatorFunc := calculator[AKnight]
-	calculatorFunc(false, false, false, false, false)
+	calculatorFunc(true, false, false, false, false)
 }
 
 type CharacterIndex int16
@@ -327,6 +327,33 @@ func aKnightDmgCalculate(afflatusAdvantage bool, applyAnAnLeeBuff bool, applyBkb
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f with Hopscotch buff (%.2f, %.2f, %.2f, %.2f)", ultimateDamages[0], ultimateBuff1Damages[0], ultimateBuff2Damages[0], ultimateBuff3Damages[0], ultimateBuff4Damages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForBraveNewWorld := DmgCal.DamageCalculator{
+		Character:                 character.AKnight,
+		Psychube:                  &psychube.BraveNewWorld,
+		Resonance:                 &resonance,
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1)
+	skill1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill1)
+	skill2Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2)
+	skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect().IncantationMight()}, character.Skill2)
+	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate)
+	expectTotalDamage = skill1Damages[character.Star1] + skill1Damages[character.Star2] + skill2Damages[character.Star2]*3 + ultimateDamages[character.Star1]*3 + skill1BuffDamages[character.Star2] + skill1BuffDamages[character.Star3]
+
+	fmt.Printf("---------\nA Knight Brave New World Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 }
 
