@@ -94,6 +94,14 @@ var ThunderousApplause = Psychube{
 	},
 }
 
+var ThunderousApplauseE5 = Psychube{
+	atk:      330,
+	critRate: 0.16,
+	additionalEffect: &Stat{
+		critDmg: 0.32,
+	},
+}
+
 /*
 For each enemy target defeated by the carrier, Ultimate Might +4% for the carrier. Stacks up to 4 times.
 */
