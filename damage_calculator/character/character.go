@@ -75,27 +75,27 @@ type SkillIndex int16
 
 const (
 	Skill1       SkillIndex = 0
-	Skill2                  = 1
-	Ultimate                = 2
-	ExtraAction1            = 3
-	ExtraAction2            = 4
-	ExtraAction3            = 5
+	Skill2       SkillIndex = 1
+	Ultimate     SkillIndex = 2
+	ExtraAction1 SkillIndex = 3
+	ExtraAction2 SkillIndex = 4
+	ExtraAction3 SkillIndex = 5
 )
 
 type SKillStarIndex int16
 
 const (
-	Star1 SkillIndex = 0
-	Star2            = 1
-	Star3            = 2
+	Star1 SKillStarIndex = 0
+	Star2 SKillStarIndex = 1
+	Star3 SKillStarIndex = 2
 )
 
 type CharacterInsightLevel int16
 
 const (
 	Insight2L50 CharacterInsightLevel = 0
-	Insight3L1                        = 1
-	Insight3L60                       = 2
+	Insight3L1  CharacterInsightLevel = 1
+	Insight3L60 CharacterInsightLevel = 2
 )
 
 var Regulus = MakeCharacter(
@@ -217,3 +217,43 @@ var Lilya = MakeCharacter(
 		},
 	},
 )
+
+var Jessica = MakeCharacter(
+	nil,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      1143.0,
+			CritRate: 0.127,
+			CritDmg:  0.491,
+		},
+		Insight3L1: {
+			Atk:      1143.0,
+			CritRate: 0.127,
+			CritDmg:  0.491,
+		},
+		Insight3L60: {
+			Atk:      1143.0,
+			CritRate: 0.127,
+			CritDmg:  0.491,
+		},
+	},
+	Insight{
+		DmgBonus: 0.08,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.8, EnemyHit: 1},
+			{Multiplier: 2.7, EnemyHit: 1},
+			{Multiplier: 4.5, EnemyHit: 1},
+		},
+		Skill2: {
+			{Multiplier: 1.35, EnemyHit: 2},
+			{Multiplier: 2.0, EnemyHit: 2},
+			{Multiplier: 3.35, EnemyHit: 2},
+		},
+		Ultimate: {
+			{Multiplier: 3.5, EnemyHit: 1},
+		},
+	},
+)
+var Changeling = Jessica

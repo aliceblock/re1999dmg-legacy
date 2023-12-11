@@ -1,5 +1,15 @@
 package psychube
 
+type Amplification int16
+
+const (
+	Amp1 Amplification = 0
+	Amp2 Amplification = 1
+	Amp3 Amplification = 2
+	Amp4 Amplification = 3
+	Amp5 Amplification = 4
+)
+
 type Psychube struct {
 	// Fields are private (start with a lowercase letter)
 	atk              float64
@@ -9,7 +19,7 @@ type Psychube struct {
 	ultimateMight    float64
 	critRate         float64
 	critDmg          float64
-	additionalEffect *Stat
+	additionalEffect map[Amplification]*Stat
 }
 
 type Stat struct {
@@ -52,7 +62,7 @@ func (p *Psychube) CritDmg() float64 {
 	return p.critDmg
 }
 
-func (p *Psychube) AdditionalEffect() *Stat {
+func (p *Psychube) AdditionalEffect() map[Amplification]*Stat {
 	return p.additionalEffect
 }
 
@@ -89,16 +99,12 @@ func (s *Stat) CritDmg() float64 {
 var ThunderousApplause = Psychube{
 	atk:      330,
 	critRate: 0.16,
-	additionalEffect: &Stat{
-		critDmg: 0.16,
-	},
-}
-
-var ThunderousApplauseE5 = Psychube{
-	atk:      330,
-	critRate: 0.16,
-	additionalEffect: &Stat{
-		critDmg: 0.32,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {critDmg: 0.16},
+		Amp2: {critDmg: 0.2},
+		Amp3: {critDmg: 0.24},
+		Amp4: {critDmg: 0.28},
+		Amp5: {critDmg: 0.32},
 	},
 }
 
@@ -108,8 +114,12 @@ For each enemy target defeated by the carrier, Ultimate Might +4% for the carrie
 var Hopscotch = Psychube{
 	atk:              370,
 	incantationMight: 0.18,
-	additionalEffect: &Stat{
-		ultimateMight: 0.04,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {ultimateMight: 0.04},
+		Amp2: {ultimateMight: 0.05},
+		Amp3: {ultimateMight: 0.06},
+		Amp4: {ultimateMight: 0.07},
+		Amp5: {ultimateMight: 0.08},
 	},
 }
 
@@ -119,8 +129,12 @@ After the carrier casts an Ultimate, Incantation Might of the next incantation +
 var BraveNewWorld = Psychube{
 	atk:           370,
 	ultimateMight: 0.18,
-	additionalEffect: &Stat{
-		incantationMight: 0.2,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {incantationMight: 0.2},
+		Amp2: {incantationMight: 0.25},
+		Amp3: {incantationMight: 0.30},
+		Amp4: {incantationMight: 0.35},
+		Amp5: {incantationMight: 0.4},
 	},
 }
 
@@ -132,8 +146,12 @@ var HisBoundenDuty = Psychube{
 var LuxuriousLeisure = Psychube{
 	atk:           380,
 	ultimateMight: 0.18,
-	additionalEffect: &Stat{
-		dmgBonus: 0.05,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {dmgBonus: 0.05},
+		Amp2: {dmgBonus: 0.06},
+		Amp3: {dmgBonus: 0.07},
+		Amp4: {dmgBonus: 0.08},
+		Amp5: {dmgBonus: 0.09},
 	},
 }
 
@@ -143,7 +161,11 @@ When the wearer attacks, if they do not have Afflatus advantage/disadvantage, th
 var BalancePlease = Psychube{
 	atk:              380,
 	incantationMight: 0.18,
-	additionalEffect: &Stat{
-		dmgBonus: 0.12,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {dmgBonus: 0.12},
+		Amp2: {dmgBonus: 0.15},
+		Amp3: {dmgBonus: 0.18},
+		Amp4: {dmgBonus: 0.21},
+		Amp5: {dmgBonus: 0.24},
 	},
 }
