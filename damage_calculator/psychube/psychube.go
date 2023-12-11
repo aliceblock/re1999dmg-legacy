@@ -121,6 +121,14 @@ var HisBoundenDuty = Psychube{
 	dmgBonus: 0.12,
 }
 
+var LuxuriousLeisure = Psychube{
+	atk:           380,
+	ultimateMight: 0.18,
+	additionalEffect: &Stat{
+		dmgBonus: 0.05,
+	},
+}
+
 /*
 When the wearer attacks, if they do not have Afflatus advantage/disadvantage, the damage is increased by 6%. If the wearer's Afflatus is Spirit or Intellect, this effect is increased to 12%.
 */

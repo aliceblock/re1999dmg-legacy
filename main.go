@@ -17,7 +17,6 @@ var calculator = map[CharacterIndex]func(enemyHit int16, afflatusAdvantage bool,
 
 func main() {
 	calculatorFunc := calculator[Lilya]
-	calculatorFunc(1, false, false, false, false, false)
 	calculatorFunc(1, false, false, false, true, false)
 }
 
@@ -582,18 +581,102 @@ func lilyaDmgCalculate(enemyHit int16, afflatusAdvantage bool, applyAnAnLeeBuff 
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForReso1Lux := DmgCal.DamageCalculator{
+		Character:                 character.Lilya,
+		Psychube:                  &psychube.LuxuriousLeisure,
+		Resonance:                 &resonances[0],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1Lux1Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 1}, character.Skill1, enemyHit)
+	skill1Lux2Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 2}, character.Skill1, enemyHit)
+	skill1Lux3Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 3}, character.Skill1, enemyHit)
+	skill1ExtraDamages = calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1ExtraLux1Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1ExtraLux2Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	skill1ExtraLux3Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, enemyHit)
+	totalCritRate = calculatorForReso1Lux.GetTotalCritRate()
+	fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+	for index, damage := range skill1ExtraDamages {
+		if totalCritRate >= 1.0 {
+			skill1Damages[index] += damage
+		} else {
+			skill1Damages[index] += damage * totalCritRate
+		}
+	}
+	for index, damage := range skill1ExtraLux1Damages {
+		if totalCritRate >= 1.0 {
+			skill1Lux1Damages[index] += damage
+		} else {
+			skill1Lux1Damages[index] += damage * totalCritRate
+		}
+	}
+	for index, damage := range skill1ExtraLux2Damages {
+		if totalCritRate >= 1.0 {
+			skill1Lux2Damages[index] += damage
+		} else {
+			skill1Lux2Damages[index] += damage * totalCritRate
+		}
+	}
+	for index, damage := range skill1ExtraLux3Damages {
+		if totalCritRate >= 1.0 {
+			skill1Lux3Damages[index] += damage
+		} else {
+			skill1Lux3Damages[index] += damage * totalCritRate
+		}
+	}
+	skill2Damages = calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, enemyHit)
+	skill2Lux1Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 1}, character.Skill2, enemyHit)
+	skill2Lux2Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 2}, character.Skill2, enemyHit)
+	skill2Lux3Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 3}, character.Skill2, enemyHit)
+	ultimateDamages = calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, enemyHit)
+	ultimateLux1Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 1}, character.Ultimate, enemyHit)
+	ultimateLux2Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 2}, character.Ultimate, enemyHit)
+	ultimateLux3Damages := calculatorForReso1Lux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect().DmgBonus() * 3}, character.Ultimate, enemyHit)
+	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + ultimateLux1Damages[character.Star1]*1 + skill2Lux2Damages[character.Star3]*1 + skill1Lux2Damages[character.Star3] + ultimateLux2Damages[character.Star1]*1
+
+	fmt.Printf("---------\nLilya Luxurious Leisure resonance 1 Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 1 Buff 1 stack: %.2f, %.2f, %.2f", skill1Lux1Damages[0], skill1Lux1Damages[1], skill1Lux1Damages[2])
+	fmt.Printf("\nSkill 1 Buff 2 stack: %.2f, %.2f, %.2f", skill1Lux2Damages[0], skill1Lux2Damages[1], skill1Lux2Damages[2])
+	fmt.Printf("\nSkill 1 Buff 3 stack: %.2f, %.2f, %.2f", skill1Lux3Damages[0], skill1Lux3Damages[1], skill1Lux3Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+	fmt.Printf("\nSkill 2 Buff 1 stack: %.2f, %.2f, %.2f", skill2Lux1Damages[0], skill2Lux1Damages[1], skill2Lux1Damages[2])
+	fmt.Printf("\nSkill 2 Buff 2 stack: %.2f, %.2f, %.2f", skill2Lux2Damages[0], skill2Lux2Damages[1], skill2Lux2Damages[2])
+	fmt.Printf("\nSkill 2 Buff 3 stack: %.2f, %.2f, %.2f", skill2Lux3Damages[0], skill2Lux3Damages[1], skill2Lux3Damages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nUltimate Buff 1 stack: %.2f", ultimateLux1Damages[0])
+	fmt.Printf("\nUltimate Buff 2 stack: %.2f", ultimateLux2Damages[0])
+	fmt.Printf("\nUltimate Buff 3 stack: %.2f", ultimateLux3Damages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 }
 
 /*
-Skill1(1) x1
-Skill1(2) x3
-Skill1(3) x2
-Skill2(1) x1
-Skill2(2) x2
-Ultimate x2
+Skill1(1) x2
+Skill2(2) x1
+Ultimate x1
+Ultimate x1 + Skill2(3) x1
+Skill1(3) x1
+Ultimate x1
+=
+Skill1(1) x2
+Skill1(3) x1
+Skill2(2) x1
+Skill2(3) x1
+Ultimate x3
 */
 func basicCalculateExpectTotalDmg(skill1Damages []float64, skill2Damages []float64, ultimateDamages []float64) float64 {
-	return skill1Damages[character.Star1] + skill1Damages[character.Star2]*3 + skill1Damages[character.Star3]*2 + skill2Damages[character.Star2]*1 + skill2Damages[character.Star2]*2 + ultimateDamages[character.Star1]*2
+	return skill1Damages[character.Star1]*2 + skill1Damages[character.Star3]*2 + skill2Damages[character.Star1]*1 + skill2Damages[character.Star3]*1 + ultimateDamages[character.Star1]*3
 }
 
 /*
