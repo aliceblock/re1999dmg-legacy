@@ -75,6 +75,11 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 		}
 		var skillMultiplier float64 = skillInfo.Multiplier
 		var finalDamage float64
+
+		if additionalInfo.HasExtraDamage {
+			skillMultiplier += skillInfo.ExtraMultiplier[additionalInfo.ExtraDamageStack]
+		}
+
 		critRate := d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + d.CritRate + additionalInfo.CritRate
 		if critRate >= 1 {
 			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier * float64(enemyHit)
@@ -85,6 +90,12 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 	}
 
 	return finalDamages
+}
+
+func (d *DamageCalculator) CalculateGenesisDamage(additionalInfo DamageCalculatorInfo, skillMultiplier float64) float64 {
+	resonanceStats := d.Resonance.GetResonanceStats()
+	genesisDamage := (d.Character.Atk()*(1+resonanceStats.AtkPercent()+d.Psychube.AtkPercent()) + resonanceStats.Atk() + d.Psychube.Atk()) * (1 + d.Character.Insight().AtkPercent) * (1 + additionalInfo.BuffDmgBonus) * skillMultiplier
+	return genesisDamage
 }
 
 func (d *DamageCalculator) GetTotalCritRate() float64 {
@@ -109,4 +120,6 @@ type DamageCalculatorInfo struct {
 	CritRate                  float64
 	CritDmg                   float64
 	EnemyCritDef              float64
+	HasExtraDamage            bool
+	ExtraDamageStack          int16
 }

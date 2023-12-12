@@ -25,6 +25,12 @@ var LilyaBaseIdea = Idea{
 	CritDmg:  0.08,
 }
 
+var EagleBaseIdea = Idea{
+	Atk:      110,
+	CritRate: 0.05,
+	CritDmg:  0.08,
+}
+
 var C1Idea = Idea{
 	DmgBonus: 0.005,
 }
