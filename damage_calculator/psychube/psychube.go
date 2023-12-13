@@ -143,6 +143,18 @@ var HisBoundenDuty = Psychube{
 	dmgBonus: 0.12,
 }
 
+var BlasphemerOfNight = Psychube{
+	atk:              360,
+	incantationMight: 0.18,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {dmgBonus: 0.12},
+		Amp2: {dmgBonus: 0.15},
+		Amp3: {dmgBonus: 0.18},
+		Amp4: {dmgBonus: 0.21},
+		Amp5: {dmgBonus: 0.24},
+	},
+}
+
 var LuxuriousLeisure = Psychube{
 	atk:           380,
 	ultimateMight: 0.18,

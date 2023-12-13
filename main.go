@@ -9,33 +9,13 @@ import (
 	"github.com/aliceblock/re1999dmg/damage_calculator/psychube"
 )
 
-var calculator = map[CharacterIndex]func(enemyHit CalParams){
-	Regulus: regulusDmgCalculate,
-	AKnight: aKnightDmgCalculate,
-	Lilya:   lilyaDmgCalculate,
-	Eagle:   eagleDmgCalculate,
-}
-
-type CalParams struct {
-	enemyHit            int16
-	psychubeAmp         psychube.Amplification
-	afflatusAdvantage   bool
-	enemyDef            float64
-	applyAnAnLeeBuff    bool
-	applyBkbBuff        bool
-	applyConfusion      bool
-	applyToothFairyBuff bool
-	applySenseWeakness  bool
-}
-
 func main() {
-	calculatorFunc := calculator[Eagle]
+	calculatorFunc := calculator[Jessica]
 	calculatorFunc(CalParams{
-		enemyHit:    1,
-		psychubeAmp: psychube.Amp5,
-		enemyDef:    600.0,
-		// applyConfusion: true,
-		applySenseWeakness: true,
+		enemyHit:       1,
+		psychubeAmp:    psychube.Amp1,
+		resonanceIndex: 2,
+		enemyDef:       600.0,
 	})
 }
 
@@ -46,7 +26,29 @@ const (
 	AKnight CharacterIndex = 1
 	Lilya   CharacterIndex = 2
 	Eagle   CharacterIndex = 3
+	Jessica CharacterIndex = 4
 )
+
+var calculator = map[CharacterIndex]func(enemyHit CalParams){
+	Regulus: regulusDmgCalculate,
+	AKnight: aKnightDmgCalculate,
+	Lilya:   lilyaDmgCalculate,
+	Eagle:   eagleDmgCalculate,
+	Jessica: jessicaDmgCalculate,
+}
+
+type CalParams struct {
+	enemyHit            int16
+	psychubeAmp         psychube.Amplification
+	resonanceIndex      int16
+	afflatusAdvantage   bool
+	enemyDef            float64
+	applyAnAnLeeBuff    bool
+	applyBkbBuff        bool
+	applyConfusion      bool
+	applyToothFairyBuff bool
+	applySenseWeakness  bool
+}
 
 /*
 1 :2 Move Merge
@@ -1160,6 +1162,272 @@ func eagleDmgCalculate(calParams CalParams) {
 	fmt.Printf("\nUltimate Lux1: %.2f", ultimateLux1Damages[0])
 	fmt.Printf("\nUltimate Lux2: %.2f", ultimateLux2Damages[0])
 	fmt.Printf("\nUltimate Lux3: %.2f", ultimateLux3Damages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+}
+
+func jessicaDmgCalculate(calParams CalParams) {
+	critRate := 0.0
+
+	enemyCritDef := 0.1
+
+	// Buff/Debuff
+	dmgBonus := 0.2 // Insight 1
+	enemyDefReduction := 0.0
+	enemyDamageTakenReduction := 0.0
+
+	anAnleeDmgBonus := 0.0
+	if calParams.applyAnAnLeeBuff {
+		anAnleeDmgBonus = 0.15
+	}
+	dmgBonus += anAnleeDmgBonus
+
+	bkbDefReduction := 0.0
+	bkbDmgTakenPlus := 0.0
+	if calParams.applyBkbBuff {
+		bkbDefReduction = 0.15
+		bkbDmgTakenPlus = -0.15
+	}
+	enemyDefReduction += bkbDefReduction
+	enemyDamageTakenReduction += bkbDmgTakenPlus
+
+	confusionCritResistRateDown := 0.0
+	if calParams.applyConfusion {
+		confusionCritResistRateDown = 0.25
+	}
+	critRate += confusionCritResistRateDown
+
+	tfCritResistRateDown := 0.0
+	tfCritDefDown := 0.0
+	if calParams.applyToothFairyBuff {
+		tfCritResistRateDown = 0.15
+		tfCritDefDown = 0.15
+	}
+	critRate += tfCritResistRateDown
+	enemyCritDef -= tfCritDefDown
+
+	senseDefReduction := 0.0
+	senseCritDefDown := 0.0
+	if calParams.applySenseWeakness {
+		senseDefReduction = 0.2
+		senseCritDefDown = 0.2
+	}
+	enemyDefReduction += senseDefReduction
+	enemyCritDef -= senseCritDefDown
+
+	resonances := []resonance.Resonance{
+		{
+			Ideas: []resonance.IdeaAmount{
+				{Idea: resonance.JessicaBaseIdea, Amount: 1},
+				{Idea: resonance.C4IOTIdea, Amount: 6},
+				{Idea: resonance.C4SIdea, Amount: 2},
+				{Idea: resonance.C3Idea, Amount: 3},
+				{Idea: resonance.C1Idea, Amount: 2},
+			},
+		},
+		{
+			Ideas: []resonance.IdeaAmount{
+				{Idea: resonance.JessicaBaseIdea, Amount: 1},
+				{Idea: resonance.C4IOTIdea, Amount: 2},
+				{Idea: resonance.C4LIdea, Amount: 2},
+				{Idea: resonance.C4SIdea, Amount: 3},
+				{Idea: resonance.C4JIdea, Amount: 1},
+				{Idea: resonance.C3Idea, Amount: 3},
+				{Idea: resonance.C2Idea, Amount: 1},
+				{Idea: resonance.C1Idea, Amount: 1},
+			},
+		},
+		{
+			Ideas: []resonance.IdeaAmount{
+				{Idea: resonance.JessicaBaseIdea, Amount: 1},
+				{Idea: resonance.C4IOTIdea, Amount: 6},
+				{Idea: resonance.C4LIdea, Amount: 2},
+				{Idea: resonance.C4SIdea, Amount: 3},
+			},
+		},
+	}
+
+	character.Jessica.SetInsightLevel(character.Insight3L60)
+
+	calculatorForBoundenDuty := DmgCal.DamageCalculator{
+		Character:                 character.Jessica,
+		Psychube:                  &psychube.HisBoundenDuty,
+		Resonance:                 &resonances[calParams.resonanceIndex],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1Extra1Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0}, character.Skill1, calParams.enemyHit)
+	skill1Extra2Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1}, character.Skill1, calParams.enemyHit)
+	skill1Extra3Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2}, character.Skill1, calParams.enemyHit)
+	skill2Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2ExtraDamages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.enemyHit)
+	ultimateDamages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	poisonDamage := calculatorForBoundenDuty.CalculateGenesisDamage(DmgCal.DamageCalculatorInfo{}, 0.3)
+	expectTotalDamage := basicCalculateExpectTotalDmg(skill1Extra2Damages, skill2ExtraDamages, ultimateDamages) + poisonDamage*(6+6+3)
+
+	fmt.Printf("---------\nJessica His Bounden Duty Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 1: %.2f, %.2f, %.2f", skill1Extra1Damages[0], skill1Extra1Damages[1], skill1Extra1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 2: %.2f, %.2f, %.2f", skill1Extra2Damages[0], skill1Extra2Damages[1], skill1Extra2Damages[2])
+	fmt.Printf("\nSkill 1 Extra 3: %.2f, %.2f, %.2f", skill1Extra3Damages[0], skill1Extra3Damages[1], skill1Extra3Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (Extra: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForHopscotch := DmgCal.DamageCalculator{
+		Character:                 character.Jessica,
+		Psychube:                  &psychube.Hopscotch,
+		Resonance:                 &resonances[calParams.resonanceIndex],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1Extra1Damages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0}, character.Skill1, calParams.enemyHit)
+	skill1Extra2Damages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1}, character.Skill1, calParams.enemyHit)
+	skill1Extra3Damages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2ExtraDamages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	ultimateBuff1Damages := calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.psychubeAmp].UltimateMight() * 1}, character.Ultimate, calParams.enemyHit)
+	ultimateBuff2Damages := calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.psychubeAmp].UltimateMight() * 2}, character.Ultimate, calParams.enemyHit)
+	ultimateBuff3Damages := calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.psychubeAmp].UltimateMight() * 3}, character.Ultimate, calParams.enemyHit)
+	ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.psychubeAmp].UltimateMight() * 4}, character.Ultimate, calParams.enemyHit)
+	poisonDamage = calculatorForHopscotch.CalculateGenesisDamage(DmgCal.DamageCalculatorInfo{}, 0.3)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Extra2Damages, skill2ExtraDamages, ultimateDamages) + poisonDamage*(6+6+3)
+	/*
+		Skill1(1) x2
+		Skill2(2) x1
+		Ultimate x1
+		Skill2(2) x1
+		Ultimate x1 + Skill1(3) x1
+		Ultimate x1
+		Skill1(3) x1
+		Skill2(2) x1
+	*/
+	expectTotalBuffDamage := skill1Extra2Damages[character.Star1]*2 + skill1Extra2Damages[character.Star3]*2 + skill2ExtraDamages[character.Star2]*3 + ultimateDamages[character.Star1]*1 + ultimateBuff1Damages[character.Star1]*1 + ultimateBuff2Damages[character.Star1]*1 + poisonDamage*(6+6+3)
+
+	fmt.Printf("---------\nJessica Hopscotch Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 1: %.2f, %.2f, %.2f", skill1Extra1Damages[0], skill1Extra1Damages[1], skill1Extra1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 2: %.2f, %.2f, %.2f", skill1Extra2Damages[0], skill1Extra2Damages[1], skill1Extra2Damages[2])
+	fmt.Printf("\nSkill 1 Extra 3: %.2f, %.2f, %.2f", skill1Extra3Damages[0], skill1Extra3Damages[1], skill1Extra3Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (Extra: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
+	fmt.Printf("\nUltimate: %.2f with Hopscotch buff (%.2f, %.2f, %.2f, %.2f)", ultimateDamages[0], ultimateBuff1Damages[0], ultimateBuff2Damages[0], ultimateBuff3Damages[0], ultimateBuff4Damages[0])
+	fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+	fmt.Printf("\nExpect with buff total damage: %.2f", expectTotalBuffDamage)
+
+	fmt.Println()
+
+	calculatorForBraveNewWorld := DmgCal.DamageCalculator{
+		Character:                 character.Jessica,
+		Psychube:                  &psychube.BraveNewWorld,
+		Resonance:                 &resonances[calParams.resonanceIndex],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
+	skill1Extra1Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0}, character.Skill1, calParams.enemyHit)
+	skill1Extra1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
+	skill1Extra2Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1}, character.Skill1, calParams.enemyHit)
+	skill1Extra2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
+	skill1Extra3Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2}, character.Skill1, calParams.enemyHit)
+	skill1Extra3BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill2, calParams.enemyHit)
+	skill2ExtraDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.enemyHit)
+	skill2ExtraBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	poisonDamage = calculatorForBraveNewWorld.CalculateGenesisDamage(DmgCal.DamageCalculatorInfo{}, 0.3)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Extra2Damages, skill2ExtraDamages, ultimateDamages) + poisonDamage*(6+6+3)
+	/*
+		Skill1(1) x2
+		Skill2(2) x1
+		Ultimate x1
+		Skill2(2) x1
+		Ultimate x1 + Skill1(3) x1
+		Ultimate x1
+		Skill1(3) x1
+		Skill2(2) x1
+	*/
+	expectTotalDamage = skill1Extra2Damages[character.Star1]*2 + skill2ExtraDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2ExtraBuffDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1Extra2BuffDamages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1Extra2BuffDamages[character.Star3]*1 + skill2ExtraDamages[character.Star2]*1 + poisonDamage*(6+6+3)
+
+	fmt.Printf("---------\nJessica Brave New World Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 1: %.2f, %.2f, %.2f (with BNW %.2f, %.2f, %.2f)", skill1Extra1Damages[0], skill1Extra1Damages[1], skill1Extra1Damages[2], skill1Extra1BuffDamages[0], skill1Extra1BuffDamages[1], skill1Extra1BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 2: %.2f, %.2f, %.2f (with BNW %.2f, %.2f, %.2f)", skill1Extra2Damages[0], skill1Extra2Damages[1], skill1Extra2Damages[2], skill1Extra2BuffDamages[0], skill1Extra2BuffDamages[1], skill1Extra2BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 3: %.2f, %.2f, %.2f (with BNW %.2f, %.2f, %.2f)", skill1Extra3Damages[0], skill1Extra3Damages[1], skill1Extra3Damages[2], skill1Extra3BuffDamages[0], skill1Extra3BuffDamages[1], skill1Extra3BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with BNW: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f (with BNW: %.2f, %.2f, %.2f)", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2], skill2ExtraBuffDamages[0], skill2ExtraBuffDamages[1], skill2ExtraBuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForBlasphemer := DmgCal.DamageCalculator{
+		Character:                 character.Jessica,
+		Psychube:                  &psychube.BlasphemerOfNight,
+		Resonance:                 &resonances[calParams.resonanceIndex],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1BuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill1Extra1Damages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0}, character.Skill1, calParams.enemyHit)
+	skill1Extra1BuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0, BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill1Extra2Damages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1}, character.Skill1, calParams.enemyHit)
+	skill1Extra2BuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1, BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill1Extra3Damages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2}, character.Skill1, calParams.enemyHit)
+	skill1Extra3BuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2, BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2BuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	skill2ExtraDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.enemyHit)
+	skill2ExtraBuffDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	ultimateBuffDamages := calculatorForBlasphemer.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.BlasphemerOfNight.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Ultimate, calParams.enemyHit)
+	poisonDamage = calculatorForBlasphemer.CalculateGenesisDamage(DmgCal.DamageCalculatorInfo{}, 0.3)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Extra2BuffDamages, skill2ExtraBuffDamages, ultimateBuffDamages) + poisonDamage*(6+6+3)
+
+	fmt.Printf("---------\nJessica Blasphemer Of Night Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 1: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Extra1Damages[0], skill1Extra1Damages[1], skill1Extra1Damages[2], skill1Extra1BuffDamages[0], skill1Extra1BuffDamages[1], skill1Extra1BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 2: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Extra2Damages[0], skill1Extra2Damages[1], skill1Extra2Damages[2], skill1Extra2BuffDamages[0], skill1Extra2BuffDamages[1], skill1Extra2BuffDamages[2])
+	fmt.Printf("\nSkill 1 Extra 3: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Extra3Damages[0], skill1Extra3Damages[1], skill1Extra3Damages[2], skill1Extra3BuffDamages[0], skill1Extra3BuffDamages[1], skill1Extra3BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with Buff: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f (with Buff: %.2f, %.2f, %.2f)", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2], skill2ExtraBuffDamages[0], skill2ExtraBuffDamages[1], skill2ExtraBuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f (with Buff: %.2f)", ultimateDamages[0], ultimateBuffDamages[0])
+	fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 	fmt.Println()

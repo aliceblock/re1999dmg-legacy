@@ -280,19 +280,19 @@ var Jessica = MakeCharacter(
 	RealityDamage,
 	map[CharacterInsightLevel]Stat{
 		Insight2L50: {
-			Atk:      1143.0,
-			CritRate: 0.127,
-			CritDmg:  0.491,
+			Atk:      972.0,
+			CritRate: 0.086,
+			CritDmg:  0.429,
 		},
 		Insight3L1: {
-			Atk:      1143.0,
-			CritRate: 0.127,
-			CritDmg:  0.491,
+			Atk:      1008.0,
+			CritRate: 0.095,
+			CritDmg:  0.443,
 		},
 		Insight3L60: {
 			Atk:      1143.0,
-			CritRate: 0.127,
-			CritDmg:  0.491,
+			CritRate: 0.095,
+			CritDmg:  0.443,
 		},
 	},
 	Insight{
@@ -314,4 +314,3 @@ var Jessica = MakeCharacter(
 		},
 	},
 )
-var Changeling = Jessica
