@@ -314,3 +314,44 @@ var Jessica = MakeCharacter(
 		},
 	},
 )
+
+// P3
+var Charlie = MakeCharacter(
+	nil,
+	MentalDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      1003.0,
+			CritRate: 0.0546,
+			CritDmg:  0.3815,
+		},
+		Insight3L1: {
+			Atk:      1040.0,
+			CritRate: 0.0603,
+			CritDmg:  0.39,
+		},
+		Insight3L60: {
+			Atk:      1179.0,
+			CritRate: 0.0603,
+			CritDmg:  0.39,
+		},
+	},
+	Insight{
+		AtkPercent: 0.05,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.8, EnemyHit: 1, ExtraMultiplier: []float64{0.6}},
+			{Multiplier: 2.7, EnemyHit: 1, ExtraMultiplier: []float64{0.9}},
+			{Multiplier: 4.5, EnemyHit: 1, ExtraMultiplier: []float64{1.5}},
+		},
+		Skill2: {
+			{Multiplier: 1.8, EnemyHit: 1, ExtraMultiplier: []float64{0.6}},
+			{Multiplier: 2.7, EnemyHit: 1, ExtraMultiplier: []float64{0.9}},
+			{Multiplier: 4.5, EnemyHit: 1, ExtraMultiplier: []float64{1.5}},
+		},
+		Ultimate: {
+			{Multiplier: 3.5, EnemyHit: 4},
+		},
+	},
+)
