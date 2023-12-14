@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-	calculatorFunc := calculator[Charlie]
+	calculatorFunc := calculator[Eagle]
 	calculatorFunc(CalParams{
-		enemyHit:       1,
-		psychubeAmp:    psychube.Amp1,
-		resonanceIndex: 1,
-		enemyDef:       600.0,
-		// applyConfusion: true,
+		enemyHit:           1,
+		psychubeAmp:        psychube.Amp1,
+		resonanceIndex:     1,
+		enemyDef:           600.0,
+		applySenseWeakness: true,
 	})
 }
 
@@ -396,6 +396,35 @@ func aKnightDmgCalculate(calParams CalParams) {
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
 	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 	fmt.Printf("\nUltimate: %.2f with Hopscotch buff (%.2f, %.2f, %.2f, %.2f)", ultimateDamages[0], ultimateBuff1Damages[0], ultimateBuff2Damages[0], ultimateBuff3Damages[0], ultimateBuff4Damages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
+
+	calculatorForYearningDesire := DmgCal.DamageCalculator{
+		Character:                 character.AKnight,
+		Psychube:                  &psychube.YearningDesire,
+		Resonance:                 &resonance,
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Ultimate, calParams.enemyHit)
+	expectTotalDamage = aKnightCalculateExpectTotalDmg(skill1BuffDamages, skill2BuffDamages, ultimateBuffDamages)
+
+	fmt.Printf("---------\nA Knight Yearning Desire Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f (with Buff %.2f)", ultimateDamages[0], ultimateBuffDamages[0])
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 }
 
@@ -1168,6 +1197,39 @@ func eagleDmgCalculate(calParams CalParams) {
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 	fmt.Println()
+
+	calculatorForYearningDesire := DmgCal.DamageCalculator{
+		Character:                 character.Eagle,
+		Psychube:                  &psychube.YearningDesire,
+		Resonance:                 &resonance,
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+
+	skill1ExtraDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill1, calParams.enemyHit)
+	skill1ExtraBuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4}, character.Skill2, calParams.enemyHit)
+	skill2BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.enemyHit)
+	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Ultimate, calParams.enemyHit)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2BuffDamages, ultimateBuffDamages)
+
+	fmt.Printf("---------\nEagle Yearning Desire Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
+	fmt.Printf("\nSkill 1 with Buff: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2], skill1ExtraBuffDamages[0], skill1ExtraBuffDamages[1], skill1ExtraBuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f (with Buff %.2f)", ultimateDamages[0], ultimateBuffDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	fmt.Println()
 }
 
 func jessicaDmgCalculate(calParams CalParams) {
@@ -1669,7 +1731,7 @@ func charlieDmgCalculate(calParams CalParams) {
 	skill2ExtraBuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
 	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
 	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Ultimate, calParams.enemyHit)
-	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2ExtraBuffDamages, ultimateDamages) - skill2ExtraBuffDamages[character.Star2] + skill2BuffDamages[character.Star2]
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2ExtraBuffDamages, ultimateBuffDamages) - skill2ExtraBuffDamages[character.Star2] + skill2BuffDamages[character.Star2]
 
 	fmt.Printf("---------\nCharlie Yearning Desire Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
