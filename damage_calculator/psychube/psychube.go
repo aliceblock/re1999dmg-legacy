@@ -167,6 +167,18 @@ var LuxuriousLeisure = Psychube{
 	},
 }
 
+var YearningDesire = Psychube{
+	atk:              300,
+	incantationMight: 0.15,
+	additionalEffect: map[Amplification]*Stat{
+		Amp1: {dmgBonus: 0.08},
+		Amp2: {dmgBonus: 0.10},
+		Amp3: {dmgBonus: 0.12},
+		Amp4: {dmgBonus: 0.14},
+		Amp5: {dmgBonus: 0.16},
+	},
+}
+
 /*
 When the wearer attacks, if they do not have Afflatus advantage/disadvantage, the damage is increased by 6%. If the wearer's Afflatus is Spirit or Intellect, this effect is increased to 12%.
 */

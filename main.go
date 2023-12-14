@@ -13,10 +13,10 @@ func main() {
 	calculatorFunc := calculator[Charlie]
 	calculatorFunc(CalParams{
 		enemyHit:       1,
-		psychubeAmp:    psychube.Amp5,
-		resonanceIndex: 2,
+		psychubeAmp:    psychube.Amp1,
+		resonanceIndex: 1,
 		enemyDef:       600.0,
-		applyConfusion: true,
+		// applyConfusion: true,
 	})
 }
 
@@ -1646,95 +1646,39 @@ func charlieDmgCalculate(calParams CalParams) {
 
 	fmt.Println()
 
-	// calculatorForBraveNewWorld := DmgCal.DamageCalculator{
-	// 	Character:                 character.Eagle,
-	// 	Psychube:                  &psychube.BraveNewWorld,
-	// 	Resonance:                 &resonance,
-	// 	BuffDmgBonus:              dmgBonus,
-	// 	EnemyDef:                  calParams.enemyDef,
-	// 	EnemyDefReduction:         enemyDefReduction,
-	// 	EnemyDamageTakenReduction: enemyDamageTakenReduction,
-	// 	CritRate:                  critRate,
-	// 	EnemyCritDef:              enemyCritDef,
-	// 	AfflatusAdvantage:         calParams.afflatusAdvantage,
-	// }
+	calculatorForYearningDesire := DmgCal.DamageCalculator{
+		Character:                 character.Charlie,
+		Psychube:                  &psychube.YearningDesire,
+		Resonance:                 &resonances[calParams.resonanceIndex],
+		BuffDmgBonus:              dmgBonus,
+		EnemyDef:                  calParams.enemyDef,
+		EnemyDefReduction:         enemyDefReduction,
+		EnemyDamageTakenReduction: enemyDamageTakenReduction,
+		CritRate:                  critRate,
+		EnemyCritDef:              enemyCritDef,
+		AfflatusAdvantage:         calParams.afflatusAdvantage,
+	}
 
-	// skill1Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
-	// skill1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill1, calParams.enemyHit)
-	// skill2Damages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4}, character.Skill2, calParams.enemyHit)
-	// skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.psychubeAmp].IncantationMight()}, character.Skill2, calParams.enemyHit)
-	// ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.enemyHit)
-	// expectTotalDamage = skill1ExtraDamages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2BuffDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + skill2Damages[character.Star2]*1
+	skill1Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
+	skill1BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill1ExtraDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill1, calParams.enemyHit)
+	skill1ExtraBuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill1, calParams.enemyHit)
+	skill2Damages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill2, calParams.enemyHit)
+	skill2BuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	skill2ExtraDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.enemyHit)
+	skill2ExtraBuffDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Skill2, calParams.enemyHit)
+	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Ultimate, calParams.enemyHit)
+	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.psychubeAmp].DmgBonus()}, character.Ultimate, calParams.enemyHit)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2ExtraBuffDamages, ultimateDamages) - skill2ExtraBuffDamages[character.Star2] + skill2BuffDamages[character.Star2]
 
-	// fmt.Printf("---------\nEagle Brave New World Final Damage:")
-	// fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
-	// fmt.Printf("\nSkill 1 with BNW: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2], skill1ExtraBuffDamages[0], skill1ExtraBuffDamages[1], skill1ExtraBuffDamages[2])
-	// fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
-	// fmt.Printf("\nSkill 2 with BNW: %.2f, %.2f, %.2f", skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
-	// fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
-	// fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
-
-	// fmt.Println()
-
-	// calculatorForLux := DmgCal.DamageCalculator{
-	// 	Character:                 character.Eagle,
-	// 	Psychube:                  &psychube.LuxuriousLeisure,
-	// 	Resonance:                 &resonance,
-	// 	BuffDmgBonus:              dmgBonus,
-	// 	EnemyDef:                  calParams.enemyDef,
-	// 	EnemyDefReduction:         enemyDefReduction,
-	// 	EnemyDamageTakenReduction: enemyDamageTakenReduction,
-	// 	CritRate:                  critRate,
-	// 	EnemyCritDef:              enemyCritDef,
-	// 	AfflatusAdvantage:         calParams.afflatusAdvantage,
-	// }
-
-	// skill1Damages = calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{}, character.Skill1, calParams.enemyHit)
-	// skill1Lux1Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 1}, character.Skill1, calParams.enemyHit)
-	// skill1Lux2Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 2}, character.Skill1, calParams.enemyHit)
-	// skill1Lux3Damages := calculatorForBoundenDuty.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 3}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraDamages = calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraLux1Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 1}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraLux2Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 2}, character.Skill1, calParams.enemyHit)
-	// skill1ExtraLux3Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 3}, character.Skill1, calParams.enemyHit)
-	// skill2Damages = calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4}, character.Skill2, calParams.enemyHit)
-	// skill2Lux1Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 1}, character.Skill2, calParams.enemyHit)
-	// skill2Lux2Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 2}, character.Skill2, calParams.enemyHit)
-	// skill2Lux3Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{PenetrationRate: 0.4, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 3}, character.Skill2, calParams.enemyHit)
-	// ultimateDamages = calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.enemyHit)
-	// ultimateLux1Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 1}, character.Ultimate, calParams.enemyHit)
-	// ultimateLux2Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 2}, character.Ultimate, calParams.enemyHit)
-	// ultimateLux3Damages := calculatorForLux.CalculateFinalDamage(DmgCal.DamageCalculatorInfo{CritRate: 1.0, CritDmg: DmgCal.ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.psychubeAmp].DmgBonus() * 3}, character.Ultimate, calParams.enemyHit)
-	// /*
-	// 	Skill1(1) x2
-	// 	Skill2(2) x1
-	// 	Ultimate x1
-	// 	Skill2(2) x1
-	// 	Ultimate x1 + Skill1(3) x1
-	// 	Ultimate x1
-	// 	Skill1(3) x1
-	// 	Skill2(2) x1
-	// */
-	// expectTotalDamage = skill1ExtraDamages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2Lux1Damages[character.Star2]*1 + ultimateLux1Damages[character.Star1]*1 + skill1ExtraLux2Damages[character.Star3]*1 + ultimateLux2Damages[character.Star1]*1 + skill1ExtraLux3Damages[character.Star3]*1 + skill2Lux2Damages[character.Star2]*1
-
-	// fmt.Printf("---------\nEagle Luxurious Leisure Final Damage:")
-	// fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
-	// fmt.Printf("\nSkill 1 Lux1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Lux1Damages[0], skill1Lux1Damages[1], skill1Lux1Damages[2], skill1ExtraLux1Damages[0], skill1ExtraLux1Damages[1], skill1ExtraLux1Damages[2])
-	// fmt.Printf("\nSkill 1 Lux2: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Lux2Damages[0], skill1Lux2Damages[1], skill1Lux2Damages[2], skill1ExtraLux2Damages[0], skill1ExtraLux2Damages[1], skill1ExtraLux2Damages[2])
-	// fmt.Printf("\nSkill 1 Lux3: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Lux3Damages[0], skill1Lux3Damages[1], skill1Lux3Damages[2], skill1ExtraLux3Damages[0], skill1ExtraLux3Damages[1], skill1ExtraLux3Damages[2])
-	// fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
-	// fmt.Printf("\nSkill 2 Lux1: %.2f, %.2f, %.2f", skill2Lux1Damages[0], skill2Lux1Damages[1], skill2Lux1Damages[2])
-	// fmt.Printf("\nSkill 2 Lux2: %.2f, %.2f, %.2f", skill2Lux2Damages[0], skill2Lux2Damages[1], skill2Lux2Damages[2])
-	// fmt.Printf("\nSkill 2 Lux3: %.2f, %.2f, %.2f", skill2Lux3Damages[0], skill2Lux3Damages[1], skill2Lux3Damages[2])
-	// fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
-	// fmt.Printf("\nUltimate Lux1: %.2f", ultimateLux1Damages[0])
-	// fmt.Printf("\nUltimate Lux2: %.2f", ultimateLux2Damages[0])
-	// fmt.Printf("\nUltimate Lux3: %.2f", ultimateLux3Damages[0])
-	// fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
-
-	// fmt.Println()
+	fmt.Printf("---------\nCharlie Yearning Desire Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
+	fmt.Printf("\nSkill 1 with buff: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2], skill1ExtraBuffDamages[0], skill1ExtraBuffDamages[1], skill1ExtraBuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
+	fmt.Printf("\nSkill 2 with buff: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2], skill2ExtraBuffDamages[0], skill2ExtraBuffDamages[1], skill2ExtraBuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nUltimate with Buff: %.2f", ultimateBuffDamages[0])
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 }
 
 /*
