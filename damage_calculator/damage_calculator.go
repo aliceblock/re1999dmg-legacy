@@ -13,6 +13,8 @@ type DamageCalculator struct {
 	Character                 *character.Character
 	Psychube                  *psychube.Psychube
 	Resonance                 *resonance.Resonance
+	Buff                      *Buff
+	Debuff                    *Debuff
 	EnemyDef                  float64
 	EnemyDefBonus             float64
 	EnemyDamageTakenReduction float64
@@ -103,11 +105,129 @@ func (d *DamageCalculator) GetTotalCritRate() float64 {
 	return d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + d.CritRate
 }
 
+func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
+	dmgBonus := 0.0
+	dmgTaken := 0.0
+	defReduction := 0.0
+	critResistDown := 0.0
+	critDefDown := 0.0
+
+	switch d.Buff.Sonetto {
+	case 1:
+		dmgBonus = 0.15
+	case 2:
+		dmgBonus = 0.2
+	case 3:
+		dmgBonus = 0.25
+	}
+	switch d.Buff.AnAnLee {
+	case 1:
+		if dmgBonus < 0.15 {
+			dmgBonus = 0.15
+		}
+	case 2:
+		if dmgBonus < 0.2 {
+			dmgBonus = 0.2
+		}
+	case 3:
+		if dmgBonus < 0.2 {
+			dmgBonus = 0.3
+		}
+	}
+	if d.Buff.Necrologist {
+		if dmgBonus < 0.3 {
+			dmgBonus = 0.3
+		}
+	}
+	switch d.Debuff.Bkornblume {
+	case 1:
+		dmgTaken = 0.15
+	case 2:
+		dmgTaken = 0.2
+	case 3:
+		dmgTaken = 0.25
+	}
+	switch d.Debuff.BabyBlueSkill2 {
+	case 1:
+		if dmgTaken < 0.15 {
+			dmgTaken = 0.15
+		}
+	case 2:
+		if dmgTaken < 0.2 {
+			dmgTaken = 0.2
+		}
+	case 3:
+		if dmgTaken < 0.25 {
+			dmgTaken = 0.25
+		}
+	}
+	if d.Debuff.Confusion > 0 {
+		critResistDown += float64(d.Debuff.Confusion) * 0.25
+	}
+	if d.Debuff.ToothFairy {
+		critResistDown += 0.15
+		critDefDown += 0.15
+	}
+	if d.Character.DamageType() == character.RealityDamage {
+		switch d.Debuff.Bkornblume {
+		case 1:
+			defReduction = 0.15
+		case 2:
+			defReduction = 0.2
+		case 3:
+			defReduction = 0.25
+		}
+		if d.Debuff.SenseWeakness {
+			defReduction += 0.2
+			critDefDown += 0.2
+		}
+	}
+	if d.Character.DamageType() == character.MentalDamage {
+		switch d.Debuff.BabyBlueSKill1 {
+		case 2:
+			defReduction = 0.25
+		case 3:
+			defReduction = 0.35
+		}
+	}
+
+	return BuffDebuffResult{
+		DmgBonus:       dmgBonus,
+		DmgTaken:       dmgTaken,
+		DefReduction:   defReduction,
+		CritResistDown: critResistDown,
+		CritDefDown:    critDefDown,
+	}
+}
+
 func ExcessCritDmgBonus(critRate float64) float64 {
 	if critRate > 1.0 {
 		return critRate - 1.0
 	}
 	return 0.0
+}
+
+type Buff struct {
+	AnAnLee     int16
+	Sonetto     int16
+	Necrologist bool
+}
+
+type Debuff struct {
+	Bkornblume     int16
+	BabyBlueSKill1 int16
+	BabyBlueSkill2 int16
+	Confusion      int16
+	ToothFairy     bool
+	SenseWeakness  bool
+}
+
+type BuffDebuffResult struct {
+	DmgBonus       float64
+	DmgTaken       float64
+	DefReduction   float64
+	CritResistDown float64
+	CritDefDown    float64
 }
 
 type DamageCalculatorInfo struct {
