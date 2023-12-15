@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Psychube Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 20px;
+        }
+
+        .group {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #E0F7FA;
+            border-radius: 10px;
+        }
+
+        .selector,
+        .checkbox {
+            margin-right: 10px;
+        }
+
+        #char-selector,
+        #an-an-lee-selector,
+        #sonetto-selector,
+        #bkornblume-selector,
+        #baby-blue-skill-1-selector,
+        #baby-blue-skill-2-selector,
+        #confusion-selector {
+            margin-bottom: 10px;
+        }
+
+        #tooth-fairy-checkbox,
+        #sense-weakness-checkbox {
+            margin-top: 10px;
+        }
+
+        #page {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="char-selector">Character:</label>
+    <select id="char-selector" class="selector">
+        <option value="aknight">A Knight</option>
+        <option value="charlie">Charlie</option>
+        <option value="eagle">Eagle</option>
+        <option value="jessica">Jessica</option>
+        <option value="lilya">Lilya</option>
+        <option value="regulus">Regulus</option>
+    </select>
+
+    <div class="group">
+        <label for="an-an-lee-selector" class="selector-label">An-An Lee:</label>
+        <select id="an-an-lee-selector" class="selector">
+            <option value=""></option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Star</option>
+            <option value="3">3 Star</option>
+        </select>
+
+        <label for="sonetto-selector" class="selector-label">Sonetto:</label>
+        <select id="sonetto-selector" class="selector">
+            <option value=""></option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Star</option>
+            <option value="3">3 Star</option>
+        </select>
+
+        <label for="necrologist-checkbox" class="checkbox-label">Necrologist:</label>
+        <input type="checkbox" id="necrologist-checkbox" class="checkbox">
+    </div>
+
+    <div class="group">
+        <label for="bkornblume-selector" class="selector-label">Bkornblume:</label>
+        <select id="bkornblume-selector" class="selector">
+            <option value=""></option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Star</option>
+            <option value="3">3 Star</option>
+        </select>
+
+        <label for="baby-blue-skill-1-selector" class="selector-label">Baby Blue Skill 1:</label>
+        <select id="baby-blue-skill-1-selector" class="selector">
+            <option value=""></option>
+            <option value="2">2 Star</option>
+            <option value="3">3 Star</option>
+        </select>
+
+        <label for="baby-blue-skill-2-selector" class="selector-label">Baby Blue Skill 2:</label>
+        <select id="baby-blue-skill-2-selector" class="selector">
+            <option value=""></option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Star</option>
+            <option value="3">3 Star</option>
+        </select>
+
+        <br>
+
+        <label for="confusion-selector" class="selector-label">Confusion:</label>
+        <select id="confusion-selector" class="selector">
+            <option value=""></option>
+            <option value="1">1 Stack</option>
+            <option value="2">2 Stack</option>
+            <option value="3">3 Stack</option>
+            <option value="4">4 Stack</option>
+        </select>
+
+        <label for="tooth-fairy-checkbox" class="checkbox-label">Tooth Fairy:</label>
+        <input type="checkbox" id="tooth-fairy-checkbox" class="checkbox">
+
+        <label for="sense-weakness-checkbox" class="checkbox-label">Sense Weakness:</label>
+        <input type="checkbox" id="sense-weakness-checkbox" class="checkbox">
+    </div>
+
+    <iframe id="page" src="/character?name=aknight"></iframe>
+
+    <script>
+        document.getElementById('char-selector').addEventListener('change', updateIframe);
+        document.getElementById('an-an-lee-selector').addEventListener('change', updateIframe);
+        document.getElementById('sonetto-selector').addEventListener('change', updateIframe);
+        document.getElementById('necrologist-checkbox').addEventListener('change', updateIframe);
+        document.getElementById('bkornblume-selector').addEventListener('change', updateIframe);
+        document.getElementById('baby-blue-skill-1-selector').addEventListener('change', updateIframe);
+        document.getElementById('baby-blue-skill-2-selector').addEventListener('change', updateIframe);
+        document.getElementById('confusion-selector').addEventListener('change', updateIframe);
+        document.getElementById('tooth-fairy-checkbox').addEventListener('change', updateIframe);
+        document.getElementById('sense-weakness-checkbox').addEventListener('change', updateIframe);
+
+        function updateIframe() {
+            var charSelector = document.getElementById('char-selector');
+            var anAnLeeSelector = document.getElementById('an-an-lee-selector');
+            var sonettoSelector = document.getElementById('sonetto-selector');
+            var necrologistCheckbox = document.getElementById('necrologist-checkbox');
+            var bkornblumeSelector = document.getElementById('bkornblume-selector');
+            var babyBlueSkill1Selector = document.getElementById('baby-blue-skill-1-selector');
+            var babyBlueSkill2Selector = document.getElementById('baby-blue-skill-2-selector');
+            var confusionSelector = document.getElementById('confusion-selector');
+            var toothFairyCheckbox = document.getElementById('tooth-fairy-checkbox');
+            var senseWeaknessCheckbox = document.getElementById('sense-weakness-checkbox');
+
+            var queryString = '/character?name=' + charSelector.value;
+
+            function addSelectorToQueryString(selector, paramName) {
+                if (selector.value !== '') {
+                    queryString += '&' + paramName + '=' + selector.value;
+                }
+            }
+
+            function addCheckboxToQueryString(checkbox, paramName) {
+                if (checkbox.checked) {
+                    queryString += '&' + paramName + '=true';
+                }
+            }
+
+            addSelectorToQueryString(anAnLeeSelector, 'ananlee');
+            addSelectorToQueryString(sonettoSelector, 'sonetto');
+            addCheckboxToQueryString(necrologistCheckbox, 'necrologist');
+            addSelectorToQueryString(bkornblumeSelector, 'bkornblume');
+            addSelectorToQueryString(babyBlueSkill1Selector, 'babyblueskill1');
+            addSelectorToQueryString(babyBlueSkill2Selector, 'babyblueskill2');
+            addSelectorToQueryString(confusionSelector, 'confusion');
+            addCheckboxToQueryString(toothFairyCheckbox, 'toothfairy');
+            addCheckboxToQueryString(senseWeaknessCheckbox, 'senseweakness');
+
+            var iframe = document.getElementById('page');
+            iframe.src = queryString;
+        }
+    </script>
+</body>
+
+</html>

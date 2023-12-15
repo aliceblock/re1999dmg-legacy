@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Highcharts Horizontal Bar Chart</title>
+    <title>Chart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div id="chart-container" style="width: 800px; height: 600px;"></div>
@@ -16,7 +24,10 @@
             var chartData = {{.ChartData}};
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    style: {
+                        fontFamily: 'Kanit'
+                    }
                 },
                 title: {
                     text: '{{.Title}}'
@@ -34,6 +45,7 @@
                         text: 'Damage'
                     }
                 },
+                legend:{ enabled: false },
                 plotOptions: {
                     bar: {
                         dataLabels: {
@@ -45,7 +57,10 @@
                 series: [{
                     name: 'Damage',
                     data: chartData.map(function(item) {
-                        return item.damage;
+                        return {
+                            y: item.damage,
+                            color: item.color
+                        };
                     })
                 }]
             });

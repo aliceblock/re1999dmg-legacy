@@ -183,7 +183,7 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 		}
 	}
 	if d.Character.DamageType() == character.MentalDamage {
-		switch d.Debuff.BabyBlueSKill1 {
+		switch d.Debuff.BabyBlueSkill1 {
 		case 2:
 			defReduction = 0.25
 		case 3:
@@ -225,7 +225,7 @@ type Buff struct {
 
 type Debuff struct {
 	Bkornblume     int16
-	BabyBlueSKill1 int16
+	BabyBlueSkill1 int16
 	BabyBlueSkill2 int16
 	Confusion      int16
 	ToothFairy     bool
