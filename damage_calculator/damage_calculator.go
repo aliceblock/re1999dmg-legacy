@@ -130,7 +130,7 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 			dmgBonus = 0.2
 		}
 	case 3:
-		if dmgBonus < 0.2 {
+		if dmgBonus < 0.3 {
 			dmgBonus = 0.3
 		}
 	}
