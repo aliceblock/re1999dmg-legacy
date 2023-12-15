@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -27,6 +28,10 @@ type Data struct {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
 	templatesDir, err := filepath.Abs("templates")
 	if err != nil {
 		panic(err)
@@ -143,7 +148,7 @@ func main() {
 	})
 
 	// Start the server
-	http.ListenAndServe(":8088", nil)
+	http.ListenAndServe("0.0.0.0:"+port, nil)
 }
 
 func getColor(psyChubeName string) string {
