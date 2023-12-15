@@ -20,11 +20,9 @@ type DamageCalculator struct {
 	EnemyDamageTakenReduction float64
 	BuffDmgBonus              float64
 	EnemyDefReduction         float64
-	PenetrationRate           float64
-	DmgMight                  float64
-	CritRate                  float64
-	CritDmg                   float64
 	EnemyCritDef              float64
+	PenetrationRate           float64
+	CritRate                  float64
 	AfflatusAdvantage         bool
 }
 
@@ -33,12 +31,13 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 	var finalDamages []float64
 
 	resonanceStats := d.Resonance.GetResonanceStats()
+	buffDebuffResult := d.GetBuffDebuffValue()
 
 	// Calculate Effective Attack Value
 	effectiveAttackValue := d.Character.Atk()*(1+resonanceStats.AtkPercent()+d.Psychube.AtkPercent()) + resonanceStats.Atk() + d.Psychube.Atk()
 
 	// Calculate Attack and Defense Factor
-	attackDefenseFactor := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-d.EnemyDefReduction-additionalInfo.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
+	attackDefenseFactor := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-buffDebuffResult.DefReduction()-additionalInfo.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
 
 	// Check if the result is less than the specified threshold
 	if attackDefenseFactor < effectiveAttackValue*(1+d.Character.Insight().AtkPercent)*0.1 {
@@ -46,12 +45,12 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 	}
 
 	// Calculate DMG Bonus
-	posDmgBonus := d.Character.Insight().DmgBonus + resonanceStats.DmgBonus() + d.Psychube.DmgBonus() + d.BuffDmgBonus + additionalInfo.BuffDmgBonus
+	posDmgBonus := d.Character.Insight().DmgBonus + resonanceStats.DmgBonus() + d.Psychube.DmgBonus() + d.BuffDmgBonus + buffDebuffResult.DmgBonus() + buffDebuffResult.DmgTaken() + additionalInfo.BuffDmgBonus
 	negDmgBonus := d.EnemyDamageTakenReduction + additionalInfo.EnemyDamageTakenReduction
 	dmgBonus := math.Max(1+posDmgBonus-negDmgBonus, 0.3)
 
 	// Calculate Incantation/Ultimate/Ritual Might
-	dmgMight := d.DmgMight
+	dmgMight := 0.0
 	if skill == character.Skill1 || skill == character.Skill2 {
 		dmgMight += d.Psychube.IncantationMight() + additionalInfo.IncantationMight
 	}
@@ -61,7 +60,7 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 	incantationUltimateRitualMight := math.Max(1+dmgMight, 0)
 
 	// Calculate Critical Bonus
-	criticalBonus := math.Max(1+d.Character.CritDmg()+resonanceStats.CritDmg()+d.Psychube.CritDmg()+d.CritDmg+additionalInfo.CritDmg-d.EnemyCritDef-additionalInfo.EnemyCritDef, 1.1)
+	criticalBonus := math.Max(1+d.Character.CritDmg()+resonanceStats.CritDmg()+d.Psychube.CritDmg()+buffDebuffResult.CritDefDown()+additionalInfo.CritDmg-d.EnemyCritDef-additionalInfo.EnemyCritDef, 1.1)
 
 	// Calculate Afflatus Bonus
 	afflatusBonus := 1.0
@@ -82,7 +81,7 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 			skillMultiplier += skillInfo.ExtraMultiplier[additionalInfo.ExtraDamageStack]
 		}
 
-		critRate := d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + d.CritRate + additionalInfo.CritRate
+		critRate := d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + buffDebuffResult.CritResistDown() + additionalInfo.CritRate
 		if critRate >= 1 {
 			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier * float64(enemyHit)
 		} else {
@@ -102,7 +101,8 @@ func (d *DamageCalculator) CalculateGenesisDamage(additionalInfo DamageCalculato
 
 func (d *DamageCalculator) GetTotalCritRate() float64 {
 	resonanceStats := d.Resonance.GetResonanceStats()
-	return d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + d.CritRate
+	buffDebuffResult := d.GetBuffDebuffValue()
+	return d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + buffDebuffResult.CritResistDown()
 }
 
 func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
@@ -192,11 +192,11 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 	}
 
 	return BuffDebuffResult{
-		DmgBonus:       dmgBonus,
-		DmgTaken:       dmgTaken,
-		DefReduction:   defReduction,
-		CritResistDown: critResistDown,
-		CritDefDown:    critDefDown,
+		dmgBonus:       dmgBonus,
+		dmgTaken:       dmgTaken,
+		defReduction:   defReduction,
+		critResistDown: critResistDown,
+		critDefDown:    critDefDown,
 	}
 }
 
@@ -205,6 +205,16 @@ func ExcessCritDmgBonus(critRate float64) float64 {
 		return critRate - 1.0
 	}
 	return 0.0
+}
+
+type CalParams struct {
+	EnemyHit          int16
+	PsychubeAmp       psychube.Amplification
+	ResonanceIndex    int16
+	AfflatusAdvantage bool
+	EnemyDef          float64
+	Buff              Buff
+	Debuff            Debuff
 }
 
 type Buff struct {
@@ -223,11 +233,31 @@ type Debuff struct {
 }
 
 type BuffDebuffResult struct {
-	DmgBonus       float64
-	DmgTaken       float64
-	DefReduction   float64
-	CritResistDown float64
-	CritDefDown    float64
+	dmgBonus       float64
+	dmgTaken       float64
+	defReduction   float64
+	critResistDown float64
+	critDefDown    float64
+}
+
+func (bd *BuffDebuffResult) DmgBonus() float64 {
+	return bd.dmgBonus
+}
+
+func (bd *BuffDebuffResult) DmgTaken() float64 {
+	return bd.dmgTaken
+}
+
+func (bd *BuffDebuffResult) DefReduction() float64 {
+	return bd.defReduction
+}
+
+func (bd *BuffDebuffResult) CritResistDown() float64 {
+	return bd.critResistDown
+}
+
+func (bd *BuffDebuffResult) CritDefDown() float64 {
+	return bd.critDefDown
 }
 
 type DamageCalculatorInfo struct {
@@ -242,4 +272,39 @@ type DamageCalculatorInfo struct {
 	EnemyCritDef              float64
 	HasExtraDamage            bool
 	ExtraDamageStack          int16
+}
+
+type DamageResponse struct {
+	Name   string  `json:"name"`
+	Damage float64 `json:"damage"`
+}
+
+/*
+Skill1(1) x2
+Skill1(3) x2
+Skill2(2) x3
+Ultimate x3
+*/
+func basicCalculateExpectTotalDmg(skill1Damages []float64, skill2Damages []float64, ultimateDamages []float64) float64 {
+	return skill1Damages[character.Star1]*2 + skill1Damages[character.Star3]*2 + skill2Damages[character.Star2]*3 + ultimateDamages[character.Star1]*3
+}
+
+/*
+Skill1(1) x1
+Skill1(2) x2
+Skill1(3) x1
+Skill2(2) x3
+Ultimate x3
+*/
+func aKnightCalculateExpectTotalDmg(skill1Damages []float64, skill2Damages []float64, ultimateDamages []float64) float64 {
+	return skill1Damages[character.Star1] + skill1Damages[character.Star2]*2 + skill1Damages[character.Star3] + skill2Damages[character.Star2]*3 + ultimateDamages[character.Star1]*3
+}
+
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
+}
+
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
 }

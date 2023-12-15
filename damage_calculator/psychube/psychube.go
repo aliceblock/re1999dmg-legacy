@@ -11,7 +11,7 @@ const (
 )
 
 type Psychube struct {
-	// Fields are private (start with a lowercase letter)
+	name             string
 	atk              float64
 	atkPercent       float64
 	dmgBonus         float64
@@ -32,7 +32,9 @@ type Stat struct {
 	critDmg          float64
 }
 
-// Getter methods for Psychube fields
+func (p *Psychube) Name() string {
+	return p.name
+}
 
 func (p *Psychube) Atk() float64 {
 	return p.atk
@@ -97,6 +99,7 @@ func (s *Stat) CritDmg() float64 {
 }
 
 var ThunderousApplause = Psychube{
+	name:     "Thunderous Applause",
 	atk:      330,
 	critRate: 0.16,
 	additionalEffect: map[Amplification]*Stat{
@@ -112,6 +115,7 @@ var ThunderousApplause = Psychube{
 For each enemy target defeated by the carrier, Ultimate Might +4% for the carrier. Stacks up to 4 times.
 */
 var Hopscotch = Psychube{
+	name:             "Hopscotch",
 	atk:              370,
 	incantationMight: 0.18,
 	additionalEffect: map[Amplification]*Stat{
@@ -127,6 +131,7 @@ var Hopscotch = Psychube{
 After the carrier casts an Ultimate, Incantation Might of the next incantation +20%.
 */
 var BraveNewWorld = Psychube{
+	name:          "Brave New World",
 	atk:           370,
 	ultimateMight: 0.18,
 	additionalEffect: map[Amplification]*Stat{
@@ -139,11 +144,13 @@ var BraveNewWorld = Psychube{
 }
 
 var HisBoundenDuty = Psychube{
+	name:     "His Bounden Duty",
 	atk:      410,
 	dmgBonus: 0.12,
 }
 
 var BlasphemerOfNight = Psychube{
+	name:             "Blasphemer Of Night",
 	atk:              360,
 	incantationMight: 0.18,
 	additionalEffect: map[Amplification]*Stat{
@@ -156,6 +163,7 @@ var BlasphemerOfNight = Psychube{
 }
 
 var LuxuriousLeisure = Psychube{
+	name:          "Luxurious Leisure",
 	atk:           380,
 	ultimateMight: 0.18,
 	additionalEffect: map[Amplification]*Stat{
@@ -168,6 +176,7 @@ var LuxuriousLeisure = Psychube{
 }
 
 var YearningDesire = Psychube{
+	name:             "Yearning Desire",
 	atk:              300,
 	incantationMight: 0.15,
 	additionalEffect: map[Amplification]*Stat{
@@ -183,6 +192,7 @@ var YearningDesire = Psychube{
 When the wearer attacks, if they do not have Afflatus advantage/disadvantage, the damage is increased by 6%. If the wearer's Afflatus is Spirit or Intellect, this effect is increased to 12%.
 */
 var BalancePlease = Psychube{
+	name:             "Balance Please",
 	atk:              380,
 	incantationMight: 0.18,
 	additionalEffect: map[Amplification]*Stat{

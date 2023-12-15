@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts Horizontal Bar Chart</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+    <div id="chart-container" style="width: 800px; height: 600px;"></div>
+    <script>
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartData = {{.ChartData}};
+            Highcharts.chart('chart-container', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: '{{.Title}}'
+                },
+                xAxis: {
+                    categories: chartData.map(function(item) {
+                        return item.name;
+                    }),
+                    title: {
+                        text: 'Psychube'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Damage'
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true,
+                        },
+                        pointWidth: 20, // Adjust the bar width here (in pixels)
+                    }
+                },
+                series: [{
+                    name: 'Damage',
+                    data: chartData.map(function(item) {
+                        return item.damage;
+                    })
+                }]
+            });
+        });
+    </script>
+</body>
+</html>
