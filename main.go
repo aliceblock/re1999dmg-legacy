@@ -47,6 +47,14 @@ func main() {
 		panic(err)
 	}
 
+	publicPath := "./public"
+
+	// Create a file server for the specified directory
+	fileServer := http.FileServer(http.Dir(publicPath))
+
+	// Register the file server to handle requests under "/public/"
+	http.Handle("/public/", http.StripPrefix("/public/", fileServer))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		err := tmpl.ExecuteTemplate(w, "index.html", nil)
 		if err != nil {
