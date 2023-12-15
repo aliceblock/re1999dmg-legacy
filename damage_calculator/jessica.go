@@ -172,7 +172,6 @@ func JessicaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2ExtraBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.PsychubeAmp].IncantationMight()}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	poisonDamage = calculatorForBraveNewWorld.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
-	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Extra2Damages, skill2ExtraDamages, ultimateDamages) + poisonDamage*(6+6+3)
 	/*
 		Skill1(1) x2
 		Skill2(2) x1

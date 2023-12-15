@@ -320,7 +320,6 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateLux1Damages := calculatorForReso1Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 1}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux2Damages := calculatorForReso1Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 2}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux3Damages := calculatorForReso1Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 3}, character.Ultimate, calParams.EnemyHit)
-	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + ultimateLux1Damages[character.Star1]*1 + skill2Lux2Damages[character.Star3]*1 + skill1Lux2Damages[character.Star3] + ultimateLux2Damages[character.Star1]*1
 	/*
 		Skill1(1) x2
 		Skill2(2) x1
@@ -416,7 +415,6 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateLux1Damages = calculatorForReso2Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 1}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux2Damages = calculatorForReso2Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 2}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux3Damages = calculatorForReso2Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 3}, character.Ultimate, calParams.EnemyHit)
-	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + ultimateLux1Damages[character.Star1]*1 + skill2Lux2Damages[character.Star3]*1 + skill1Lux2Damages[character.Star3] + ultimateLux2Damages[character.Star1]*1
 	/*
 		Skill1(1) x2
 		Skill2(2) x1
@@ -512,7 +510,6 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateLux1Damages = calculatorForReso3Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 1}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux2Damages = calculatorForReso3Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 2}, character.Ultimate, calParams.EnemyHit)
 	ultimateLux3Damages = calculatorForReso3Lux.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 3}, character.Ultimate, calParams.EnemyHit)
-	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + ultimateLux1Damages[character.Star1]*1 + skill2Lux2Damages[character.Star3]*1 + skill1Lux2Damages[character.Star3] + ultimateLux2Damages[character.Star1]*1
 	/*
 		Skill1(1) x2
 		Skill2(2) x1

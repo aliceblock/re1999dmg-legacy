@@ -47,6 +47,50 @@
             height: 500px;
             border: none;
         }
+
+        #update-logs-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            z-index: 1;
+            animation: fadeIn 0.3s ease-in-out;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -60,6 +104,8 @@
         <option value="lilya">Lilya</option>
         <option value="regulus">Regulus</option>
     </select>
+    
+    <button id="update-logs-btn" onclick="toggleModal()">Update Logs</button>
 
     <div class="group">
         <label for="an-an-lee-selector" class="selector-label">An-An Lee:</label>
@@ -126,6 +172,15 @@
 
     <iframe id="page" src="/character?name=aknight"></iframe>
 
+    <div id="update-logs-modal" class="modal">
+        <h2>Update Logs</h2>
+        <h5>12 Dec 2023</h5>
+        <ul>
+            <li>Beta มากๆ เจอบั๊กแจ้งได้ครับ</li>
+        </ul>
+        <button onclick="toggleModal()">Close</button>
+    </div>
+
     <script>
         document.getElementById('char-selector').addEventListener('change', updateIframe);
         document.getElementById('an-an-lee-selector').addEventListener('change', updateIframe);
@@ -176,6 +231,19 @@
 
             var iframe = document.getElementById('page');
             iframe.src = queryString;
+        }
+
+        function toggleModal() {
+            var modal = document.getElementById('update-logs-modal');
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                modal.style.animation = 'fadeIn 0.3s ease-in-out';
+                modal.style.display = 'block';
+            } else {
+                modal.style.animation = 'fadeOut 0.3s ease-in-out';
+                setTimeout(function () {
+                    modal.style.display = 'none';
+                }, 300);
+            }
         }
     </script>
 </body>
