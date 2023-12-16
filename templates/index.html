@@ -188,12 +188,12 @@
         </div>
         <div class="col-auto d-flex flex-row">
             <div class="d-flex col-auto align-items-center">
-                <button type="button" class="btn btn-primary col-auto" onclick="copyToClipboard()">
+                <button id="share-btn" type="button" class="btn btn-primary col-auto" onclick="copyToClipboard()">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
             </div>
             <div class="d-flex col-auto align-items-center ms-2">
-                <button type="button" class="btn btn-primary col-auto" data-bs-toggle="modal"
+                <button id="update-logs-btn" type="button" class="btn btn-primary col-auto" data-bs-toggle="modal"
                     data-bs-target="#updateLogsModal"><i class="fa-regular fa-lightbulb"></i></button>
             </div>
         </div>
@@ -314,7 +314,7 @@
 
                 <!-- Modal Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button id="modal-close-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
