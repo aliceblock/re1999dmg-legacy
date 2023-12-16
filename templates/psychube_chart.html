@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <title>Chart</title>
-    
+
     <!-- Favicon and related files -->
     <link rel="icon" type="image/png" sizes="192x192" href="/public/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/public/android-chrome-512x512.png">
@@ -11,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
     <link rel="manifest" href="/public/site.webmanifest">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
@@ -19,20 +20,35 @@
     <style>
         body {
             font-family: 'Kanit', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chart-container {
+            display: flex;
+            justify-content: center;
+        }
+        #chart {
+            width: 100%;
+            max-width: 1270px;
+            height: 400px;
         }
     </style>
 </head>
+
 <body>
-    <div id="chart-container" style="width: 800px; height: 600px;"></div>
+    <div id="chart-container">
+        <div id="chart"></div>
+    </div>
     <script>
         Highcharts.setOptions({
             lang: {
                 thousandsSep: ','
             }
         });
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var chartData = {{.ChartData}};
-            Highcharts.chart('chart-container', {
+            Highcharts.chart('chart', {
                 chart: {
                     type: 'bar',
                     style: {
@@ -43,7 +59,7 @@
                     text: '{{.Title}}'
                 },
                 xAxis: {
-                    categories: chartData.map(function(item) {
+                    categories: chartData.map(function (item) {
                         return item.name;
                     }),
                     title: {
@@ -55,7 +71,7 @@
                         text: 'Damage'
                     }
                 },
-                legend:{ enabled: false },
+                legend: { enabled: false },
                 plotOptions: {
                     bar: {
                         dataLabels: {
@@ -66,7 +82,7 @@
                 },
                 series: [{
                     name: 'Damage',
-                    data: chartData.map(function(item) {
+                    data: chartData.map(function (item) {
                         return {
                             y: item.damage,
                             color: item.color
@@ -77,4 +93,5 @@
         });
     </script>
 </body>
+
 </html>

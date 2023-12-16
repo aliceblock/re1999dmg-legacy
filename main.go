@@ -115,6 +115,12 @@ func main() {
 			debuff.SenseWeakness = true
 		}
 
+		afflatusAdvantageBool := false
+		afflatusAdvantage := queryParams.Get("afflatusadvantage")
+		if afflatusAdvantage == "true" {
+			afflatusAdvantageBool = true
+		}
+
 		data := Data{
 			Title:     cases.Title(language.English).String(charName),
 			ChartData: []ChartData{},
@@ -127,12 +133,13 @@ func main() {
 		}
 		for _, amp := range amps {
 			responseDamage := calculatorFunc(DmgCal.CalParams{
-				EnemyHit:       1,
-				PsychubeAmp:    amp,
-				ResonanceIndex: 0,
-				EnemyDef:       600.0,
-				Buff:           buff,
-				Debuff:         debuff,
+				EnemyHit:          1,
+				PsychubeAmp:       amp,
+				ResonanceIndex:    0,
+				EnemyDef:          600.0,
+				Buff:              buff,
+				Debuff:            debuff,
+				AfflatusAdvantage: afflatusAdvantageBool,
 			})
 			for _, res := range responseDamage {
 				chartData := ChartData{

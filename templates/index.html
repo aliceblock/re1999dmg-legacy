@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
     <link rel="manifest" href="/public/site.webmanifest">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
@@ -32,55 +32,18 @@
             border-radius: 10px;
         }
 
-        .selector,
-        .checkbox {
-            margin-right: 10px;
+        .filter {
+            padding: 5px;
         }
-
-        #char-selector,
-        #an-an-lee-selector,
-        #sonetto-selector,
-        #bkornblume-selector,
-        #baby-blue-skill-1-selector,
-        #baby-blue-skill-2-selector,
-        #confusion-selector {
-            margin-bottom: 10px;
-        }
-
-        #tooth-fairy-checkbox,
-        #sense-weakness-checkbox {
-            margin-top: 10px;
+        
+        select.form-select {
+            width: auto;
+            display: inline-block;
         }
 
         #page {
             width: 100%;
             height: 500px;
-            border: none;
-        }
-
-        #update-logs-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 400px;
-            width: 100%;
-            max-height: 80vh;
-            padding: 20px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            z-index: 1;
-            animation: fadeIn 0.3s ease-in-out;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border: none;
         }
 
@@ -105,97 +68,154 @@
 </head>
 
 <body>
-    <label for="char-selector">Character:</label>
-    <select id="char-selector" class="selector">
-        <option value="aknight">A Knight</option>
-        <option value="charlie">Charlie</option>
-        <option value="eagle">Eagle</option>
-        <option value="jessica">Jessica (BETA)</option>
-        <option value="lilya">Lilya</option>
-        <option value="regulus">Regulus</option>
-    </select>
-    
-    <button id="update-logs-btn" onclick="toggleModal()">Update Logs</button>
-
-    <div class="group">
-        <label for="an-an-lee-selector" class="selector-label">An-An Lee:</label>
-        <select id="an-an-lee-selector" class="selector">
-            <option value=""></option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Star</option>
-            <option value="3">3 Star</option>
-        </select>
-
-        <label for="sonetto-selector" class="selector-label">Sonetto:</label>
-        <select id="sonetto-selector" class="selector">
-            <option value=""></option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Star</option>
-            <option value="3">3 Star</option>
-        </select>
-
-        <label for="necrologist-checkbox" class="checkbox-label">Necrologist:</label>
-        <input type="checkbox" id="necrologist-checkbox" class="checkbox">
+    <div class="row justify-content-between mb-3">
+        <div class="col-auto">
+            <div class="row filter align-items-center">
+                <label class="col-auto" for="char-selector">Character:</label>
+                <select id="char-selector" class="form-select">
+                    <option value="aknight">A Knight</option>
+                    <option value="charlie">Charlie</option>
+                    <option value="eagle">Eagle</option>
+                    <option value="jessica">Jessica (BETA)</option>
+                    <option value="lilya">Lilya</option>
+                    <option value="regulus">Regulus</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary col-auto" data-bs-toggle="modal" data-bs-target="#updateLogsModal">Update Logs</button>
     </div>
 
     <div class="group">
-        <label for="bkornblume-selector" class="selector-label">Bkornblume:</label>
-        <select id="bkornblume-selector" class="selector">
-            <option value=""></option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Star</option>
-            <option value="3">3 Star</option>
-        </select>
+        <div class="row align-items-center collapse filter-group show" id="filterGroup">
+            <div class="col-auto filter">
+                <label for="an-an-lee-selector" class="selector-label">An-An Lee:</label>
+                <select id="an-an-lee-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                </select>
+            </div>
 
-        <label for="baby-blue-skill-1-selector" class="selector-label">Baby Blue Skill 1:</label>
-        <select id="baby-blue-skill-1-selector" class="selector">
-            <option value=""></option>
-            <option value="2">2 Star</option>
-            <option value="3">3 Star</option>
-        </select>
+            <div class="col-auto filter">
+                <label for="sonetto-selector" class="selector-label">Sonetto:</label>
+                <select id="sonetto-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                </select>
+            </div>
 
-        <label for="baby-blue-skill-2-selector" class="selector-label">Baby Blue Skill 2:</label>
-        <select id="baby-blue-skill-2-selector" class="selector">
-            <option value=""></option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Star</option>
-            <option value="3">3 Star</option>
-        </select>
+            <div class="col-auto filter">
+                <label for="necrologist-checkbox" class="checkbox-label">Necrologist:</label>
+                <input type="checkbox" id="necrologist-checkbox" class="checkbox">
+            </div>
 
-        <br>
+            <div class="col-auto filter">
+                <label for="afflatus-advantage-checkbox" class="checkbox-label">Afflatus Advantage:</label>
+                <input type="checkbox" id="afflatus-advantage-checkbox" class="checkbox">
+            </div>
+        </div>
+    </div>
 
-        <label for="confusion-selector" class="selector-label">Confusion:</label>
-        <select id="confusion-selector" class="selector">
-            <option value=""></option>
-            <option value="1">1 Stack</option>
-            <option value="2">2 Stack</option>
-            <option value="3">3 Stack</option>
-            <option value="4">4 Stack</option>
-        </select>
+    <div class="group">
+        <div class="row align-items-center collapse filter-group show" id="debuffGroup">
+            <div class="col-auto filter">
+                <label for="bkornblume-selector" class="selector-label">Bkornblume:</label>
+                <select id="bkornblume-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                </select>
+            </div>
 
-        <label for="tooth-fairy-checkbox" class="checkbox-label">Tooth Fairy:</label>
-        <input type="checkbox" id="tooth-fairy-checkbox" class="checkbox">
+            <div class="col-auto filter">
+                <label for="baby-blue-skill-1-selector" class="selector-label">Baby Blue Skill 1:</label>
+                <select id="baby-blue-skill-1-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                </select>
+            </div>
 
-        <label for="sense-weakness-checkbox" class="checkbox-label">Sense Weakness:</label>
-        <input type="checkbox" id="sense-weakness-checkbox" class="checkbox">
+            <div class="col-auto filter">
+                <label for="baby-blue-skill-2-selector" class="selector-label">Baby Blue Skill 2:</label>
+                <select id="baby-blue-skill-2-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                </select>
+            </div>
+
+            <div class="col-auto filter">
+                <label for="confusion-selector" class="selector-label">Confusion:</label>
+                <select id="confusion-selector" class="form-select">
+                    <option value=""></option>
+                    <option value="1">1 Stack</option>
+                    <option value="2">2 Stack</option>
+                    <option value="3">3 Stack</option>
+                    <option value="4">4 Stack</option>
+                </select>
+            </div>
+
+            <div class="col-auto filter">
+                <label for="tooth-fairy-checkbox" class="checkbox-label">Tooth Fairy:</label>
+                <input type="checkbox" id="tooth-fairy-checkbox" class="checkbox">
+            </div>
+
+            <div class="col-auto filter">
+                <label for="sense-weakness-checkbox" class="checkbox-label">Sense Weakness:</label>
+                <input type="checkbox" id="sense-weakness-checkbox" class="checkbox">
+            </div>
+        </div>
     </div>
 
     <iframe id="page" src="/character?name=aknight"></iframe>
 
-    <div id="update-logs-modal" class="modal">
-        <h2>Update Logs</h2>
-        <h5>12 Dec 2023</h5>
-        <ul>
-            <li>Beta มากๆ เจอบั๊กแจ้งได้ครับ</li>
-        </ul>
-        <button onclick="toggleModal()">Close</button>
+    <div class="modal fade" id="updateLogsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Logs</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                    <h5>13 Dec 2023</h5>
+                    <ul>
+                        <li>เพิ่มตัวเลือกชนะธาตุ</li>
+                        <li>ปรับให้ดูบนมือถือได้ดีขึ้น (มั้ง)</li>
+                    </ul>
+                    <hr>
+                    <h5>12 Dec 2023</h5>
+                    <ul>
+                        <li>Beta มากๆ เจอบั๊กแจ้งได้ครับ</li>
+                    </ul>
+                </div>
+    
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Close</button>
+                </div>
+    
+            </div>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         document.getElementById('char-selector').addEventListener('change', updateIframe);
         document.getElementById('an-an-lee-selector').addEventListener('change', updateIframe);
         document.getElementById('sonetto-selector').addEventListener('change', updateIframe);
         document.getElementById('necrologist-checkbox').addEventListener('change', updateIframe);
+        document.getElementById('afflatus-advantage-checkbox').addEventListener('change', updateIframe);
         document.getElementById('bkornblume-selector').addEventListener('change', updateIframe);
         document.getElementById('baby-blue-skill-1-selector').addEventListener('change', updateIframe);
         document.getElementById('baby-blue-skill-2-selector').addEventListener('change', updateIframe);
@@ -208,6 +228,7 @@
             var anAnLeeSelector = document.getElementById('an-an-lee-selector');
             var sonettoSelector = document.getElementById('sonetto-selector');
             var necrologistCheckbox = document.getElementById('necrologist-checkbox');
+            var afflatusAdvantageCheckbox = document.getElementById('afflatus-advantage-checkbox');
             var bkornblumeSelector = document.getElementById('bkornblume-selector');
             var babyBlueSkill1Selector = document.getElementById('baby-blue-skill-1-selector');
             var babyBlueSkill2Selector = document.getElementById('baby-blue-skill-2-selector');
@@ -232,6 +253,7 @@
             addSelectorToQueryString(anAnLeeSelector, 'ananlee');
             addSelectorToQueryString(sonettoSelector, 'sonetto');
             addCheckboxToQueryString(necrologistCheckbox, 'necrologist');
+            addCheckboxToQueryString(afflatusAdvantageCheckbox, 'afflatusadvantage');
             addSelectorToQueryString(bkornblumeSelector, 'bkornblume');
             addSelectorToQueryString(babyBlueSkill1Selector, 'babyblueskill1');
             addSelectorToQueryString(babyBlueSkill2Selector, 'babyblueskill2');
