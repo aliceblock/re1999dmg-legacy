@@ -378,17 +378,17 @@
             updateIframe();
         });
 
-        document.getElementById('char-selector').addEventListener('change', updateIframe);
-        document.getElementById('an-an-lee-selector').addEventListener('change', updateIframe);
-        document.getElementById('sonetto-selector').addEventListener('change', updateIframe);
-        document.getElementById('necrologist-checkbox').addEventListener('change', updateIframe);
-        document.getElementById('afflatus-advantage-checkbox').addEventListener('change', updateIframe);
-        document.getElementById('bkornblume-selector').addEventListener('change', updateIframe);
-        document.getElementById('baby-blue-skill-1-selector').addEventListener('change', updateIframe);
-        document.getElementById('baby-blue-skill-2-selector').addEventListener('change', updateIframe);
-        document.getElementById('confusion-selector').addEventListener('change', updateIframe);
-        document.getElementById('tooth-fairy-checkbox').addEventListener('change', updateIframe);
-        document.getElementById('sense-weakness-checkbox').addEventListener('change', updateIframe);
+        document.getElementById('char-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('an-an-lee-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('sonetto-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('necrologist-checkbox').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('afflatus-advantage-checkbox').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('bkornblume-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('baby-blue-skill-1-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('baby-blue-skill-2-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('confusion-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('tooth-fairy-checkbox').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('sense-weakness-checkbox').addEventListener('change', function() { updateIframe(); });
 
         function getQueryString() {
             var charSelector = document.getElementById('char-selector');
