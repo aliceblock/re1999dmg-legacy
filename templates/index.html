@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Psychube Calculator</title>
-    
+
     <!-- Favicon and related files -->
     <link rel="icon" type="image/png" sizes="192x192" href="/public/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/public/android-chrome-512x512.png">
@@ -19,6 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         body {
             font-family: 'Kanit', sans-serif;
@@ -35,7 +39,7 @@
         .filter {
             padding: 5px;
         }
-        
+
         select.form-select {
             width: auto;
             display: inline-block;
@@ -51,6 +55,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -60,7 +65,94 @@
             from {
                 opacity: 1;
             }
+
             to {
+                opacity: 0;
+            }
+        }
+
+        .snackbar {
+            visibility: hidden;
+            /* Hidden by default. Visible on click */
+            min-width: 250px;
+            /* Set a default minimum width */
+            margin-left: -125px;
+            /* Divide value of min-width by 2 */
+            background-color: #333;
+            /* Black background color */
+            color: #fff;
+            /* White text color */
+            text-align: center;
+            /* Centered text */
+            border-radius: 2px;
+            /* Rounded borders */
+            padding: 16px;
+            /* Padding */
+            position: fixed;
+            /* Sit on top of the screen */
+            z-index: 1;
+            /* Add a z-index if needed */
+            left: 50%;
+            /* Center the snackbar */
+            bottom: 30px;
+            /* 30px from the bottom */
+        }
+
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        .snackbar.show {
+            visibility: visible;
+            /* Show the snackbar */
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+            However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
                 opacity: 0;
             }
         }
@@ -82,7 +174,17 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-primary col-auto" data-bs-toggle="modal" data-bs-target="#updateLogsModal">Update Logs</button>
+        <div class="col-auto d-flex flex-row">
+            <div class="d-flex col-auto align-items-center">
+                <button type="button" class="btn btn-primary col-auto" onclick="copyToClipboard()">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+            </div>
+            <div class="d-flex col-auto align-items-center ms-2">
+                <button type="button" class="btn btn-primary col-auto" data-bs-toggle="modal"
+                    data-bs-target="#updateLogsModal"><i class="fa-regular fa-lightbulb"></i></button>
+            </div>
+        </div>
     </div>
 
     <div class="group">
@@ -178,17 +280,18 @@
     <div class="modal fade" id="updateLogsModal">
         <div class="modal-dialog">
             <div class="modal-content">
-    
+
                 <div class="modal-header">
                     <h4 class="modal-title">Update Logs</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-    
+
                 <div class="modal-body">
                     <h5>13 Dec 2023</h5>
                     <ul>
                         <li>เพิ่มตัวเลือกชนะธาตุ</li>
                         <li>ปรับให้ดูบนมือถือได้ดีขึ้น (มั้ง)</li>
+                        <li>เพิ่มปุ่มแชร์ URL</li>
                     </ul>
                     <hr>
                     <h5>12 Dec 2023</h5>
@@ -196,21 +299,73 @@
                         <li>Beta มากๆ เจอบั๊กแจ้งได้ครับ</li>
                     </ul>
                 </div>
-    
+
                 <!-- Modal Footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                 </div>
-    
             </div>
         </div>
     </div>
+
+    <div id="alert-snackbar" class="snackbar">Alert</div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const charName = urlParams.get('name');
+            const anAnLee = urlParams.get('ananlee');
+            const sonetto = urlParams.get('sonetto');
+            const necrologist = urlParams.get('necrologist');
+            const afflatusAdvantage = urlParams.get('afflatusadvantage');
+            const bkornblume = urlParams.get('bkornblume');
+            const babyBlueSkill1 = urlParams.get('babyblueskill1');
+            const babyBlueSkill2 = urlParams.get('babyblueskill2');
+            const confusion = urlParams.get('confusion');
+            const toothfairy = urlParams.get('toothfairy');
+            const senseweakness = urlParams.get('senseweakness');
+
+            if (charName) {
+                $('#char-selector').val(charName);
+            }
+            if (anAnLee) {
+                $('#an-an-lee-selector').val(anAnLee);
+            }
+            if (sonetto) {
+                $('#sonetto-selector').val(sonetto);
+            }
+            if (necrologist) {
+                $('#necrologist-checkbox').prop('checked', true);
+            }
+            if (afflatusAdvantage) {
+                $('#afflatus-advantage-checkbox').prop('checked', true);
+            }
+
+            if (bkornblume) {
+                $('#bkornblume-selector').val(bkornblume);
+            }
+            if (babyBlueSkill1) {
+                $('#baby-blue-skill-1-selector').val(babyBlueSkill1);
+            }
+            if (babyBlueSkill2) {
+                $('#baby-blue-skill-2-selector').val(babyBlueSkill2);
+            }
+            if (confusion) {
+                $('#confusion-selector').val(confusion);
+            }
+            if (toothfairy) {
+                $('#tooth-fairy-checkbox').prop('checked', true);
+            }
+            if (senseweakness) {
+                $('#sense-weakness-checkbox').prop('checked', true);
+            }
+            updateIframe();
+        });
+
         document.getElementById('char-selector').addEventListener('change', updateIframe);
         document.getElementById('an-an-lee-selector').addEventListener('change', updateIframe);
         document.getElementById('sonetto-selector').addEventListener('change', updateIframe);
@@ -223,7 +378,7 @@
         document.getElementById('tooth-fairy-checkbox').addEventListener('change', updateIframe);
         document.getElementById('sense-weakness-checkbox').addEventListener('change', updateIframe);
 
-        function updateIframe() {
+        function getQueryString() {
             var charSelector = document.getElementById('char-selector');
             var anAnLeeSelector = document.getElementById('an-an-lee-selector');
             var sonettoSelector = document.getElementById('sonetto-selector');
@@ -236,7 +391,7 @@
             var toothFairyCheckbox = document.getElementById('tooth-fairy-checkbox');
             var senseWeaknessCheckbox = document.getElementById('sense-weakness-checkbox');
 
-            var queryString = '/character?name=' + charSelector.value;
+            var queryString = '?name=' + charSelector.value;
 
             function addSelectorToQueryString(selector, paramName) {
                 if (selector.value !== '') {
@@ -261,8 +416,23 @@
             addCheckboxToQueryString(toothFairyCheckbox, 'toothfairy');
             addCheckboxToQueryString(senseWeaknessCheckbox, 'senseweakness');
 
+            return queryString
+        }
+
+        function updateIframe(queryString) {
+            queryString = queryString || getQueryString();
             var iframe = document.getElementById('page');
-            iframe.src = queryString;
+            iframe.src = `/character${queryString}`;
+        }
+        
+        function copyToClipboard() {
+            const $text = $('<input>');
+            $('body').append($text);
+            $text.val(location.hostname + (location.port? `:${location.port}`: '') + getQueryString()).select();
+            document.execCommand("copy");
+            $text.remove();
+
+            snackbarAlert("Copied URL to clipboard!");
         }
 
         function toggleModal() {
@@ -276,6 +446,15 @@
                     modal.style.display = 'none';
                 }, 300);
             }
+        }
+
+        function snackbarAlert(message) {
+            const $alert = $('#alert-snackbar');
+            $alert.addClass('show');
+            $alert.text(message);
+            setTimeout(function(){ 
+                $alert.removeClass('show');
+            }, 3000);
         }
     </script>
 </body>

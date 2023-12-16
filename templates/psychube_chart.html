@@ -49,6 +49,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             var chartData = {{.ChartData}};
             Highcharts.chart('chart', {
+                accessibility: {
+                    enabled: false
+                },
                 chart: {
                     type: 'bar',
                     style: {
