@@ -11,6 +11,7 @@ import (
 func BkornblumeDmgCalculate(calParams CalParams) []DamageResponse {
 	damageResponse := []DamageResponse{}
 
+	insight1DmgBonus := 0.2
 	enemyCritDef := 0.1
 
 	resonances := []resonance.Resonance{
@@ -43,6 +44,7 @@ func BkornblumeDmgCalculate(calParams CalParams) []DamageResponse {
 			Character:         character.Bkornblume,
 			Psychube:          &psychube.BraveNewWorld,
 			Resonance:         &resonances[i],
+			BuffDmgBonus:      insight1DmgBonus,
 			Buff:              &calParams.Buff,
 			Debuff:            &calParams.Debuff,
 			EnemyDef:          calParams.EnemyDef,
@@ -80,6 +82,7 @@ func BkornblumeDmgCalculate(calParams CalParams) []DamageResponse {
 			Character:         character.Bkornblume,
 			Psychube:          &psychube.HisBoundenDuty,
 			Resonance:         &resonances[i],
+			BuffDmgBonus:      insight1DmgBonus,
 			Buff:              &calParams.Buff,
 			Debuff:            &calParams.Debuff,
 			EnemyDef:          calParams.EnemyDef,
@@ -116,6 +119,7 @@ func BkornblumeDmgCalculate(calParams CalParams) []DamageResponse {
 			Character:         character.Bkornblume,
 			Psychube:          &psychube.LuxuriousLeisure,
 			Resonance:         &resonances[i],
+			BuffDmgBonus:      insight1DmgBonus,
 			Buff:              &calParams.Buff,
 			Debuff:            &calParams.Debuff,
 			EnemyDef:          calParams.EnemyDef,
@@ -168,6 +172,7 @@ func BkornblumeDmgCalculate(calParams CalParams) []DamageResponse {
 			Character:         character.Bkornblume,
 			Psychube:          &psychube.YearningDesire,
 			Resonance:         &resonances[i],
+			BuffDmgBonus:      insight1DmgBonus,
 			Buff:              &calParams.Buff,
 			Debuff:            &calParams.Debuff,
 			EnemyDef:          calParams.EnemyDef,
