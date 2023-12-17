@@ -546,5 +546,63 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 		Damage: toFixed(expectTotalDamage, 2),
 	})
 
+	fmt.Println()
+
+	for i := 0; i < 3; i++ {
+		calculatorForYearning := DamageCalculator{
+			Character:         character.Lilya,
+			Psychube:          &psychube.YearningDesire,
+			Resonance:         &resonances[i],
+			Buff:              &calParams.Buff,
+			Debuff:            &calParams.Debuff,
+			EnemyDef:          calParams.EnemyDef,
+			EnemyCritDef:      enemyCritDef,
+			AfflatusAdvantage: calParams.AfflatusAdvantage,
+		}
+
+		skill1Damages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill1, calParams.EnemyHit)
+		skill1BuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+		skill1ExtraDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.ExtraAction1, calParams.EnemyHit)
+		skill1ExtraBuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.ExtraAction1, calParams.EnemyHit)
+		totalCritRate := calculatorForYearning.GetTotalCritRate()
+		fmt.Printf("\nCrit rate: %d\n", int16(totalCritRate*100))
+		for index, damage := range skill1ExtraDamages {
+			if totalCritRate >= 1.0 {
+				skill1Damages[index] += damage
+			} else {
+				skill1Damages[index] += damage * totalCritRate
+			}
+		}
+		for index, damage := range skill1ExtraBuffDamages {
+			if totalCritRate >= 1.0 {
+				skill1BuffDamages[index] += damage
+			} else {
+				skill1BuffDamages[index] += damage * totalCritRate
+			}
+		}
+		skill2Damages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
+		skill2BuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
+		ultimateDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, calParams.EnemyHit)
+		ultimateBuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
+		expectTotalDamage := basicCalculateExpectTotalDmg(skill1BuffDamages, skill2BuffDamages, ultimateBuffDamages)
+
+		fmt.Printf("---------\nLilya Yearning Desire resonance %d Final Damage:", i+1)
+		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+		fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+		psychubeName = calculatorForYearning.Psychube.Name() + fmt.Sprintf(" Reso%d", i+1)
+		if calParams.PsychubeAmp > 0 {
+			psychubeName += fmt.Sprintf(" (A%d)", calParams.PsychubeAmp+1)
+		}
+		damageResponse = append(damageResponse, DamageResponse{
+			Name:   psychubeName,
+			Damage: toFixed(expectTotalDamage, 2),
+		})
+
+		fmt.Println()
+	}
+
 	return damageResponse
 }
