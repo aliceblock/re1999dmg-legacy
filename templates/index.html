@@ -493,7 +493,7 @@
         function copyToClipboard() {
             const $text = $('<input>');
             $('body').append($text);
-            $text.val(location.hostname + (location.port? `:${location.port}`: '') + getQueryString()).select();
+            $text.val(location.protocol + "//" + location.hostname + (location.port? `:${location.port}`: '') + getQueryString()).select();
             document.execCommand("copy");
             $text.remove();
 
