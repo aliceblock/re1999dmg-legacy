@@ -38,6 +38,10 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 
 	// Calculate Attack and Defense Factor
 	attackDefenseFactor := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-buffDebuffResult.DefReduction()-additionalInfo.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
+	attackDefenseFactorNoSenseWeakness := effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-buffDebuffResult.DefReduction()-additionalInfo.EnemyDefReduction)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
+	if d.Debuff.SenseWeakness && d.Character.DamageType() == character.RealityDamage {
+		attackDefenseFactorNoSenseWeakness = effectiveAttackValue*(1+d.Character.Insight().AtkPercent) - d.EnemyDef*(1+d.EnemyDefBonus-buffDebuffResult.DefReduction()-additionalInfo.EnemyDefReduction+0.2)*(1-d.PenetrationRate-additionalInfo.PenetrationRate)
+	}
 
 	// Check if the result is less than the specified threshold
 	if attackDefenseFactor < effectiveAttackValue*(1+d.Character.Insight().AtkPercent)*0.1 {
@@ -46,8 +50,13 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 
 	// Calculate DMG Bonus
 	posDmgBonus := d.Character.Insight().DmgBonus + resonanceStats.DmgBonus() + d.Psychube.DmgBonus() + d.BuffDmgBonus + buffDebuffResult.DmgBonus() + buffDebuffResult.DmgTaken() + additionalInfo.BuffDmgBonus
+	posDmgBonusNoSenseWeakness := d.Character.Insight().DmgBonus + resonanceStats.DmgBonus() + d.Psychube.DmgBonus() + d.BuffDmgBonus + buffDebuffResult.DmgBonus() + buffDebuffResult.DmgTaken() + additionalInfo.BuffDmgBonus
+	if d.Debuff.SenseWeakness {
+		posDmgBonusNoSenseWeakness -= 0.2
+	}
 	negDmgBonus := d.EnemyDamageTakenReduction + additionalInfo.EnemyDamageTakenReduction
 	dmgBonus := math.Max(1+posDmgBonus-negDmgBonus, 0.3)
+	dmgBonusNoSenseWeakness := math.Max(1+posDmgBonusNoSenseWeakness-negDmgBonus, 0.3)
 
 	// Calculate Incantation/Ultimate/Ritual Might
 	dmgMight := 0.0
@@ -83,9 +92,15 @@ func (d *DamageCalculator) CalculateFinalDamage(additionalInfo DamageCalculatorI
 
 		critRate := d.Character.CritRate() + resonanceStats.CritRate() + d.Psychube.CritRate() + buffDebuffResult.CritResistDown() + additionalInfo.CritRate
 		if critRate >= 1 {
-			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier * float64(enemyHit)
+			finalDamage = attackDefenseFactor * dmgBonus * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier
+			if enemyHit > 1 {
+				finalDamage += attackDefenseFactorNoSenseWeakness * dmgBonusNoSenseWeakness * incantationUltimateRitualMight * criticalBonus * afflatusBonus * skillMultiplier * float64(enemyHit-1)
+			}
 		} else {
-			finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*critRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-critRate)*afflatusBonus) * skillMultiplier * float64(enemyHit)
+			finalDamage = (attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*critRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-critRate)*afflatusBonus) * skillMultiplier
+			if enemyHit > 1 {
+				finalDamage += (attackDefenseFactorNoSenseWeakness*dmgBonusNoSenseWeakness*incantationUltimateRitualMight*critRate*criticalBonus*afflatusBonus + attackDefenseFactor*dmgBonus*incantationUltimateRitualMight*(1-critRate)*afflatusBonus) * skillMultiplier * float64(enemyHit-1)
+			}
 		}
 		finalDamages = append(finalDamages, finalDamage)
 	}
