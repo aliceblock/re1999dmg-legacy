@@ -254,5 +254,49 @@ func JessicaDmgCalculate(calParams CalParams) []DamageResponse {
 		Damage: toFixed(expectTotalDamage, 2),
 	})
 
+	fmt.Println()
+
+	calculatorForYearning := DamageCalculator{
+		Character:         character.Jessica,
+		Psychube:          &psychube.YearningDesire,
+		Resonance:         &resonances[calParams.ResonanceIndex],
+		Buff:              &calParams.Buff,
+		Debuff:            &calParams.Debuff,
+		EnemyDef:          calParams.EnemyDef,
+		EnemyCritDef:      enemyCritDef,
+		AfflatusAdvantage: calParams.AfflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill1Extra1Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 0, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill1Extra2Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 1, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill1Extra3Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, ExtraDamageStack: 2, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill2Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
+	skill2ExtraDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
+	ultimateDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
+	poisonDamage = calculatorForYearning.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
+	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Extra2Damages, skill2ExtraDamages, ultimateDamages) + poisonDamage*(6+6+3)
+
+	fmt.Printf("---------\nJessica Yearning Desire Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 1: %.2f, %.2f, %.2f", skill1Extra1Damages[0], skill1Extra1Damages[1], skill1Extra1Damages[2])
+	fmt.Printf("\nSkill 1 Extra 2: %.2f, %.2f, %.2f", skill1Extra2Damages[0], skill1Extra2Damages[1], skill1Extra2Damages[2])
+	fmt.Printf("\nSkill 1 Extra 3: %.2f, %.2f, %.2f", skill1Extra3Damages[0], skill1Extra3Damages[1], skill1Extra3Damages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (Extra: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
+	fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+	fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	psychubeName = calculatorForYearning.Psychube.Name()
+	if calParams.PsychubeAmp > 0 {
+		psychubeName += fmt.Sprintf(" (A%d)", calParams.PsychubeAmp+1)
+	}
+	damageResponse = append(damageResponse, DamageResponse{
+		Name:   psychubeName,
+		Damage: toFixed(expectTotalDamage, 2),
+	})
+
+	fmt.Println()
+
 	return damageResponse
 }
