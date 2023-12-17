@@ -355,3 +355,43 @@ var Charlie = MakeCharacter(
 		},
 	},
 )
+
+var Bkornblume = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      968.0,
+			CritRate: 0.059,
+			CritDmg:  0.3815,
+		},
+		Insight3L1: {
+			Atk:      1004.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+		Insight3L60: {
+			Atk:      1139.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+	},
+	Insight{
+		AtkPercent: 0.05,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.35, EnemyHit: 2, ExtraMultiplier: []float64{0.3}},
+			{Multiplier: 2.0, EnemyHit: 2, ExtraMultiplier: []float64{0.45}},
+			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{0.75}},
+		},
+		Skill2: {
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+		},
+		Ultimate: {
+			{Multiplier: 5.5, EnemyHit: 1},
+		},
+	},
+)

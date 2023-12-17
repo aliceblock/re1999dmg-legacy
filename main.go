@@ -147,6 +147,9 @@ func main() {
 					Damage: res.Damage,
 					Color:  getColor(res.Name),
 				}
+				if strings.Contains(res.Name, "His Bounden Duty") && strings.Contains(res.Name, "A5") {
+					continue
+				}
 				data.ChartData = append(data.ChartData, chartData)
 			}
 		}

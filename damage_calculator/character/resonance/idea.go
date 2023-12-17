@@ -41,6 +41,11 @@ var CharlieBaseIdea = Idea{
 	DmgBonus: 0.06,
 }
 
+var BkornblumeBaseIdea = Idea{
+	Atk:      136,
+	DmgBonus: 0.02,
+}
+
 var C1Idea = Idea{
 	DmgBonus: 0.005,
 }

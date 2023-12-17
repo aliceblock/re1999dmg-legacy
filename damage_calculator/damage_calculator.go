@@ -168,6 +168,9 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 		critResistDown += 0.15
 		critDefDown += 0.15
 	}
+	if d.Debuff.SenseWeakness {
+		critDefDown += 0.2
+	}
 	if d.Character.DamageType() == character.RealityDamage {
 		switch d.Debuff.Bkornblume {
 		case 1:
@@ -179,7 +182,6 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 		}
 		if d.Debuff.SenseWeakness {
 			defReduction += 0.2
-			critDefDown += 0.2
 		}
 	}
 	if d.Character.DamageType() == character.MentalDamage {
