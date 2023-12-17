@@ -173,18 +173,31 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="row justify-content-between mb-3">
-        <div class="col-auto">
-            <div class="row filter align-items-center">
-                <label class="col-auto" for="char-selector">Character:</label>
-                <select id="char-selector" class="form-select">
-                    <option value="aknight">A Knight</option>
-                    <option value="bkornblume">Bkornblume</option>
-                    <option value="charlie">Charlie</option>
-                    <option value="eagle">Eagle</option>
-                    <option value="jessica">Jessica (BETA)</option>
-                    <option value="lilya">Lilya</option>
-                    <option value="regulus">Regulus</option>
-                </select>
+        <div class="col-auto d-flex flex-row">
+            <div class="d-flex col-auto align-items-center">
+                <div class="row filter align-items-center">
+                    <label class="col-auto" for="char-selector">Character:</label>
+                    <select id="char-selector" class="form-select">
+                        <option value="aknight">A Knight</option>
+                        <option value="bkornblume">Bkornblume</option>
+                        <option value="charlie">Charlie</option>
+                        <option value="eagle">Eagle</option>
+                        <option value="jessica">Jessica (BETA)</option>
+                        <option value="lilya">Lilya</option>
+                        <option value="regulus">Regulus</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex col-auto align-items-center ms-2">
+                <div class="row filter align-items-center">
+                    <label class="col-auto" for="char-selector">Target:</label>
+                    <select id="enemy-selector" class="form-select">
+                        <option value="1">1 Enemy</option>
+                        <option value="2">2 Enemies</option>
+                        <option value="3">3 Enemies</option>
+                        <option value="4">4 Enemies</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="col-auto d-flex flex-row">
@@ -329,6 +342,7 @@
                     <h5>อื่นๆ</h5>
                     <ul>
                         <li>แก้บั๊ก Sense Weakness ไม่ส่งผลกับ Mental Damage</li>
+                        <li>เพิ่มตัวเลือกจำนวนศัตรู</li>
                     </ul>
                     <hr>
                     <h3>16 Dec 2023</h3>
@@ -362,6 +376,7 @@
         $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
             const charName = urlParams.get('name');
+            const enemyHit = urlParams.get('enemy');
             const anAnLee = urlParams.get('ananlee');
             const sonetto = urlParams.get('sonetto');
             const necrologist = urlParams.get('necrologist');
@@ -375,6 +390,9 @@
 
             if (charName) {
                 $('#char-selector').val(charName);
+            }
+            if (enemyHit) {
+                $('#enemy-selector').val(enemyHit);
             }
             if (anAnLee) {
                 $('#an-an-lee-selector').val(anAnLee);
@@ -411,6 +429,7 @@
         });
 
         document.getElementById('char-selector').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('enemy-selector').addEventListener('change', function() { updateIframe(); });
         document.getElementById('an-an-lee-selector').addEventListener('change', function() { updateIframe(); });
         document.getElementById('sonetto-selector').addEventListener('change', function() { updateIframe(); });
         document.getElementById('necrologist-checkbox').addEventListener('change', function() { updateIframe(); });
@@ -424,6 +443,7 @@
 
         function getQueryString() {
             var charSelector = document.getElementById('char-selector');
+            var enemySelector = document.getElementById('enemy-selector');
             var anAnLeeSelector = document.getElementById('an-an-lee-selector');
             var sonettoSelector = document.getElementById('sonetto-selector');
             var necrologistCheckbox = document.getElementById('necrologist-checkbox');
@@ -449,6 +469,7 @@
                 }
             }
 
+            addSelectorToQueryString(enemySelector, 'enemy');
             addSelectorToQueryString(anAnLeeSelector, 'ananlee');
             addSelectorToQueryString(sonettoSelector, 'sonetto');
             addCheckboxToQueryString(necrologistCheckbox, 'necrologist');

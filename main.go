@@ -66,6 +66,8 @@ func main() {
 	http.HandleFunc("/character", func(w http.ResponseWriter, r *http.Request) {
 		queryParams := r.URL.Query()
 		charName := queryParams.Get("name")
+		enemyHitRaw, _ := strconv.ParseInt(queryParams.Get("enemy"), 10, 8)
+		enemyHit := int16(enemyHitRaw)
 
 		// Buff
 		buff := DmgCal.Buff{}
@@ -133,7 +135,7 @@ func main() {
 		}
 		for _, amp := range amps {
 			responseDamage := calculatorFunc(DmgCal.CalParams{
-				EnemyHit:          1,
+				EnemyHit:          enemyHit,
 				PsychubeAmp:       amp,
 				ResonanceIndex:    0,
 				EnemyDef:          600.0,
