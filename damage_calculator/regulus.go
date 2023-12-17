@@ -176,5 +176,54 @@ func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
 		Damage: toFixed(expectTotalDamage, 2),
 	})
 
+	fmt.Println()
+
+	calculatorForYearning := DamageCalculator{
+		Character:         character.Regulus,
+		Psychube:          &psychube.YearningDesire,
+		Resonance:         &resonance,
+		Buff:              &calParams.Buff,
+		Debuff:            &calParams.Debuff,
+		EnemyDef:          calParams.EnemyDef,
+		EnemyCritDef:      enemyCritDef,
+		AfflatusAdvantage: calParams.AfflatusAdvantage,
+	}
+
+	skill1Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill1, calParams.EnemyHit)
+	skill1BuffDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill2Damages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
+	skill2BuffDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
+	ultimateDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
+	ultimateBuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
+
+	fmt.Printf("---------\nRegulus Yearning Desire Final Damage:")
+	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
+	fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
+	fmt.Printf("\nUltimate: %.2f (with Buff %.2f)", ultimateDamages[0], ultimateBuffDamages[0])
+
+	skill1RestlessDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForYearning.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill1, calParams.EnemyHit)
+	skill1RestlessBuffDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForYearning.GetTotalCritRate() + regulusCritRateBonus), BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
+	skill2RestlessDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Skill2, calParams.EnemyHit)
+	skill2RestlessBuffDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus), BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
+	ultimateRestlessDamages = calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus)}, character.Ultimate, calParams.EnemyHit)
+	ultimateRestlessBuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: regulusCritRateBonus, CritDmg: ExcessCritDmgBonus(calculatorForThunder.GetTotalCritRate() + regulusCritRateBonus), BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
+
+	fmt.Printf("\nSkill 1 with Restless Heart: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1RestlessDamages[0], skill1RestlessDamages[1], skill1RestlessDamages[2], skill1RestlessBuffDamages[0], skill1RestlessBuffDamages[1], skill1RestlessBuffDamages[2])
+	fmt.Printf("\nSkill 2 with Restless Heart: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill2RestlessDamages[0], skill2RestlessDamages[1], skill2RestlessDamages[2], skill2RestlessBuffDamages[0], skill2RestlessBuffDamages[1], skill2RestlessBuffDamages[2])
+	fmt.Printf("\nUltimate with Restless Heart: %.2f (with Buff %.2f)", ultimateRestlessDamages[0], ultimateRestlessBuffDamages[0])
+
+	expectTotalDamage = skill1RestlessBuffDamages[character.Star2]*3 + skill2BuffDamages[character.Star1]*1 + ultimateRestlessBuffDamages[character.Star1]*3
+
+	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+	psychubeName = calculatorForYearning.Psychube.Name()
+	if calParams.PsychubeAmp > 0 {
+		psychubeName += fmt.Sprintf(" (A%d)", calParams.PsychubeAmp+1)
+	}
+	damageResponse = append(damageResponse, DamageResponse{
+		Name:   psychubeName,
+		Damage: toFixed(expectTotalDamage, 2),
+	})
+
 	return damageResponse
 }
