@@ -395,3 +395,83 @@ var Bkornblume = MakeCharacter(
 		},
 	},
 )
+
+var BkornblumeP2 = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      968.0,
+			CritRate: 0.059,
+			CritDmg:  0.3815,
+		},
+		Insight3L1: {
+			Atk:      1004.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+		Insight3L60: {
+			Atk:      1139.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+	},
+	Insight{
+		AtkPercent: 0.05,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.35, EnemyHit: 2, ExtraMultiplier: []float64{0.45}},
+			{Multiplier: 2.0, EnemyHit: 2, ExtraMultiplier: []float64{0.65}},
+			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{1.0}},
+		},
+		Skill2: {
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+		},
+		Ultimate: {
+			{Multiplier: 6.25, EnemyHit: 1},
+		},
+	},
+)
+
+var BkornblumeP5 = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      968.0,
+			CritRate: 0.059,
+			CritDmg:  0.3815,
+		},
+		Insight3L1: {
+			Atk:      1004.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+		Insight3L60: {
+			Atk:      1139.0,
+			CritRate: 0.065,
+			CritDmg:  0.397,
+		},
+	},
+	Insight{
+		AtkPercent: 0.05,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.35, EnemyHit: 2, ExtraMultiplier: []float64{0.45}},
+			{Multiplier: 2.0, EnemyHit: 2, ExtraMultiplier: []float64{0.65}},
+			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{1.0}},
+		},
+		Skill2: {
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+			{Multiplier: 0.0, EnemyHit: 4},
+		},
+		Ultimate: {
+			{Multiplier: 8.0, EnemyHit: 1},
+		},
+	},
+)
