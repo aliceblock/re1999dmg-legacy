@@ -224,5 +224,74 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Println()
 	}
 
+	for i := 0; i < len(resonances); i++ {
+		calculatorForHopscotch := DamageCalculator{
+			Character:         character.Centurion,
+			Psychube:          &psychube.Hopscotch,
+			Resonance:         &resonances[i],
+			Buff:              &calParams.Buff,
+			Debuff:            &calParams.Debuff,
+			EnemyDef:          calParams.EnemyDef,
+			EnemyCritDef:      enemyCritDef,
+			AfflatusAdvantage: calParams.AfflatusAdvantage,
+		}
+
+		skill1Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill1, calParams.EnemyHit)
+		skill1Moxie1Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 1, HasExtraDamage: true, ExtraDamageStack: 0}, character.Skill1, calParams.EnemyHit)
+		skill1Moxie2Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 2, HasExtraDamage: true, ExtraDamageStack: 1}, character.Skill1, calParams.EnemyHit)
+		skill1Moxie3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 3, HasExtraDamage: true, ExtraDamageStack: 2}, character.Skill1, calParams.EnemyHit)
+		skill1Moxie4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 4, HasExtraDamage: true, ExtraDamageStack: 3}, character.Skill1, calParams.EnemyHit)
+		skill1Moxie5Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, HasExtraDamage: true, ExtraDamageStack: 4}, character.Skill1, calParams.EnemyHit)
+
+		skill2Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
+		skill2Moxie1Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 1}, character.Skill2, calParams.EnemyHit)
+		skill2Moxie2Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 2}, character.Skill2, calParams.EnemyHit)
+		skill2Moxie3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 3}, character.Skill2, calParams.EnemyHit)
+		skill2Moxie4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 4}, character.Skill2, calParams.EnemyHit)
+		skill2Moxie5Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5}, character.Skill2, calParams.EnemyHit)
+
+		ultimateDamages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
+		ultimateBuff1Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 1}, character.Ultimate, calParams.EnemyHit)
+		ultimateBuff2Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 2}, character.Ultimate, calParams.EnemyHit)
+		ultimateBuff3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 3}, character.Ultimate, calParams.EnemyHit)
+		ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 4}, character.Ultimate, calParams.EnemyHit)
+
+		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
+
+		fmt.Printf("---------\nCenturion Yearning Desire Final Damage:")
+		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
+		fmt.Printf("\nSkill 1 Moxie 1: %.2f, %.2f, %.2f", skill1Moxie1Damages[0], skill1Moxie1Damages[1], skill1Moxie1Damages[2])
+		fmt.Printf("\nSkill 1 Moxie 2: %.2f, %.2f, %.2f", skill1Moxie2Damages[0], skill1Moxie2Damages[1], skill1Moxie2Damages[2])
+		fmt.Printf("\nSkill 1 Moxie 3: %.2f, %.2f, %.2f", skill1Moxie3Damages[0], skill1Moxie3Damages[1], skill1Moxie3Damages[2])
+		fmt.Printf("\nSkill 1 Moxie 4: %.2f, %.2f, %.2f", skill1Moxie4Damages[0], skill1Moxie4Damages[1], skill1Moxie4Damages[2])
+		fmt.Printf("\nSkill 1 Moxie 5: %.2f, %.2f, %.2f", skill1Moxie5Damages[0], skill1Moxie5Damages[1], skill1Moxie5Damages[2])
+		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
+		fmt.Printf("\nSkill 2 Moxie 1: %.2f, %.2f, %.2f", skill2Moxie1Damages[0], skill2Moxie1Damages[1], skill2Moxie1Damages[2])
+		fmt.Printf("\nSkill 2 Moxie 2: %.2f, %.2f, %.2f", skill2Moxie2Damages[0], skill2Moxie2Damages[1], skill2Moxie2Damages[2])
+		fmt.Printf("\nSkill 2 Moxie 3: %.2f, %.2f, %.2f", skill2Moxie3Damages[0], skill2Moxie3Damages[1], skill2Moxie3Damages[2])
+		fmt.Printf("\nSkill 2 Moxie 4: %.2f, %.2f, %.2f", skill2Moxie4Damages[0], skill2Moxie4Damages[1], skill2Moxie4Damages[2])
+		fmt.Printf("\nSkill 2 Moxie 5: %.2f, %.2f, %.2f", skill2Moxie5Damages[0], skill2Moxie5Damages[1], skill2Moxie5Damages[2])
+		fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
+		fmt.Printf("\nUltimate Buff 1: %.2f", ultimateBuff1Damages[0])
+		fmt.Printf("\nUltimate Buff 2: %.2f", ultimateBuff2Damages[0])
+		fmt.Printf("\nUltimate Buff 3: %.2f", ultimateBuff3Damages[0])
+		fmt.Printf("\nUltimate Buff 4: %.2f", ultimateBuff4Damages[0])
+		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
+
+		psychubeName := calculatorForHopscotch.Psychube.Name()
+		if len(resonances) > 1 {
+			psychubeName += fmt.Sprintf(" Reso %d", i+1)
+		}
+		if calParams.PsychubeAmp > 0 {
+			psychubeName += fmt.Sprintf(" (A%d)", calParams.PsychubeAmp+1)
+		}
+		damageResponse = append(damageResponse, DamageResponse{
+			Name:   psychubeName,
+			Damage: toFixed(expectTotalDamage, 2),
+		})
+
+		fmt.Println()
+	}
+
 	return damageResponse
 }
