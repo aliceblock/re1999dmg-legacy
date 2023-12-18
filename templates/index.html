@@ -182,6 +182,7 @@
                         <option value="bkornblume">Bkornblume</option>
                         <option value="bkornblume_p2">Bkornblume P2</option>
                         <option value="bkornblume_p5">Bkornblume P5</option>
+                        <option value="centurion">Centurion (BETA)</option>
                         <option value="charlie">Charlie P3</option>
                         <option value="eagle">Eagle</option>
                         <option value="jessica">Jessica (BETA)</option>
@@ -315,6 +316,13 @@
                 </div>
 
                 <div class="modal-body">
+                    <h3>18 Dec 2023</h3>
+                    <h5>Centurion</h5>
+                    <ul>
+                        <li>เบื้องต้นจะจัดให้อยู่ในหมวด BETA ไปก่อน</li>
+                        <li>Yearning Desire คือแรงมาก ในเงื่อนไขต้องแปะ Debuff มอนให้ได้</li>
+                        <li>เงื่อนไขในการเลือกใช้ His Bounden Duty หรือ Thunderous Applause ขึ้นอยู่กับว่าอยู่กับตี้แบบไหน แต่โดยรวม ถ้ายังไม่ได้ขัดอะไรเลย His Bounden Duty จะดูดีกว่า</li>
+                    </ul>
                     <h3>17 Dec 2023</h3>
                     <h5>Lilya</h5>
                     <ul>
@@ -429,6 +437,13 @@
                 $('#sense-weakness-checkbox').prop('checked', true);
             }
             updateIframe();
+
+            const serverLastUpdated = 1702924450560; // new Date().getTime();
+            const lastUpdated = localStorage.getItem('lastUpdated');
+            if (!lastUpdated || lastUpdated < serverLastUpdated) {
+                $('#updateLogsModal').modal('show');
+                localStorage.setItem('lastUpdated', serverLastUpdated);
+            }
         });
 
         document.getElementById('char-selector').addEventListener('change', function() { updateIframe(); });

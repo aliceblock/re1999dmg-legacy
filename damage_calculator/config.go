@@ -12,6 +12,7 @@ const (
 	Bkornblume   CharacterIndex = "bkornblume"
 	BkornblumeP2 CharacterIndex = "bkornblume_p2"
 	BkornblumeP5 CharacterIndex = "bkornblume_p5"
+	Centurion    CharacterIndex = "centurion"
 )
 
 var Calculator = map[CharacterIndex]func(CalParams) []DamageResponse{
@@ -24,4 +25,5 @@ var Calculator = map[CharacterIndex]func(CalParams) []DamageResponse{
 	Bkornblume:   BkornblumeDmgCalculate,
 	BkornblumeP2: BkornblumeP2DmgCalculate,
 	BkornblumeP5: BkornblumeP5DmgCalculate,
+	Centurion:    CenturionDmgCalculate,
 }

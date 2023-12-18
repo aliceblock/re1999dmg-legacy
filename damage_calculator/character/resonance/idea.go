@@ -46,6 +46,12 @@ var BkornblumeBaseIdea = Idea{
 	DmgBonus: 0.02,
 }
 
+var CenturionBaseIdea = Idea{
+	Atk:      138,
+	CritRate: 0.06,
+	CritDmg:  0.08,
+}
+
 var C1Idea = Idea{
 	DmgBonus: 0.005,
 }

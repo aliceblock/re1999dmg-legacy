@@ -475,3 +475,43 @@ var BkornblumeP5 = MakeCharacter(
 		},
 	},
 )
+
+var Centurion = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      980.0,
+			CritRate: 0.172,
+			CritDmg:  0.5585,
+		},
+		Insight3L1: {
+			Atk:      1016.0,
+			CritRate: 0.19,
+			CritDmg:  0.5855,
+		},
+		Insight3L60: {
+			Atk:      1153.0,
+			CritRate: 0.19,
+			CritDmg:  0.5855,
+		},
+	},
+	Insight{
+		CritRate: 0.1,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.8, EnemyHit: 1, ExtraMultiplier: []float64{0.08, 0.16, 0.24, 0.32, 0.4}},
+			{Multiplier: 2.7, EnemyHit: 1, ExtraMultiplier: []float64{0.12, 0.24, 0.36, 0.48, 0.6}},
+			{Multiplier: 4.5, EnemyHit: 1, ExtraMultiplier: []float64{0.2, 0.4, 0.6, 0.8, 1.0}},
+		},
+		Skill2: {
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 1.5, EnemyHit: 2},
+			{Multiplier: 2.25, EnemyHit: 2},
+		},
+		Ultimate: {
+			{Multiplier: 3.0, EnemyHit: 4},
+		},
+	},
+)
