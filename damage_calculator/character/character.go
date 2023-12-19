@@ -515,3 +515,43 @@ var Centurion = MakeCharacter(
 		},
 	},
 )
+
+var Eternity = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      952.0,
+			CritRate: 0.077,
+			CritDmg:  0.415,
+		},
+		Insight3L1: {
+			Atk:      987.0,
+			CritRate: 0.085,
+			CritDmg:  0.427,
+		},
+		Insight3L60: {
+			Atk:      1120.0,
+			CritRate: 0.085,
+			CritDmg:  0.427,
+		},
+	},
+	Insight{
+		DmgBonus: 0.08,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 2.0, EnemyHit: 1},
+			{Multiplier: 3.0, EnemyHit: 1},
+			{Multiplier: 5.0, EnemyHit: 1},
+		},
+		Skill2: {
+			{Multiplier: 1.6, EnemyHit: 2},
+			{Multiplier: 2.4, EnemyHit: 2},
+			{Multiplier: 4.0, EnemyHit: 2},
+		},
+		Ultimate: {
+			{Multiplier: 3.0, EnemyHit: 4},
+		},
+	},
+)

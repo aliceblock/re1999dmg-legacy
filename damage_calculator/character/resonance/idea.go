@@ -52,6 +52,12 @@ var CenturionBaseIdea = Idea{
 	CritDmg:  0.08,
 }
 
+var EternityBaseIdea = Idea{
+	Atk:      134,
+	DmgBonus: 0.02,
+	CritDmg:  0.06,
+}
+
 var C1Idea = Idea{
 	DmgBonus: 0.005,
 }
