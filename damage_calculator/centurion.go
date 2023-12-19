@@ -258,7 +258,7 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 
 		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
 
-		fmt.Printf("---------\nCenturion Yearning Desire Final Damage:")
+		fmt.Printf("---------\nCenturion Hopscotch Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
 		fmt.Printf("\nSkill 1 Moxie 1: %.2f, %.2f, %.2f", skill1Moxie1Damages[0], skill1Moxie1Damages[1], skill1Moxie1Damages[2])
 		fmt.Printf("\nSkill 1 Moxie 2: %.2f, %.2f, %.2f", skill1Moxie2Damages[0], skill1Moxie2Damages[1], skill1Moxie2Damages[2])
