@@ -294,8 +294,8 @@
             </div>
 
             <div class="col-auto filter">
-                <label for="tooth-fairy-checkbox" class="checkbox-label">Tooth Fairy:</label>
-                <input type="checkbox" id="tooth-fairy-checkbox" class="checkbox">
+                <label for="baby-teeth-checkbox" class="checkbox-label">Baby Teeth:</label>
+                <input type="checkbox" id="baby-teeth-checkbox" class="checkbox">
             </div>
 
             <div class="col-auto filter">
@@ -327,6 +327,10 @@
                         <li>เพิ่มเข้า BETA</li>
                         <li>Yearning Desire แรงเหมือนเดิม ในเงื่อนไขต้องแปะ Debuff มอนให้ได้</li>
                         <li>Brave New World ยิ่งได้กด Ultimate บ่อยยิ่งแข็งแกร่ง ขัด 5 ได้คือก็ดีมาก ถ้าในด่านจำนวนมอนยิ่งเยอะ Damage จะยิ่งทิ้งห่างอันอื่น</li>
+                    </ul>
+                    <h5>อื่นๆ</h5>
+                    <ul>
+                        <li>เปลี่ยนชื่อบัพจาก Fairy Tooth เป็น Baby Teeth</li>
                     </ul>
                     <h3>18 Dec 2023</h3>
                     <h5>Centurion</h5>
@@ -408,7 +412,7 @@
             const babyBlueSkill1 = urlParams.get('babyblueskill1');
             const babyBlueSkill2 = urlParams.get('babyblueskill2');
             const confusion = urlParams.get('confusion');
-            const toothfairy = urlParams.get('toothfairy');
+            const babyteeth = urlParams.get('babyteeth');
             const senseweakness = urlParams.get('senseweakness');
 
             if (charName) {
@@ -442,15 +446,15 @@
             if (confusion) {
                 $('#confusion-selector').val(confusion);
             }
-            if (toothfairy) {
-                $('#tooth-fairy-checkbox').prop('checked', true);
+            if (babyteeth) {
+                $('#baby-teeth-checkbox').prop('checked', true);
             }
             if (senseweakness) {
                 $('#sense-weakness-checkbox').prop('checked', true);
             }
             updateIframe();
 
-            const serverLastUpdated = 1702924450560; // new Date().getTime();
+            const serverLastUpdated = 1703011297870; // new Date().getTime();
             const lastUpdated = localStorage.getItem('lastUpdated');
             if (!lastUpdated || lastUpdated < serverLastUpdated) {
                 $('#updateLogsModal').modal('show');
@@ -468,7 +472,7 @@
         document.getElementById('baby-blue-skill-1-selector').addEventListener('change', function() { updateIframe(); });
         document.getElementById('baby-blue-skill-2-selector').addEventListener('change', function() { updateIframe(); });
         document.getElementById('confusion-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('tooth-fairy-checkbox').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('baby-teeth-checkbox').addEventListener('change', function() { updateIframe(); });
         document.getElementById('sense-weakness-checkbox').addEventListener('change', function() { updateIframe(); });
 
         function getQueryString() {
@@ -482,7 +486,7 @@
             var babyBlueSkill1Selector = document.getElementById('baby-blue-skill-1-selector');
             var babyBlueSkill2Selector = document.getElementById('baby-blue-skill-2-selector');
             var confusionSelector = document.getElementById('confusion-selector');
-            var toothFairyCheckbox = document.getElementById('tooth-fairy-checkbox');
+            var babyTeethCheckbox = document.getElementById('baby-teeth-checkbox');
             var senseWeaknessCheckbox = document.getElementById('sense-weakness-checkbox');
 
             var queryString = '?name=' + charSelector.value;
@@ -508,7 +512,7 @@
             addSelectorToQueryString(babyBlueSkill1Selector, 'babyblueskill1');
             addSelectorToQueryString(babyBlueSkill2Selector, 'babyblueskill2');
             addSelectorToQueryString(confusionSelector, 'confusion');
-            addCheckboxToQueryString(toothFairyCheckbox, 'toothfairy');
+            addCheckboxToQueryString(babyTeethCheckbox, 'babyteeth');
             addCheckboxToQueryString(senseWeaknessCheckbox, 'senseweakness');
 
             return queryString

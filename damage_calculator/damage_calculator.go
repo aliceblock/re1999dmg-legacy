@@ -179,7 +179,7 @@ func (d *DamageCalculator) GetBuffDebuffValue() BuffDebuffResult {
 	if d.Debuff.Confusion > 0 {
 		critResistDown += float64(d.Debuff.Confusion) * 0.25
 	}
-	if d.Debuff.ToothFairy {
+	if d.Debuff.BabyTeeth {
 		critResistDown += 0.15
 		critDefDown += 0.15
 	}
@@ -245,7 +245,7 @@ type Debuff struct {
 	BabyBlueSkill1 int16
 	BabyBlueSkill2 int16
 	Confusion      int16
-	ToothFairy     bool
+	BabyTeeth      bool
 	SenseWeakness  bool
 }
 

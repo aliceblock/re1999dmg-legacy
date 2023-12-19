@@ -92,7 +92,7 @@ func main() {
 		babyblueskill1 := queryParams.Get("babyblueskill1")
 		babyblueskill2 := queryParams.Get("babyblueskill2")
 		confusion := queryParams.Get("confusion")
-		toothfairy := queryParams.Get("toothfairy")
+		babyteeth := queryParams.Get("babyteeth")
 		senseweakness := queryParams.Get("senseweakness")
 		if bkornblume != "" {
 			value, _ := strconv.ParseInt(bkornblume, 10, 8)
@@ -110,8 +110,8 @@ func main() {
 			value, _ := strconv.ParseInt(confusion, 10, 8)
 			debuff.Confusion = int16(value)
 		}
-		if toothfairy == "true" {
-			debuff.ToothFairy = true
+		if babyteeth == "true" {
+			debuff.BabyTeeth = true
 		}
 		if senseweakness == "true" {
 			debuff.SenseWeakness = true
