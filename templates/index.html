@@ -22,13 +22,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5VSMQK8B');</script>
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5VSMQK8B');</script>
     <!-- End Google Tag Manager -->
 
     <style>
@@ -55,7 +58,7 @@
 
         #page {
             width: 100%;
-            height: 500px;
+            height: 650px;
             border: none;
         }
 
@@ -169,42 +172,66 @@
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5VSMQK8B"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5VSMQK8B" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="row justify-content-between mb-3">
-        <div class="col-md-auto col-12 d-flex flex-row flex-wrap">
-            <div class="d-flex col-auto align-items-center me-2">
-                <div class="row filter align-items-center">
-                    <label class="col-auto" for="char-selector">Character:</label>
-                    <select id="char-selector" class="form-select">
-                        <option value="aknight">A Knight</option>
-                        <option value="bkornblume">Bkornblume</option>
-                        <option value="bkornblume_p2">Bkornblume P2</option>
-                        <option value="bkornblume_p5">Bkornblume P5</option>
-                        <option value="centurion">Centurion</option>
-                        <option value="charlie">Charlie P3</option>
-                        <option value="eagle">Eagle</option>
-                        <option value="eternity">Eternity (BETA)</option>
-                        <option value="jessica">Jessica (BETA)</option>
-                        <option value="lilya">Lilya</option>
-                        <option value="regulus">Regulus</option>
-                    </select>
-                </div>
+        <div class="col-auto">
+            <div class="row filter align-items-center">
+                <label class="col-auto" for="char-selector">Character:</label>
+                <select id="char-selector" class="form-select">
+                    <option value="aknight">A Knight</option>
+                    <option value="bkornblume">Bkornblume</option>
+                    <option value="bkornblume_p2">Bkornblume P2</option>
+                    <option value="bkornblume_p5">Bkornblume P5</option>
+                    <option value="centurion">Centurion</option>
+                    <option value="charlie">Charlie P3</option>
+                    <option value="eagle">Eagle</option>
+                    <option value="eternity">Eternity (BETA)</option>
+                    <option value="jessica">Jessica (BETA)</option>
+                    <option value="lilya">Lilya</option>
+                    <option value="regulus">Regulus</option>
+                </select>
             </div>
-            <div class="d-flex col-auto align-items-center">
-                <div class="row filter align-items-center">
-                    <label class="col-auto" for="char-selector">Target:</label>
-                    <select id="enemy-selector" class="form-select">
-                        <option value="1">1 Enemy</option>
-                        <option value="2">2 Enemies</option>
-                        <option value="3">3 Enemies</option>
-                        <option value="4">4 Enemies</option>
-                    </select>
+        </div>
+        <div class="col-auto">
+            <div class="row filter align-items-center">
+                <label class="col-auto" for="char-selector">Target:</label>
+                <select id="enemy-selector" class="form-select">
+                    <option value="1">1 Enemy</option>
+                    <option value="2">2 Enemies</option>
+                    <option value="3">3 Enemies</option>
+                    <option value="4">4 Enemies</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md d-flex">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="psychube-amp1" value="amp1">
+                        <label class="form-check-label" for="psychube-amp1">A1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="psychube-amp2" value="amp2">
+                        <label class="form-check-label" for="psychube-amp2">A2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="psychube-amp3" value="amp3">
+                        <label class="form-check-label" for="psychube-amp3">A3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="psychube-amp4" value="amp4">
+                        <label class="form-check-label" for="psychube-amp4">A4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="psychube-amp5" value="amp5">
+                        <label class="form-check-label" for="psychube-amp5">A5</label>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-auto d-flex flex-row">
+        <div class="col-auto d-flex flex-row mt-2">
             <div class="d-flex col-auto align-items-center">
                 <button id="share-btn" type="button" class="btn btn-primary col-auto" onclick="copyToClipboard()">
                     <i class="fa-solid fa-share-nodes"></i>
@@ -317,6 +344,12 @@
                 </div>
 
                 <div class="modal-body">
+                    <h3>20 Dec 2023</h3>
+                    <h5>อื่นๆ</h5>
+                    <ul>
+                        <li>ลองเพิ่มตัวเลือก Amplification</li>
+                        <li>ขยายความสูง Chart เพิ่มอีกหน่อย</li>
+                    </ul>
                     <h3>19 Dec 2023</h3>
                     <h5>Centurion</h5>
                     <ul>
@@ -326,7 +359,8 @@
                     <ul>
                         <li>เพิ่มเข้า BETA</li>
                         <li>Yearning Desire แรงเหมือนเดิม ในเงื่อนไขต้องแปะ Debuff มอนให้ได้</li>
-                        <li>Brave New World ยิ่งได้กด Ultimate บ่อยยิ่งแข็งแกร่ง ขัด 5 ได้คือก็ดีมาก ถ้าในด่านจำนวนมอนยิ่งเยอะ Damage จะยิ่งทิ้งห่างอันอื่น</li>
+                        <li>Brave New World ยิ่งได้กด Ultimate บ่อยยิ่งแข็งแกร่ง ขัด 5 ได้คือก็ดีมาก
+                            ถ้าในด่านจำนวนมอนยิ่งเยอะ Damage จะยิ่งทิ้งห่างอันอื่น</li>
                     </ul>
                     <h5>อื่นๆ</h5>
                     <ul>
@@ -343,17 +377,24 @@
                     <h5>Lilya</h5>
                     <ul>
                         <li>เพิ่ม Yearning Desire</li>
-                        <li>ตัวเลือกอันดับต้นๆก็ยังจะเป็น Luxurious Leisure (ไม่ขัด แต่ถ้าขัดก็จะดีมาก) และ Thunderous Applause (ขัด 5)</li>
+                        <li>ตัวเลือกอันดับต้นๆก็ยังจะเป็น Luxurious Leisure (ไม่ขัด แต่ถ้าขัดก็จะดีมาก) และ Thunderous
+                            Applause (ขัด 5)</li>
                     </ul>
                     <h5>Regulus</h5>
                     <ul>
                         <li>เพิ่ม Yearning Desire</li>
-                        <li>Yearning Desire จะเป็นหนึ่งในตัวเลือกที่ดีมาก แต่คุณจะต้องแปะ Debuff ให้ได้ทุกครั้งที่จะทำการโจมตี และด้วยความที่ใช้ Ultimate ได้ค่อนข้างบ่อย ตัวแปะ Debuff ควรจะเป็นประเภทแปะใส่มอนได้ทุกตัว แทนที่จะแปะทีละตัว</li>
+                        <li>Yearning Desire จะเป็นหนึ่งในตัวเลือกที่ดีมาก แต่คุณจะต้องแปะ Debuff
+                            ให้ได้ทุกครั้งที่จะทำการโจมตี และด้วยความที่ใช้ Ultimate ได้ค่อนข้างบ่อย ตัวแปะ Debuff
+                            ควรจะเป็นประเภทแปะใส่มอนได้ทุกตัว แทนที่จะแปะทีละตัว</li>
                     </ul>
                     <h5>Jessica</h5>
                     <ul>
                         <li>เพิ่ม Yearning Desire</li>
-                        <li>Yearning Desire โดยจะเป็นตัวเลือกที่ดี เพราะมอนจะมีพิษติดอยู่แทบตลอด และเราจะเลือกตีเฉพาะที่มอนติดพิษอยู่แล้ว แต่เราอาจจะต้องเสียคอมโบในการกด Ultimate เพื่อใช้ความสามารถ Insight 3 ที่จะแปะพิษให้มอน 2 Stack ทันทีไม่ได้ (คือกดได้แหละ แต่คุ้มไหมนี่ไม่รู้เหมือนกัน เพราะ Damage จะตกมากๆถ้ามอนไม่มี Debuff เว้นเสียแต่ว่าคุณจะมี Debuffer ตัวอื่นในทีมด้วย เช่น Bkornblume)</li>
+                        <li>Yearning Desire โดยจะเป็นตัวเลือกที่ดี เพราะมอนจะมีพิษติดอยู่แทบตลอด
+                            และเราจะเลือกตีเฉพาะที่มอนติดพิษอยู่แล้ว แต่เราอาจจะต้องเสียคอมโบในการกด Ultimate
+                            เพื่อใช้ความสามารถ Insight 3 ที่จะแปะพิษให้มอน 2 Stack ทันทีไม่ได้ (คือกดได้แหละ
+                            แต่คุ้มไหมนี่ไม่รู้เหมือนกัน เพราะ Damage จะตกมากๆถ้ามอนไม่มี Debuff เว้นเสียแต่ว่าคุณจะมี
+                            Debuffer ตัวอื่นในทีมด้วย เช่น Bkornblume)</li>
                         <li>ทีมที่แนะนำจะเป็น Jessica, Bkornblume, Sotheby</li>
                     </ul>
                     <h5>A Knight</h5>
@@ -363,7 +404,8 @@
                     <h5>Bkornblume</h5>
                     <ul>
                         <li>เพิ่มการคำนวณ</li>
-                        <li>Luxurious Leisure ก็ยังดูเป็นตัวเลือกที่ดีที่แม้จะไม่ขัดเลยก็ตาม เงื่อนไขการเล่นก็ไม่ได้มีอะไร แค่ Ultimate ให้ได้บ่อยๆก็พอ</li>
+                        <li>Luxurious Leisure ก็ยังดูเป็นตัวเลือกที่ดีที่แม้จะไม่ขัดเลยก็ตาม
+                            เงื่อนไขการเล่นก็ไม่ได้มีอะไร แค่ Ultimate ให้ได้บ่อยๆก็พอ</li>
                     </ul>
                     <h5>อื่นๆ</h5>
                     <ul>
@@ -387,7 +429,8 @@
 
                 <!-- Modal Footer -->
                 <div class="modal-footer">
-                    <button id="modal-close-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button id="modal-close-btn" type="button" class="btn btn-primary"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -414,6 +457,11 @@
             const confusion = urlParams.get('confusion');
             const babyteeth = urlParams.get('babyteeth');
             const senseweakness = urlParams.get('senseweakness');
+            const amp1 = urlParams.get('amp1');
+            const amp2 = urlParams.get('amp2');
+            const amp3 = urlParams.get('amp3');
+            const amp4 = urlParams.get('amp4');
+            const amp5 = urlParams.get('amp5');
 
             if (charName) {
                 $('#char-selector').val(charName);
@@ -452,9 +500,24 @@
             if (senseweakness) {
                 $('#sense-weakness-checkbox').prop('checked', true);
             }
+            if (amp1 || (!amp1 && !amp2 && !amp3 && !amp4 && !amp5)) {
+                $('#psychube-amp1').prop('checked', true);
+            }
+            if (amp2) {
+                $('#psychube-amp2').prop('checked', true);
+            }
+            if (amp3) {
+                $('#psychube-amp3').prop('checked', true);
+            }
+            if (amp4) {
+                $('#psychube-amp4').prop('checked', true);
+            }
+            if (amp5) {
+                $('#psychube-amp5').prop('checked', true);
+            }
             updateIframe();
 
-            const serverLastUpdated = 1703011297870; // new Date().getTime();
+            const serverLastUpdated = 1703096567197; // new Date().getTime();
             const lastUpdated = localStorage.getItem('lastUpdated');
             if (!lastUpdated || lastUpdated < serverLastUpdated) {
                 $('#updateLogsModal').modal('show');
@@ -462,18 +525,23 @@
             }
         });
 
-        document.getElementById('char-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('enemy-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('an-an-lee-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('sonetto-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('necrologist-checkbox').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('afflatus-advantage-checkbox').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('bkornblume-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('baby-blue-skill-1-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('baby-blue-skill-2-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('confusion-selector').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('baby-teeth-checkbox').addEventListener('change', function() { updateIframe(); });
-        document.getElementById('sense-weakness-checkbox').addEventListener('change', function() { updateIframe(); });
+        document.getElementById('char-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('enemy-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('an-an-lee-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('sonetto-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('necrologist-checkbox').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('afflatus-advantage-checkbox').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('bkornblume-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('baby-blue-skill-1-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('baby-blue-skill-2-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('confusion-selector').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('baby-teeth-checkbox').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('sense-weakness-checkbox').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('psychube-amp1').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('psychube-amp2').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('psychube-amp3').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('psychube-amp4').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('psychube-amp5').addEventListener('change', function () { updateIframe(); });
 
         function getQueryString() {
             var charSelector = document.getElementById('char-selector');
@@ -488,6 +556,11 @@
             var confusionSelector = document.getElementById('confusion-selector');
             var babyTeethCheckbox = document.getElementById('baby-teeth-checkbox');
             var senseWeaknessCheckbox = document.getElementById('sense-weakness-checkbox');
+            var psychubeAmp1 = document.getElementById('psychube-amp1');
+            var psychubeAmp2 = document.getElementById('psychube-amp2');
+            var psychubeAmp3 = document.getElementById('psychube-amp3');
+            var psychubeAmp4 = document.getElementById('psychube-amp4');
+            var psychubeAmp5 = document.getElementById('psychube-amp5');
 
             var queryString = '?name=' + charSelector.value;
 
@@ -514,6 +587,11 @@
             addSelectorToQueryString(confusionSelector, 'confusion');
             addCheckboxToQueryString(babyTeethCheckbox, 'babyteeth');
             addCheckboxToQueryString(senseWeaknessCheckbox, 'senseweakness');
+            addCheckboxToQueryString(psychubeAmp1, 'amp1');
+            addCheckboxToQueryString(psychubeAmp2, 'amp2');
+            addCheckboxToQueryString(psychubeAmp3, 'amp3');
+            addCheckboxToQueryString(psychubeAmp4, 'amp4');
+            addCheckboxToQueryString(psychubeAmp5, 'amp5');
 
             return queryString
         }
@@ -523,11 +601,11 @@
             var iframe = document.getElementById('page');
             iframe.src = `/character${queryString}`;
         }
-        
+
         function copyToClipboard() {
             const $text = $('<input>');
             $('body').append($text);
-            $text.val(location.protocol + "//" + location.hostname + (location.port? `:${location.port}`: '') + getQueryString()).select();
+            $text.val(location.protocol + "//" + location.hostname + (location.port ? `:${location.port}` : '') + getQueryString()).select();
             document.execCommand("copy");
             $text.remove();
 
@@ -551,7 +629,7 @@
             const $alert = $('#alert-snackbar');
             $alert.addClass('show');
             $alert.text(message);
-            setTimeout(function(){ 
+            setTimeout(function () {
                 $alert.removeClass('show');
             }, 3000);
         }

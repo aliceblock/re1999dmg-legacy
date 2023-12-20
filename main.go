@@ -69,6 +69,12 @@ func main() {
 		enemyHitRaw, _ := strconv.ParseInt(queryParams.Get("enemy"), 10, 8)
 		enemyHit := int16(enemyHitRaw)
 
+		psychubeAmp1 := queryParams.Get("amp1")
+		psychubeAmp2 := queryParams.Get("amp2")
+		psychubeAmp3 := queryParams.Get("amp3")
+		psychubeAmp4 := queryParams.Get("amp4")
+		psychubeAmp5 := queryParams.Get("amp5")
+
 		// Buff
 		buff := DmgCal.Buff{}
 		anAnLee := queryParams.Get("ananlee")
@@ -129,10 +135,24 @@ func main() {
 		}
 
 		calculatorFunc := DmgCal.Calculator[DmgCal.CharacterIndex(charName)]
-		amps := []psychube.Amplification{
-			psychube.Amp1,
-			psychube.Amp5,
+		amps := []psychube.Amplification{}
+		if psychubeAmp1 == "true" {
+			amps = append(amps, psychube.Amp1)
 		}
+		if psychubeAmp2 == "true" {
+			amps = append(amps, psychube.Amp2)
+		}
+		if psychubeAmp3 == "true" {
+			amps = append(amps, psychube.Amp3)
+		}
+		if psychubeAmp4 == "true" {
+			amps = append(amps, psychube.Amp4)
+		}
+		if psychubeAmp5 == "true" {
+			amps = append(amps, psychube.Amp5)
+		}
+
+		hasBoundenDuty := false
 		for _, amp := range amps {
 			responseDamage := calculatorFunc(DmgCal.CalParams{
 				EnemyHit:          enemyHit,
@@ -144,13 +164,16 @@ func main() {
 				AfflatusAdvantage: afflatusAdvantageBool,
 			})
 			for _, res := range responseDamage {
+				if hasBoundenDuty && strings.Contains(res.Name, "His Bounden Duty") {
+					continue
+				}
 				chartData := ChartData{
 					Name:   res.Name,
 					Damage: res.Damage,
 					Color:  getColor(res.Name),
 				}
-				if strings.Contains(res.Name, "His Bounden Duty") && strings.Contains(res.Name, "A5") {
-					continue
+				if strings.Contains(res.Name, "His Bounden Duty") {
+					hasBoundenDuty = true
 				}
 				data.ChartData = append(data.ChartData, chartData)
 			}
