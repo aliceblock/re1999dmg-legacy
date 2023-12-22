@@ -315,6 +315,46 @@ var Jessica = MakeCharacter(
 	},
 )
 
+var JessicaP2 = MakeCharacter(
+	nil,
+	RealityDamage,
+	map[CharacterInsightLevel]Stat{
+		Insight2L50: {
+			Atk:      972.0,
+			CritRate: 0.086,
+			CritDmg:  0.429,
+		},
+		Insight3L1: {
+			Atk:      1008.0,
+			CritRate: 0.095,
+			CritDmg:  0.443,
+		},
+		Insight3L60: {
+			Atk:      1143.0,
+			CritRate: 0.095,
+			CritDmg:  0.443,
+		},
+	},
+	Insight{
+		DmgBonus: 0.08,
+	},
+	map[SkillIndex][]Skill{
+		Skill1: {
+			{Multiplier: 1.8, EnemyHit: 1, ExtraMultiplier: []float64{0.4, 0.6, 0.8}},
+			{Multiplier: 2.7, EnemyHit: 1, ExtraMultiplier: []float64{0.6, 0.9, 1.2}},
+			{Multiplier: 4.5, EnemyHit: 1, ExtraMultiplier: []float64{1.0, 1.5, 2.0}},
+		},
+		Skill2: {
+			{Multiplier: 1.35, EnemyHit: 2, ExtraMultiplier: []float64{0.3}},
+			{Multiplier: 2.0, EnemyHit: 2, ExtraMultiplier: []float64{0.45}},
+			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{0.75}},
+		},
+		Ultimate: {
+			{Multiplier: 4.25, EnemyHit: 1},
+		},
+	},
+)
+
 // P3
 var Charlie = MakeCharacter(
 	nil,

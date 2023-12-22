@@ -7,7 +7,10 @@ const (
 	AKnight      CharacterIndex = "aknight"
 	Lilya        CharacterIndex = "lilya"
 	Eagle        CharacterIndex = "eagle"
-	Jessica      CharacterIndex = "jessica"
+	JessicaR10   CharacterIndex = "jessica_r10"
+	JessicaR12   CharacterIndex = "jessica_r12"
+	JessicaP2R10 CharacterIndex = "jessica_p2_r10"
+	JessicaP2R12 CharacterIndex = "jessica_p2_r12"
 	Charlie      CharacterIndex = "charlie"
 	Bkornblume   CharacterIndex = "bkornblume"
 	BkornblumeP2 CharacterIndex = "bkornblume_p2"
@@ -21,7 +24,10 @@ var Calculator = map[CharacterIndex]func(CalParams) []DamageResponse{
 	AKnight:      AKnightDmgCalculate,
 	Lilya:        LilyaDmgCalculate,
 	Eagle:        EagleDmgCalculate,
-	Jessica:      JessicaDmgCalculate,
+	JessicaR10:   JessicaR10DmgCalculate,
+	JessicaR12:   JessicaR12DmgCalculate,
+	JessicaP2R10: JessicaP2R10DmgCalculate,
+	JessicaP2R12: JessicaP2R12DmgCalculate,
 	Charlie:      CharlieDmgCalculate,
 	Bkornblume:   BkornblumeDmgCalculate,
 	BkornblumeP2: BkornblumeP2DmgCalculate,

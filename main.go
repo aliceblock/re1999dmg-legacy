@@ -164,7 +164,7 @@ func main() {
 				AfflatusAdvantage: afflatusAdvantageBool,
 			})
 			for _, res := range responseDamage {
-				if hasBoundenDuty && strings.Contains(res.Name, "His Bounden Duty") {
+				if hasBoundenDuty && strings.Contains(res.Name, "His Bounden Duty") && (strings.Contains(res.Name, "A2") || strings.Contains(res.Name, "A3") || strings.Contains(res.Name, "A4") || strings.Contains(res.Name, "A5")) {
 					continue
 				}
 				chartData := ChartData{
