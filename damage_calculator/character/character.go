@@ -310,7 +310,7 @@ var Jessica = MakeCharacter(
 			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{0.75}},
 		},
 		Ultimate: {
-			{Multiplier: 3.5, EnemyHit: 1},
+			{Multiplier: 3.5, EnemyHit: 4},
 		},
 	},
 )
@@ -350,7 +350,7 @@ var JessicaP2 = MakeCharacter(
 			{Multiplier: 3.35, EnemyHit: 2, ExtraMultiplier: []float64{0.75}},
 		},
 		Ultimate: {
-			{Multiplier: 4.25, EnemyHit: 1},
+			{Multiplier: 4.25, EnemyHit: 4},
 		},
 	},
 )
