@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	DmgCal "github.com/aliceblock/re1999dmg/damage_calculator"
-	"github.com/aliceblock/re1999dmg/damage_calculator/psychube"
+	DmgCal "github.com/aliceblock/re1999dmg-legacy/damage_calculator"
+	"github.com/aliceblock/re1999dmg-legacy/damage_calculator/psychube"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )

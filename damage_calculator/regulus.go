@@ -3,9 +3,9 @@ package damage_calculator
 import (
 	"fmt"
 
-	"github.com/aliceblock/re1999dmg/damage_calculator/character"
-	"github.com/aliceblock/re1999dmg/damage_calculator/character/resonance"
-	"github.com/aliceblock/re1999dmg/damage_calculator/psychube"
+	"github.com/aliceblock/re1999dmg-legacy/damage_calculator/character"
+	"github.com/aliceblock/re1999dmg-legacy/damage_calculator/character/resonance"
+	"github.com/aliceblock/re1999dmg-legacy/damage_calculator/psychube"
 )
 
 /*

@@ -1,4 +1,4 @@
-module github.com/aliceblock/re1999dmg
+module github.com/aliceblock/re1999dmg-legacy
 
 go 1.21.0
 
