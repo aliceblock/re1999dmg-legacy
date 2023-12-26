@@ -89,7 +89,7 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 		fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
 		fmt.Printf("\nUltimate: %.2f (I1 Buff: %.2f)", ultimateDamages[0], ultimateI1Damages[0])
-		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage/12.0)
 		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 		psychubeName := calculator.Psychube.Name()
@@ -141,7 +141,7 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 		fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
 		fmt.Printf("\nUltimate: %.2f (I1 Buff: %.2f)", ultimateDamages[0], ultimateI1Damages[0])
-		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage/12.0)
 		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 		psychubeName := calculator.Psychube.Name()
@@ -194,7 +194,7 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f", skill2Damages[0], skill2Damages[1], skill2Damages[2])
 		fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2])
 		fmt.Printf("\nUltimate: %.2f (I1 Buff: %.2f)", ultimateDamages[0], ultimateI1Damages[0])
-		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage/12.0)
 		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 		psychubeName := calculator.Psychube.Name()
@@ -252,7 +252,7 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Printf("\nSkill 2: %.2f, %.2f, %.2f (With BNW Buff: %.2f, %.2f, %.2f)", skill2Damages[0], skill2Damages[1], skill2Damages[2], skill2BuffDamages[0], skill2BuffDamages[1], skill2BuffDamages[2])
 		fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f (With BNW Buff: %.2f, %.2f, %.2f)", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2], skill2ExtraBuffDamages[0], skill2ExtraBuffDamages[1], skill2ExtraBuffDamages[2])
 		fmt.Printf("\nUltimate: %.2f (I1 Buff: %.2f)", ultimateDamages[0], ultimateI1Damages[0])
-		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage/12.0)
 		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 		psychubeName := calculator.Psychube.Name()
@@ -310,7 +310,7 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		fmt.Printf("\nSkill 2 Extra: %.2f, %.2f, %.2f (With Buff: %.2f, %.2f, %.2f)", skill2ExtraDamages[0], skill2ExtraDamages[1], skill2ExtraDamages[2], skill2ExtraBuffDamages[0], skill2ExtraBuffDamages[1], skill2ExtraBuffDamages[2])
 		fmt.Printf("\nUltimate: %.2f", ultimateDamages[0])
 		fmt.Printf("\nUltimate I1: %.2f (With Buff: %.2f)", ultimateI1Damages[0], ultimateI1BuffDamages[0])
-		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage)
+		fmt.Printf("\nPoison stack/round: %.2f", poisonDamage/12.0)
 		fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
 		psychubeName := calculator.Psychube.Name()
