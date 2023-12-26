@@ -308,7 +308,7 @@ func JessicaP2R10DmgCalculate(calParams CalParams) []DamageResponse {
 
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 15.0
-		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra2Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraBuffDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2BuffDamages[character.Star2] + skill2ExtraDamages[character.Star2] + poisonDamages
+		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra2BuffDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraBuffDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2BuffDamages[character.Star2] + skill2ExtraDamages[character.Star2] + poisonDamages
 
 		fmt.Printf("---------\nJessica Blasphemer of Night Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
