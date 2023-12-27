@@ -225,13 +225,14 @@ func ExcessCritDmgBonus(critRate float64) float64 {
 }
 
 type CalParams struct {
-	EnemyHit          int16
-	PsychubeAmp       psychube.Amplification
-	ResonanceIndex    int16
-	AfflatusAdvantage bool
-	EnemyDef          float64
-	Buff              Buff
-	Debuff            Debuff
+	EnemyHit            int16
+	PsychubeAmp         psychube.Amplification
+	ShowDamagePerAction bool
+	ResonanceIndex      int16
+	AfflatusAdvantage   bool
+	EnemyDef            float64
+	Buff                Buff
+	Debuff              Debuff
 }
 
 type Buff struct {

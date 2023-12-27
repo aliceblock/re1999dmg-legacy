@@ -23,6 +23,7 @@ import (
 12:1 Ultimate
 */
 func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 10
 	damageResponse := make([]DamageResponse, 0)
 
 	enemyCritDef := 0.1
@@ -78,6 +79,9 @@ func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
 	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
 
 	expectTotalDamage := skill1RestlessDamages[character.Star2]*1 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3 + skill1RestlessBuffDamages[character.Star2]*2
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
@@ -121,6 +125,9 @@ func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
 	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
 
 	expectTotalDamage = skill1RestlessDamages[character.Star2]*3 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
@@ -164,6 +171,9 @@ func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
 	fmt.Printf("\nUltimate with Restless Heart: %.2f", ultimateRestlessDamages[0])
 
 	expectTotalDamage = skill1RestlessDamages[character.Star2]*3 + skill2Damages[character.Star1]*1 + ultimateRestlessDamages[character.Star1]*3
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 
@@ -213,6 +223,9 @@ func RegulusDmgCalculate(calParams CalParams) []DamageResponse {
 	fmt.Printf("\nUltimate with Restless Heart: %.2f (with Buff %.2f)", ultimateRestlessDamages[0], ultimateRestlessBuffDamages[0])
 
 	expectTotalDamage = skill1RestlessBuffDamages[character.Star2]*3 + skill2BuffDamages[character.Star1]*1 + ultimateRestlessBuffDamages[character.Star1]*3
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("\nExpect total damage: %.2f", expectTotalDamage)
 

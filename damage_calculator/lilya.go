@@ -9,6 +9,7 @@ import (
 )
 
 func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 19
 	damageResponse := []DamageResponse{}
 
 	enemyCritDef := 0.1
@@ -71,6 +72,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages := calculatorForReso1.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages := calculatorForReso1.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, CritDmg: psychube.ThunderousApplause.AdditionalEffect()[calParams.PsychubeAmp].CritDmg()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage := basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Thunderous Applause resonance 1 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -115,6 +119,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForReso2.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForReso2.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, CritDmg: psychube.ThunderousApplause.AdditionalEffect()[calParams.PsychubeAmp].CritDmg()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Thunderous Applause resonance 2 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -159,6 +166,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForReso3.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForReso3.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, CritDmg: psychube.ThunderousApplause.AdditionalEffect()[calParams.PsychubeAmp].CritDmg()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Thunderous Applause resonance 3 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -202,6 +212,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForReso1HBD.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForReso1HBD.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya His Bounden Duty resonance 1 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -245,6 +258,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForReso2HBD.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForReso2HBD.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya His Bounden Duty resonance 2 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -331,6 +347,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2Lux1Damages[character.Star2]*1 + ultimateLux1Damages[character.Star1]*1 + skill1Lux2Damages[character.Star3]*1 + ultimateLux2Damages[character.Star1]*1 + skill1Lux3Damages[character.Star3]*1 + skill2Lux2Damages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Luxurious Leisure resonance 1 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -426,6 +445,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2Lux1Damages[character.Star2]*1 + ultimateLux1Damages[character.Star1]*1 + skill1Lux2Damages[character.Star3]*1 + ultimateLux2Damages[character.Star1]*1 + skill1Lux3Damages[character.Star3]*1 + skill2Lux2Damages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Luxurious Leisure resonance 2 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -521,6 +543,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalDamage = skill1Damages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2Lux1Damages[character.Star2]*1 + ultimateLux1Damages[character.Star1]*1 + skill1Lux2Damages[character.Star3]*1 + ultimateLux2Damages[character.Star1]*1 + skill1Lux3Damages[character.Star3]*1 + skill2Lux2Damages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nLilya Luxurious Leisure resonance 2 Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -585,6 +610,9 @@ func LilyaDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2}, character.Ultimate, calParams.EnemyHit)
 		ultimateBuffDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 0.2, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
 		expectTotalDamage := basicCalculateExpectTotalDmg(skill1BuffDamages, skill2BuffDamages, ultimateBuffDamages)
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nLilya Yearning Desire resonance %d Final Damage:", i+1)
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])

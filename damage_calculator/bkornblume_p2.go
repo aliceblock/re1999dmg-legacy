@@ -9,6 +9,7 @@ import (
 )
 
 func BkornblumeP2DmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 14
 	damageResponse := []DamageResponse{}
 
 	insight1DmgBonus := 0.2
@@ -56,6 +57,9 @@ func BkornblumeP2DmgCalculate(calParams CalParams) []DamageResponse {
 		skill1BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.PsychubeAmp].IncantationMight()}, character.Skill1, calParams.EnemyHit)
 		ultimateDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 		expectTotalDamage := skill1Damages[character.Star1]*1 + ultimateDamages[character.Star1]*1 + skill1BuffDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1BuffDamages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1BuffDamages[character.Star3]*1
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nBkornblume Brave New World Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
@@ -93,6 +97,9 @@ func BkornblumeP2DmgCalculate(calParams CalParams) []DamageResponse {
 		skill1Damages := calculatorForHisBounden.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true}, character.Skill1, calParams.EnemyHit)
 		ultimateDamages := calculatorForHisBounden.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 		expectTotalDamage := skill1Damages[character.Star1]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star3]*1
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nBkornblume His Bounden Duty Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -138,6 +145,9 @@ func BkornblumeP2DmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateBuff3Damages := calculatorForLux.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 3}, character.Ultimate, calParams.EnemyHit)
 		ultimateBuff4Damages := calculatorForLux.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.LuxuriousLeisure.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus() * 4}, character.Ultimate, calParams.EnemyHit)
 		expectTotalDamage := skill1Damages[character.Star1]*1 + ultimateDamages[character.Star1]*1 + skill1Buff1Damages[character.Star2]*1 + ultimateBuff1Damages[character.Star1]*1 + skill1Buff2Damages[character.Star3]*1 + ultimateBuff2Damages[character.Star1]*1 + skill1Buff3Damages[character.Star3]*1
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nBkornblume Luxurious Leisure Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -183,6 +193,9 @@ func BkornblumeP2DmgCalculate(calParams CalParams) []DamageResponse {
 		skill1Damages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill1, calParams.EnemyHit)
 		ultimateDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
 		expectTotalDamage := skill1Damages[character.Star1]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1Damages[character.Star3]*1
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nBkornblume Yearning Desire Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])

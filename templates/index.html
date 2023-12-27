@@ -234,6 +234,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-auto d-flex">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="checkbox-show-dpa" value="dpa">
+                        <label class="form-check-label" for="checkbox-show-dpa">Dpa</label>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-auto d-flex flex-row mt-2">
             <div class="d-flex col-auto align-items-center">
                 <button id="share-btn" type="button" class="btn btn-primary col-auto" onclick="copyToClipboard()">
@@ -347,6 +357,11 @@
                 </div>
 
                 <div class="modal-body">
+                    <h3>27 Dec 2023</h3>
+                    <h5>อื่นๆ</h5>
+                    <ul>
+                        <li>เพิ่ม Dpa (Damage per action)</li>
+                    </ul>
                     <h3>26 Dec 2023</h3>
                     <h5>Jessica</h5>
                     <ul>
@@ -497,6 +512,7 @@
             const amp3 = urlParams.get('amp3');
             const amp4 = urlParams.get('amp4');
             const amp5 = urlParams.get('amp5');
+            const dpa = urlParams.get('dpa');
 
             if (charName) {
                 $('#char-selector').val(charName);
@@ -550,9 +566,12 @@
             if (amp5) {
                 $('#psychube-amp5').prop('checked', true);
             }
+            if (dpa) {
+                $('#checkbox-show-dpa').prop('checked', true);
+            }
             updateIframe();
 
-            const serverLastUpdated = 1703592612877; // new Date().getTime();
+            const serverLastUpdated = 1703692831983; // new Date().getTime();
             const lastUpdated = localStorage.getItem('lastUpdated');
             if (!lastUpdated || lastUpdated < serverLastUpdated) {
                 $('#updateLogsModal').modal('show');
@@ -577,6 +596,7 @@
         document.getElementById('psychube-amp3').addEventListener('change', function () { updateIframe(); });
         document.getElementById('psychube-amp4').addEventListener('change', function () { updateIframe(); });
         document.getElementById('psychube-amp5').addEventListener('change', function () { updateIframe(); });
+        document.getElementById('checkbox-show-dpa').addEventListener('change', function () { updateIframe(); });
 
         function getQueryString() {
             var charSelector = document.getElementById('char-selector');
@@ -596,6 +616,7 @@
             var psychubeAmp3 = document.getElementById('psychube-amp3');
             var psychubeAmp4 = document.getElementById('psychube-amp4');
             var psychubeAmp5 = document.getElementById('psychube-amp5');
+            var showDpa = document.getElementById('checkbox-show-dpa');
 
             var queryString = '?name=' + charSelector.value;
 
@@ -627,6 +648,7 @@
             addCheckboxToQueryString(psychubeAmp3, 'amp3');
             addCheckboxToQueryString(psychubeAmp4, 'amp4');
             addCheckboxToQueryString(psychubeAmp5, 'amp5');
+            addCheckboxToQueryString(showDpa, 'dpa');
 
             return queryString
         }

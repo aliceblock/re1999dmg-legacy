@@ -9,6 +9,7 @@ import (
 )
 
 func EternityDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 12
 	damageResponse := []DamageResponse{}
 
 	insight3DmgBonus := 0.05
@@ -70,6 +71,9 @@ func EternityDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateTurn5Damages := calculator.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight3DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Turn2Damages[character.Star2] + skill1Turn2Damages[character.Star2] + ultimateTurn4Damages[character.Star1] + skill1Turn5Damages[character.Star2] + skill2Turn5Damages[character.Star2] + skill1Turn5Damages[character.Star2] + ultimateTurn5Damages[character.Star1] + skill2Turn5Damages[character.Star2]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nEternity His Bounden Duty Final Damage:")
 		fmt.Printf("\nSkill 1 Turn 1: %.2f, %.2f, %.2f", skill1Turn1Damages[0], skill1Turn1Damages[1], skill1Turn1Damages[2])
@@ -136,6 +140,9 @@ func EternityDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateTurn5Damages := calculator.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight3DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Turn2Damages[character.Star2] + skill1Turn2Damages[character.Star2] + ultimateTurn4Damages[character.Star1] + skill1Turn5Damages[character.Star2] + skill2Turn5Damages[character.Star2] + skill1Turn5Damages[character.Star2] + ultimateTurn5Damages[character.Star1] + skill2Turn5Damages[character.Star2]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nEternity Yearning Desire Final Damage:")
 		fmt.Printf("\nSkill 1 Turn 1: %.2f, %.2f, %.2f", skill1Turn1Damages[0], skill1Turn1Damages[1], skill1Turn1Damages[2])
@@ -201,6 +208,9 @@ func EternityDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateTurn5Damages := calculator.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight3DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Turn2Damages[character.Star2] + skill1Turn2Damages[character.Star2] + ultimateTurn4Damages[character.Star1] + skill1Turn5Damages[character.Star2] + skill2Turn5Damages[character.Star2] + skill1Turn5Damages[character.Star2] + ultimateTurn5Damages[character.Star1] + skill2Turn5Damages[character.Star2]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nEternity Hopscotch Final Damage:")
 		fmt.Printf("\nSkill 1 Turn 1: %.2f, %.2f, %.2f", skill1Turn1Damages[0], skill1Turn1Damages[1], skill1Turn1Damages[2])
@@ -276,6 +286,9 @@ func EternityDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateTurn5Damages := calculator.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight3DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Turn2Damages[character.Star2] + skill1Turn2Damages[character.Star2] + ultimateTurn4Damages[character.Star1] + skill1Turn5BuffDamages[character.Star2] + skill2Turn5Damages[character.Star2] + skill1Turn5Damages[character.Star2] + ultimateTurn5Damages[character.Star1] + skill2Turn5BuffDamages[character.Star2]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nEternity Brave New World Final Damage:")
 		fmt.Printf("\nSkill 1 Turn 1: %.2f, %.2f, %.2f (with Buff: %.2f, %.2f, %.2f)", skill1Turn1Damages[0], skill1Turn1Damages[1], skill1Turn1Damages[2], skill1Turn1BuffDamages[0], skill1Turn1BuffDamages[1], skill1Turn1BuffDamages[2])

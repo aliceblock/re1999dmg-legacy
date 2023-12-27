@@ -9,6 +9,7 @@ import (
 )
 
 func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 19
 	damageResponse := []DamageResponse{}
 
 	enemyCritDef := 0.1
@@ -66,6 +67,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2ExtraDamages := calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages := calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage := basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2ExtraDamages, ultimateDamages) - skill2ExtraDamages[character.Star2] + skill2Damages[character.Star2]
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nCharlie His Bounden Duty Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -105,6 +109,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateBuff3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 3}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 4}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2ExtraDamages, ultimateDamages) - skill2ExtraDamages[character.Star2] + skill2Damages[character.Star2]
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 	/*
 		Skill1(1) x2
 		Skill2(2) x1
@@ -116,6 +123,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalBuffDamage := skill1ExtraDamages[character.Star1]*2 + skill1ExtraDamages[character.Star3]*2 + skill2Damages[character.Star2]*1 + skill2ExtraDamages[character.Star2]*2 + ultimateDamages[character.Star1]*1 + ultimateBuff1Damages[character.Star1]*1 + ultimateBuff2Damages[character.Star1]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalBuffDamage = expectTotalBuffDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nCharlie Hopscotch Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -161,6 +171,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2ExtraDamages = calculatorForThunder.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, CritDmg: psychube.ThunderousApplause.AdditionalEffect()[calParams.PsychubeAmp].CritDmg()}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForThunder.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2ExtraDamages, ultimateDamages) - skill2ExtraDamages[character.Star2] + skill2Damages[character.Star2]
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("\nCrit Rate: %.2f\n", calculatorForThunder.GetTotalCritRate()*100)
 	fmt.Printf("---------\nCharlie Thunderous Applause Final Damage:")
@@ -201,6 +214,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2ExtraBuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{HasExtraDamage: true, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.PsychubeAmp].IncantationMight()}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = skill1ExtraDamages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2ExtraBuffDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + skill2ExtraDamages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nCharlie Brave New World Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -243,6 +259,9 @@ func CharlieDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2ExtraBuffDamages, ultimateBuffDamages) - skill2ExtraBuffDamages[character.Star2] + skill2BuffDamages[character.Star2]
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nCharlie Yearning Desire Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])

@@ -9,6 +9,7 @@ import (
 )
 
 func EagleDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 19
 	damageResponse := []DamageResponse{}
 
 	enemyCritDef := 0.1
@@ -44,6 +45,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages := calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{PenetrationRate: 0.4}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages := calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage := basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle His Bounden Duty Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -82,6 +86,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateBuff3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 3}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 4}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 	/*
 		Skill1(1) x2
 		Skill2(2) x1
@@ -93,6 +100,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalBuffDamage := skill1ExtraDamages[character.Star1]*2 + skill1ExtraDamages[character.Star3]*2 + skill2Damages[character.Star2]*3 + ultimateDamages[character.Star1]*1 + ultimateBuff1Damages[character.Star1]*1 + ultimateBuff2Damages[character.Star1]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalBuffDamage = expectTotalBuffDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle Hopscotch Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -137,6 +147,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForThunder.CalculateFinalDamage(DamageCalculatorInfo{PenetrationRate: 0.4}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForThunder.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate()+1.0) + psychube.ThunderousApplause.AdditionalEffect()[calParams.PsychubeAmp].CritDmg()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraDamages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle Thunderous Applause Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -174,6 +187,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{PenetrationRate: 0.4, IncantationMight: psychube.BraveNewWorld.AdditionalEffect()[calParams.PsychubeAmp].IncantationMight()}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = skill1ExtraDamages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2BuffDamages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + ultimateDamages[character.Star1]*1 + skill1ExtraBuffDamages[character.Star3]*1 + skill2Damages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle Brave New World Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -232,6 +248,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 		Skill2(2) x1
 	*/
 	expectTotalDamage = skill1ExtraDamages[character.Star1]*2 + skill2Damages[character.Star2]*1 + ultimateDamages[character.Star1]*1 + skill2Lux1Damages[character.Star2]*1 + ultimateLux1Damages[character.Star1]*1 + skill1ExtraLux2Damages[character.Star3]*1 + ultimateLux2Damages[character.Star1]*1 + skill1ExtraLux3Damages[character.Star3]*1 + skill2Lux2Damages[character.Star2]*1
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle Luxurious Leisure Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])
@@ -280,6 +299,9 @@ func EagleDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0)}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{CritRate: 1.0, CritDmg: ExcessCritDmgBonus(calculatorForBoundenDuty.GetTotalCritRate() + 1.0), BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = basicCalculateExpectTotalDmg(skill1ExtraBuffDamages, skill2BuffDamages, ultimateBuffDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nEagle Yearning Desire Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Extra %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1ExtraDamages[0], skill1ExtraDamages[1], skill1ExtraDamages[2])

@@ -75,6 +75,8 @@ func main() {
 		psychubeAmp4 := queryParams.Get("amp4")
 		psychubeAmp5 := queryParams.Get("amp5")
 
+		showDamagePerAction := queryParams.Get("dpa") == "true"
+
 		// Buff
 		buff := DmgCal.Buff{}
 		anAnLee := queryParams.Get("ananlee")
@@ -155,13 +157,14 @@ func main() {
 		hasBoundenDuty := false
 		for _, amp := range amps {
 			responseDamage := calculatorFunc(DmgCal.CalParams{
-				EnemyHit:          enemyHit,
-				PsychubeAmp:       amp,
-				ResonanceIndex:    0,
-				EnemyDef:          600.0,
-				Buff:              buff,
-				Debuff:            debuff,
-				AfflatusAdvantage: afflatusAdvantageBool,
+				EnemyHit:            enemyHit,
+				PsychubeAmp:         amp,
+				ResonanceIndex:      0,
+				EnemyDef:            600.0,
+				ShowDamagePerAction: showDamagePerAction,
+				Buff:                buff,
+				Debuff:              debuff,
+				AfflatusAdvantage:   afflatusAdvantageBool,
 			})
 			for _, res := range responseDamage {
 				if hasBoundenDuty && strings.Contains(res.Name, "His Bounden Duty") && (strings.Contains(res.Name, "A2") || strings.Contains(res.Name, "A3") || strings.Contains(res.Name, "A4") || strings.Contains(res.Name, "A5")) {

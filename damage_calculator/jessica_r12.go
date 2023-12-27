@@ -9,6 +9,7 @@ import (
 )
 
 func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 19
 	damageResponse := []DamageResponse{}
 
 	insight1DmgBonus := 0.2 // Damage to poisoned enemy
@@ -81,6 +82,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateDamages[character.Star1] + skill1Extra3Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2Damages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica His Bounden Duty Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -135,6 +139,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateDamages[character.Star1] + skill1Extra3Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2Damages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica Hopscotch Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -190,6 +197,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateDamages[character.Star1] + skill1Extra3Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2Damages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica Yearning Desire Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -250,6 +260,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraBuffDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateDamages[character.Star1] + skill1Extra3BuffDamages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2BuffDamages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica Brave New World Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (With BNW Buff: %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
@@ -309,6 +322,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraDamages[character.Star2] + skill1Extra1Damages[character.Star2] + ultimateI1Damages[character.Star1] + skill2ExtraBuffDamages[character.Star2] + skill1Extra1Damages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateDamages[character.Star1] + skill1Extra3BuffDamages[character.Star2] + skill2ExtraDamages[character.Star2] + ultimateI1Damages[character.Star1] + skill1Extra2BuffDamages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica Blasphemer of Night Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -369,6 +385,9 @@ func JessicaR12DmgCalculate(calParams CalParams) []DamageResponse {
 		poisonDamage := calculator.CalculateGenesisDamage(DamageCalculatorInfo{}, 0.3)
 		poisonDamages := poisonDamage * 14.0
 		expectTotalDamage := skill2ExtraBuffDamages[character.Star2] + skill1Extra2BuffDamages[character.Star2] + ultimateI1BuffDamages[character.Star1] + skill2ExtraBuffDamages[character.Star2] + skill1Extra2BuffDamages[character.Star2] + skill2ExtraBuffDamages[character.Star2] + ultimateI1BuffDamages[character.Star1] + skill1Extra3BuffDamages[character.Star2] + skill2ExtraBuffDamages[character.Star2] + ultimateI1BuffDamages[character.Star1] + skill1Extra3BuffDamages[character.Star2] + poisonDamages
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nJessica Blasphemer of Night (Sotheby) Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])

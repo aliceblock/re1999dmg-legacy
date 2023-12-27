@@ -9,6 +9,7 @@ import (
 )
 
 func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 18
 	damageResponse := []DamageResponse{}
 
 	enemyCritDef := 0.1
@@ -44,6 +45,9 @@ func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages := calculatorForBalancePlease.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages := calculatorForBalancePlease.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage := aKnightCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nA Knight Balance, Please Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -79,6 +83,9 @@ func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2BuffDamages := calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.BalancePlease.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForBraveNewWorld.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = skill1Damages[character.Star1] + skill1Damages[character.Star2] + skill2Damages[character.Star2]*3 + ultimateDamages[character.Star1]*3 + skill1BuffDamages[character.Star2] + skill1BuffDamages[character.Star3]
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nA Knight Brave New World Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with BNW Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])
@@ -112,6 +119,9 @@ func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
 	skill2Damages = calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{}, character.Skill2, calParams.EnemyHit)
 	ultimateDamages = calculatorForBoundenDuty.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = aKnightCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nA Knight His Bounden Duty Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -149,6 +159,9 @@ func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateBuff3Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{UltimateMight: 0.04 * 3}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{UltimateMight: 0.04 * 4}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = aKnightCalculateExpectTotalDmg(skill1Damages, skill2Damages, ultimateDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nA Knight Hopsotch Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -185,6 +198,9 @@ func AKnightDmgCalculate(calParams CalParams) []DamageResponse {
 	ultimateDamages = calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{}, character.Ultimate, calParams.EnemyHit)
 	ultimateBuffDamages := calculatorForYearningDesire.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: psychube.YearningDesire.AdditionalEffect()[calParams.PsychubeAmp].DmgBonus()}, character.Ultimate, calParams.EnemyHit)
 	expectTotalDamage = aKnightCalculateExpectTotalDmg(skill1BuffDamages, skill2BuffDamages, ultimateBuffDamages)
+	if calParams.ShowDamagePerAction {
+		expectTotalDamage = expectTotalDamage / float64(actionsCount)
+	}
 
 	fmt.Printf("---------\nA Knight Yearning Desire Final Damage:")
 	fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f (with Buff %.2f, %.2f, %.2f)", skill1Damages[0], skill1Damages[1], skill1Damages[2], skill1BuffDamages[0], skill1BuffDamages[1], skill1BuffDamages[2])

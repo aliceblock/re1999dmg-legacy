@@ -9,6 +9,7 @@ import (
 )
 
 func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
+	actionsCount := 20
 	damageResponse := []DamageResponse{}
 
 	insight1DmgBonus := 0.06
@@ -69,6 +70,9 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateDamages := calculatorForHisBounden.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nCenturion His Bounden Duty Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -130,6 +134,9 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateDamages := calculatorForThunder.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nCenturion Thunderous Applause Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -192,6 +199,9 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateDamages := calculatorForYearning.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nCenturion Yearning Desire Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
@@ -257,6 +267,9 @@ func CenturionDmgCalculate(calParams CalParams) []DamageResponse {
 		ultimateBuff4Damages := calculatorForHopscotch.CalculateFinalDamage(DamageCalculatorInfo{BuffDmgBonus: insight1DmgBonus * 5, UltimateMight: psychube.Hopscotch.AdditionalEffect()[calParams.PsychubeAmp].UltimateMight() * 4}, character.Ultimate, calParams.EnemyHit)
 
 		expectTotalDamage := skill2Moxie2Damages[character.Star2] + skill1Moxie4Damages[character.Star1] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star3] + skill1Moxie5Damages[character.Star3] + skill2Moxie5Damages[character.Star1] + skill1Moxie5Damages[character.Star2] + skill1Moxie5Damages[character.Star2] + ultimateDamages[character.Star1]
+		if calParams.ShowDamagePerAction {
+			expectTotalDamage = expectTotalDamage / float64(actionsCount)
+		}
 
 		fmt.Printf("---------\nCenturion Hopscotch Final Damage:")
 		fmt.Printf("\nSkill 1: %.2f, %.2f, %.2f", skill1Damages[0], skill1Damages[1], skill1Damages[2])
